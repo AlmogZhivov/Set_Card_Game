@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
  *
  * @inv slotToCard[x] == y iff cardToSlot[y] == x
  */
+
+// this is a comment
+
 public class Table {
 
     /**

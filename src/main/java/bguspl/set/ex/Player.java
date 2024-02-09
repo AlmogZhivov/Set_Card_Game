@@ -1,5 +1,9 @@
 package bguspl.set.ex;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import bguspl.set.Env;
 
 /**
@@ -51,6 +55,11 @@ public class Player implements Runnable {
     private int score;
 
     /**
+     * The key presses of a player
+     */
+    private BlockingQueue<Integer> actionsQueue;
+
+    /**
      * The class constructor.
      *
      * @param env    - the environment object.
@@ -64,6 +73,7 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
+        this.actionsQueue = new LinkedBlockingDeque<Integer>(env.config.featureSize);
     }
 
     /**
@@ -114,7 +124,7 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        // TODO implement
+        
     }
 
     /**

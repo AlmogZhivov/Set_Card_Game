@@ -1,5 +1,6 @@
 package bguspl.set.ex;
 
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -105,8 +106,10 @@ public class Player implements Runnable {
         // note: this is a very, very smart AI (!)
         aiThread = new Thread(() -> {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+            Random rnd = new Random();
             while (!terminate) {
-                // TODO implement player key press simulator
+                int pressing = rnd.nextInt(env.config.tableSize);
+                keyPressed(pressing);
                 try {
                     synchronized (this) { wait(); }
                 } catch (InterruptedException ignored) {}
@@ -144,17 +147,30 @@ public class Player implements Runnable {
      * @post - the player's score is updated in the ui.
      */
     public void point() {
-        // TODO implement
-
         int ignored = table.countCards(); // this part is just for demonstration in the unit tests
         env.ui.setScore(id, ++score);
+        try {
+            for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+                env.ui.setFreeze(id, i);
+                Thread.sleep(1000);
+            }
+            env.ui.setFreeze(id, 0);
+        } catch (InterruptedException e) {}
+        actionsQueue.clear();
     }
 
     /**
      * Penalize a player and perform other related actions.
      */
     public void penalty() {
-        // TODO implement
+        try {
+            for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                env.ui.setFreeze(id, i);
+                Thread.sleep(1000);
+            }
+            env.ui.setFreeze(id, 0);
+        } catch (InterruptedException e) {}
+        actionsQueue.clear();
     }
 
     public int score() {

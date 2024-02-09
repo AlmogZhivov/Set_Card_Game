@@ -31,7 +31,10 @@ public class Dealer implements Runnable {
      * True iff game should be terminated.
      */
     private volatile boolean terminate;
-
+    /**
+     * True iff the dealer has changed the table
+     */
+    private boolean hasChanged = false;
     /**
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
      */
@@ -92,6 +95,7 @@ public class Dealer implements Runnable {
      * Checks cards should be removed from the table and removes them.
      */
     private void removeCardsFromTable() {
+        hasChanged = true;
         // TODO implement
     }
 
@@ -99,7 +103,12 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
+        hasChanged = true;
         // TODO implement
+
+
+        // After the dealer has placed the cards, we gonna change back the status to false
+        hasChanged = false;
     }
 
     /**
@@ -120,6 +129,7 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
+        hasChanged = true;
         // TODO implement
     }
 
@@ -128,5 +138,9 @@ public class Dealer implements Runnable {
      */
     private void announceWinners() {
         // TODO implement
+    }
+
+    public boolean hasChanged() {
+        return hasChanged;
     }
 }

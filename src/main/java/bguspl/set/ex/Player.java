@@ -24,6 +24,10 @@ public class Player implements Runnable {
      */
     private final Table table;
 
+     /**
+     * Dealer entity
+     */
+    private final Dealer dealer;
     /**
      * The id of the player (starting from 0).
      */
@@ -73,6 +77,7 @@ public class Player implements Runnable {
         this.table = table;
         this.id = id;
         this.human = human;
+        this.dealer = dealer;
         this.actionsQueue = new LinkedBlockingDeque<Integer>(env.config.featureSize);
     }
 
@@ -124,7 +129,12 @@ public class Player implements Runnable {
      * @param slot - the slot corresponding to the key pressed.
      */
     public void keyPressed(int slot) {
-        
+        // We make sure that the dealer has not changed the table currently
+        if (actionsQueue.size() < env.config.featureSize && !dealer.hasChanged()) {
+            try {
+                actionsQueue.put(slot);
+            } catch (InterruptedException e) {}
+        }
     }
 
     /**

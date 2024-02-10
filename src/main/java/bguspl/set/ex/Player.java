@@ -65,6 +65,16 @@ public class Player implements Runnable {
     private BlockingQueue<Integer> actionsQueue;
 
     /**
+     * Player tokens
+     */
+    private int[] playerTokens;
+
+    /*
+     * Total tokens amount
+     */
+    private int tokensAmount;
+
+    /**
      * The class constructor.
      *
      * @param env    - the environment object.
@@ -80,6 +90,10 @@ public class Player implements Runnable {
         this.human = human;
         this.dealer = dealer;
         this.actionsQueue = new LinkedBlockingDeque<Integer>(env.config.featureSize);
+        this.playerTokens = new int[env.config.featureSize];
+        for (int i = 0; i < env.config.featureSize; i++)
+            this.playerTokens[i] = -1;
+        tokensAmount = 0;
     }
 
     /**
@@ -175,5 +189,15 @@ public class Player implements Runnable {
 
     public int score() {
         return score;
+    }
+    // Delete all tokens belong to player
+    public void deleteTokens() {
+        for (int i = 0; i < env.config.featureSize; i++) {
+            if (playerTokens[i] != -1) {
+                table.removeToken(id, playerTokens[i]);
+                tokensAmount--;
+                playerTokens[i] = -1;
+            }
+        }
     }
 }

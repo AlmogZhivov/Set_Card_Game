@@ -2,6 +2,7 @@ package bguspl.set.ex;
 
 import bguspl.set.Env;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -141,7 +142,22 @@ public class Dealer implements Runnable {
      */
     private void removeAllCardsFromTable() {
         hasChanged = true;
-        // TODO implement
+        // generate random slots
+        List<Integer> slots = new LinkedList<>();
+        for (int i = 0; i < table.slotToCard.length; i++) {
+            slots.add(i);
+        }
+        Collections.shuffle(slots);
+        // remove cards from table
+        for (Integer slot : slots) {
+            Integer card = table.slotToCard[slot];
+            if (card != null) {
+                table.removeCard(slot); 
+                deck.add(card);           
+            }            
+        }
+        // shuffle the cards again after removal
+        Collections.shuffle(deck);
     }
 
     /**
@@ -160,7 +176,7 @@ public class Dealer implements Runnable {
             if (players[i].score() == maximum) 
                 maxPlayer.add(players[i].id);
         }
-        // From list to array
+        // List to array convertion
         int[] winners = new int[maxPlayer.size()];
         for (int i = 0; i < winners.length; i++) {
             winners[i] = maxPlayer.get(i);

@@ -2,6 +2,7 @@ package bguspl.set.ex;
 
 import bguspl.set.Env;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,6 +22,7 @@ public class Dealer implements Runnable {
      */
     private final Table table;
     private final Player[] players;
+    private Thread dealerThread;
 
     /**
      * The list of card ids that are left in the dealer's deck.
@@ -52,6 +54,7 @@ public class Dealer implements Runnable {
      */
     @Override
     public void run() {
+        this.dealerThread = Thread.currentThread();
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
         while (!shouldFinish()) {
             placeCardsOnTable();
@@ -115,14 +118,22 @@ public class Dealer implements Runnable {
      * Sleep for a fixed amount of time or until the thread is awakened for some purpose.
      */
     private void sleepUntilWokenOrTimeout() {
-        // TODO implement
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {}
     }
 
     /**
      * Reset and/or update the countdown and the countdown display.
      */
     private void updateTimerDisplay(boolean reset) {
-        // TODO implement
+        if (reset && !shouldFinish())
+            reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
+        long timeLeft = reshuffleTime - System.currentTimeMillis();
+        if (timeLeft > env.config.turnTimeoutWarningMillis)
+            env.ui.setCountdown(timeLeft, false);
+        else
+            env.ui.setCountdown(timeLeft, true);
     }
 
     /**
@@ -137,7 +148,24 @@ public class Dealer implements Runnable {
      * Check who is/are the winner/s and displays them.
      */
     private void announceWinners() {
-        // TODO implement
+        List<Integer> maxPlayer = new LinkedList<Integer>();
+        int maximum = players[0].score();
+        // Find the maximum score
+        for (int i = 1; i < players.length; i++) {
+            if (players[i].score() > maximum)
+                maximum = players[i].score();
+        }
+        // Find the player with the maximum score or the 2 players with tie
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].score() == maximum) 
+                maxPlayer.add(players[i].id);
+        }
+        // From list to array
+        int[] winners = new int[maxPlayer.size()];
+        for (int i = 0; i < winners.length; i++) {
+            winners[i] = maxPlayer.get(i);
+        }
+        env.ui.announceWinner(winners);
     }
 
     public boolean hasChanged() {

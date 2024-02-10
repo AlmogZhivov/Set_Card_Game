@@ -63,16 +63,21 @@ public class Player implements Runnable {
      * The key presses of a player
      */
     private BlockingQueue<Integer> actionsQueue;
-
+    
     /**
-     * Player tokens
+     * Player's tokes
      */
     private int[] playerTokens;
 
-    /*
-     * Total tokens amount
+    /**
+     * Tokens number
      */
     private int tokensAmount;
+
+    /**
+     * Indicator for penalty or point
+     */
+    private int isValid;
 
     /**
      * The class constructor.
@@ -93,7 +98,8 @@ public class Player implements Runnable {
         this.playerTokens = new int[env.config.featureSize];
         for (int i = 0; i < env.config.featureSize; i++)
             this.playerTokens[i] = -1;
-        tokensAmount = 0;
+        this.tokensAmount = 0;
+        this.isValid = -1;
     }
 
     /**
@@ -106,7 +112,25 @@ public class Player implements Runnable {
         if (!human) createArtificialIntelligence();
 
         while (!terminate) {
-            // TODO implement main player loop
+            try {
+                synchronized (dealer.dealerLock) {
+                    // Get the player's slot
+                    if (isValid == -1 && !actionsQueue.isEmpty()) {
+                        int slot = actionsQueue.remove();
+                        if (!removeSlot(slot) && table.slotToCard[slot] != null && canBePlaced(slot)) {
+                            if (!dealer.hasChanged() && tokensAmount == env.config.featureSize) {
+                                dealer.checkPlayerSlots(this, playerTokens.clone());
+                                dealer.dealerLock.wait();
+                            }
+                        }
+                    }
+                }
+                // Apply action depends on dealer's answer
+                if (isValid == 1)
+                    point();
+                else if (isValid == 0)
+                    penalty();
+            } catch (InterruptedException ignored) {}
         }
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -171,6 +195,7 @@ public class Player implements Runnable {
             env.ui.setFreeze(id, 0);
         } catch (InterruptedException e) {}
         actionsQueue.clear();
+        isValid = -1;
     }
 
     /**
@@ -185,18 +210,60 @@ public class Player implements Runnable {
             env.ui.setFreeze(id, 0);
         } catch (InterruptedException e) {}
         actionsQueue.clear();
+        isValid = -1;
     }
 
     public int score() {
         return score;
     }
-    // Delete all tokens belong to player
+    public void setIsValid(int input) {
+        this.isValid = input;
+    }
+
+    private boolean canBePlaced(int slot) {
+        if (tokensAmount < env.config.featureSize) {
+            boolean alreadyExists = false;
+            int updateIndex = -1;
+            // Checking if the slot exists
+            for (int i = 0; i < env.config.featureSize; i++) {
+                if (playerTokens[i] == slot)
+                    alreadyExists = true;
+            }
+            // Find if there is a place to insert the slot
+            for (int i = 0; i < env.config.featureSize; i++) {
+                if (playerTokens[i] == -1)
+                    updateIndex = i;
+            }
+            // Place the new slot if we found a place for it
+            if (!alreadyExists && updateIndex != -1) {
+                playerTokens[updateIndex] = slot;
+                table.placeToken(id, slot);
+                tokensAmount++;
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean removeSlot(int slot) {
+        if (table.removeToken(id, slot)) {
+            // Searching for the token to be removed
+            for (int i = 0; i < env.config.featureSize; i++) {
+                if (playerTokens[i] == slot) {
+                    playerTokens[i] = -1;
+                    tokensAmount--;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public void deleteTokens() {
         for (int i = 0; i < env.config.featureSize; i++) {
+            // Delete all the existing player's tokens
             if (playerTokens[i] != -1) {
                 table.removeToken(id, playerTokens[i]);
-                tokensAmount--;
                 playerTokens[i] = -1;
+                tokensAmount--;
             }
         }
     }

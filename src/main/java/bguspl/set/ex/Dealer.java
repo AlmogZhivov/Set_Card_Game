@@ -5,6 +5,8 @@ import bguspl.set.Env;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,12 +44,27 @@ public class Dealer implements Runnable {
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
      */
     private long reshuffleTime = Long.MAX_VALUE;
+    /**
+     * Dealer's lock
+     */
+    public final Object dealerLock;
+     /**
+     * Slots of the current round
+     */
+    private BlockingQueue<Integer> boardSlots;
+     /**
+     * Players of the current round
+     */
+    private BlockingQueue<Player> boardPlayers;
 
     public Dealer(Env env, Table table, Player[] players) {
         this.env = env;
         this.table = table;
         this.players = players;
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
+        dealerLock = new Object();
+        this.boardSlots = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
+        this.boardPlayers = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
 
     /**
@@ -57,7 +74,13 @@ public class Dealer implements Runnable {
     public void run() {
         this.dealerThread = Thread.currentThread();
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
+        // The dealer must activate player's threads
+        for (Player player : players) {
+            Thread playerThread = new Thread(player, player.id + " ");
+            playerThread.start();
+        }
         while (!shouldFinish()) {
+            reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
             placeCardsOnTable();
             timerLoop();
             updateTimerDisplay(false);
@@ -100,6 +123,9 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {
         hasChanged = true;
+
+        // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using setIsValid metod
+        // GET THE SLOT AND THE PLAYER FROM 'boardPlayers' 'boardSlots' amd check if boardSlots.length > 2
         // TODO implement
     }
 
@@ -109,7 +135,6 @@ public class Dealer implements Runnable {
     private void placeCardsOnTable() {
         hasChanged = true;
         // TODO implement
-
 
         // After the dealer has placed the cards, we gonna change back the status to false
         hasChanged = false;
@@ -142,6 +167,10 @@ public class Dealer implements Runnable {
      */
     private void removeAllCardsFromTable() {
         hasChanged = true;
+        // delete for each player his tokens
+        for (Player player : players) {
+            player.deleteTokens();
+        }
         // generate random slots
         List<Integer> slots = new LinkedList<>();
         for (int i = 0; i < table.slotToCard.length; i++) {
@@ -158,6 +187,8 @@ public class Dealer implements Runnable {
         }
         // shuffle the cards again after removal
         Collections.shuffle(deck);
+        boardSlots.clear();
+        boardPlayers.clear();
     }
 
     /**
@@ -186,5 +217,16 @@ public class Dealer implements Runnable {
 
     public boolean hasChanged() {
         return hasChanged;
+    }
+
+    // Maybe not needed?
+    public void checkPlayerSlots(Player player, int[] slots) {
+        try {
+            for (int i = 0; i < slots.length; i++) {
+                boardSlots.put(slots[i]);
+            }
+            boardPlayers.put(player);
+            dealerThread.interrupt();
+        } catch (InterruptedException e) {}
     }
 }

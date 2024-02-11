@@ -86,7 +86,7 @@ public class Dealer implements Runnable {
             updateTimerDisplay(false);
             removeAllCardsFromTable();
         }
-        announceWinners();
+        //announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
@@ -99,6 +99,18 @@ public class Dealer implements Runnable {
             updateTimerDisplay(false);
             removeCardsFromTable();
             placeCardsOnTable();
+            /* 
+            while (!areAvailableSets() && !deck.isEmpty()) {
+                removeAllCardsFromTable();
+                placeCardsOnTable();
+                updateTimerDisplay(true);
+            }
+            if (!areAvailableSets() && deck.isEmpty()) {
+                terminate();
+                announceWinners();
+                env.logger.info("Thread " + Thread.currentThread().getName() + " terminated.");
+            }
+            */
         }
     }
 
@@ -114,6 +126,7 @@ public class Dealer implements Runnable {
      *
      * @return true iff the game should be finished.
      */
+    // Add && noSetsOnTable()?
     private boolean shouldFinish() {
         return terminate || env.util.findSets(deck, 1).size() == 0;
     }
@@ -228,5 +241,14 @@ public class Dealer implements Runnable {
             boardPlayers.put(player);
             dealerThread.interrupt();
         } catch (InterruptedException e) {}
+    }
+
+    private boolean areAvailableSets() {
+        LinkedList<Integer> cards = new LinkedList<>();
+        for (int i = 0; i < table.slotToCard.length; i++) {
+            if (table.slotToCard[i] != null)
+            cards.add(table.slotToCard[i]);
+        }
+        return env.util.findSets(cards, 1).size() != 0;
     }
 }

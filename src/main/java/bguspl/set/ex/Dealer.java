@@ -118,7 +118,10 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        // TODO implement
+        for (int i = players.length - 1; i >= 0; i--) {
+            players[i].terminate();
+        }
+        this.terminate = true;
     }
 
     /**

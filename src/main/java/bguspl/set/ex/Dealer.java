@@ -154,6 +154,9 @@ public class Dealer implements Runnable {
 
         // After the dealer has placed the cards, we gonna change back the status to false
         hasChanged = false;
+        synchronized (dealerLock) {
+            dealerLock.notifyAll();
+        }
     }
 
     /**

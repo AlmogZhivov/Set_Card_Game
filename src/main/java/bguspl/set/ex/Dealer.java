@@ -39,7 +39,7 @@ public class Dealer implements Runnable {
     /**
      * True iff the dealer has changed the table
      */
-    private boolean hasChanged = false;
+    //private boolean hasChanged = false;
     /**
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
      */
@@ -48,14 +48,16 @@ public class Dealer implements Runnable {
      * Dealer's lock
      */
     public final Object dealerLock;
+
+    public final int setSize;
      /**
      * Slots of the current round
      */
-    private BlockingQueue<Integer> boardSlots;
-     /**
-     * Players of the current round
-     */
-    private BlockingQueue<Player> boardPlayers;
+    // private BlockingQueue<Integer> boardSlots;
+    //  /**
+    //  * Players of the current round
+    //  */
+    // private BlockingQueue<Player> boardPlayers;
 
     public Dealer(Env env, Table table, Player[] players) {
         this.env = env;
@@ -63,8 +65,9 @@ public class Dealer implements Runnable {
         this.players = players;
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         dealerLock = new Object();
-        this.boardSlots = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
-        this.boardPlayers = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
+        this.setSize = env.config.featureSize;
+        // this.boardSlots = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
+        // this.boardPlayers = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
 
     /**
@@ -79,9 +82,10 @@ public class Dealer implements Runnable {
             Thread playerThread = new Thread(player, player.id + " ");
             playerThread.start();
         }
+        placeCardsOnTable();
         while (!shouldFinish()) {
             reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
-            placeCardsOnTable();
+            //placeCardsOnTable();
             timerLoop();
             updateTimerDisplay(false);
             removeAllCardsFromTable();
@@ -140,21 +144,56 @@ public class Dealer implements Runnable {
      * Checks cards should be removed from the table and removes them.
      */
     private void removeCardsFromTable() {
-        hasChanged = true;
-        
+        synchronized(dealerLock) {
+           // hasChanged = true;
+
+            for (Player player : players) {
+                if (table.getNumOfTokensOnTable(player.id) == setSize) {
+                    int[] tokens = table.getTokens(player.id);
+                    if (env.util.testSet(tokens)) {
+                        for (int token : tokens) {
+                            table.removeToken(player.id, token);
+                        }
+                    }
+                }
+            }
+
+
+            // // ----------------
+            // while(!boardPlayers.isEmpty()){
+            //     Player player = null;
+            //     try {
+            //         player = boardPlayers.take();
+            //     }
+            //     catch(Exception e) {/*do nothing */}
+            //     int[] arr = new int[3];
+            //     for (int i = 0; i < 3; i = i + 1){
+            //         try{arr[i] = boardSlots.take();} catch(Exception e) {}
+            //     }
+            //     if (env.util.testSet(arr)) {
+            //         for (int i : arr) {
+            //             table.removeToken(player.id, i);
+            //             table.removeCard(i);
+            //         }
+            //         player.point();
+            //     }
+                
+            } // finished sync
+
+            placeCardsOnTable();
+        }
 
         // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using setIsValid metod
         // GET THE SLOT AND THE PLAYER FROM 'boardPlayers' 'boardSlots' amd check if boardSlots.length > 2
-        // TODO implement
-    }
+        // done implement
 
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
         synchronized(dealerLock){
-            hasChanged = true;
-            List<Integer> emptySlots = table.emptySlots();
+            //hasChanged = true;
+            List<Integer> emptySlots = table.getEmptySlots();
             if(emptySlots==null)
                 return;
             
@@ -164,9 +203,9 @@ public class Dealer implements Runnable {
             }
 
             // After the dealer has placed the cards, we gonna change back the status to false
-            hasChanged = false;
+            //hasChanged = false;
         }
-        // TODO implement
+        // done implement
     }
 
     /**
@@ -195,11 +234,11 @@ public class Dealer implements Runnable {
      * Returns all the cards from the table to the deck.
      */
     private void removeAllCardsFromTable() {
-        hasChanged = true;
+        //hasChanged = true;
         // delete for each player his tokens
-        for (Player player : players) {
-            player.deleteTokens();
-        }
+        // for (Player player : players) {
+        //     player.deleteTokens();
+        // }
         // generate random slots
         List<Integer> slots = new LinkedList<>();
         for (int i = 0; i < table.slotToCard.length; i++) {
@@ -216,8 +255,8 @@ public class Dealer implements Runnable {
         }
         // shuffle the cards again after removal
         Collections.shuffle(deck);
-        boardSlots.clear();
-        boardPlayers.clear();
+        // boardSlots.clear();
+        // boardPlayers.clear();
     }
 
     /**
@@ -244,20 +283,20 @@ public class Dealer implements Runnable {
         env.ui.announceWinner(winners);
     }
 
-    public boolean hasChanged() {
-        return hasChanged;
-    }
+    // public boolean hasChanged() {
+    //     return hasChanged;
+    // }
 
-    // Maybe not needed?
-    public void checkPlayerSlots(Player player, int[] slots) {
-        try {
-            for (int i = 0; i < slots.length; i++) {
-                boardSlots.put(slots[i]);
-            }
-            boardPlayers.put(player);
-            dealerThread.interrupt();
-        } catch (InterruptedException e) {}
-    }
+    // // Maybe not needed?
+    // public void checkPlayerSlots(Player player, int[] slots) {
+    //     try {
+    //         for (int i = 0; i < slots.length; i++) {
+    //             boardSlots.put(slots[i]);
+    //         }
+    //         boardPlayers.put(player);
+    //         dealerThread.interrupt();
+    //     } catch (InterruptedException e) {}
+    // }
 
     private boolean areAvailableSets() {
         LinkedList<Integer> cards = new LinkedList<>();

@@ -61,21 +61,19 @@ public class Player implements Runnable {
      * The key presses of a player
      */
     private ArrayBlockingQueue<Integer> actionsQueue;
-    
-    /**
-     * Player's tokes
-     */
-    private int[] playerTokens;
 
-    /**
-     * Tokens number
-     */
-    private int tokensAmount;
+    //private final int setSize;
+    
+    // /**
+    //  * Player's tokes
+    //  */
+    // private int[] playerTokens; // almog added this field, for blocking queue
+
 
     /**
      * Indicator for penalty or point
      */
-    private int isValid;
+    //private int isValid;
 
     /**
      * The class constructor.
@@ -92,12 +90,12 @@ public class Player implements Runnable {
         this.id = id;
         this.human = human;
         this.dealer = dealer;
-        this.actionsQueue = new ArrayBlockingQueue<Integer>(env.config.featureSize);
-        this.playerTokens = new int[env.config.featureSize];
-        for (int i = 0; i < env.config.featureSize; i++)
-            this.playerTokens[i] = -1;
-        this.tokensAmount = 0;
-        this.isValid = -1;
+        this.actionsQueue = new ArrayBlockingQueue<Integer>(dealer.setSize); //why do we need limitations?
+        //this.setSize = env.config.featureSize;
+        // this.playerTokens = new int[env.config.featureSize];
+        // for (int i = 0; i < env.config.featureSize; i++)
+        //     this.playerTokens[i] = -1;
+        //this.isValid = -1;
     }
 
     /**
@@ -109,26 +107,41 @@ public class Player implements Runnable {
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
         if (!human) createArtificialIntelligence();
 
-        while (!terminate) {
-            try {
-                synchronized (dealer.dealerLock) {
-                    // Get the player's slot
-                    if (isValid == -1 && !actionsQueue.isEmpty()) {
+        synchronized(this){
+            while (!terminate) {
+                try {
+
+                    while (table.getNumOfTokensOnTable(this.id) >= dealer.setSize) {
+                        // if actionsQueue is full then current thread need to wait
+                        // for dealer to either point or penelty
+                        this.wait();
+                    }
+
+                    if (actionsQueue.size() > 0) {
                         int slot = actionsQueue.remove();
-                        if (!removeSlot(slot) && table.slotToCard[slot] != null && canBePlaced(slot)) {
-                            if (!dealer.hasChanged() && tokensAmount == env.config.featureSize) {
-                                dealer.checkPlayerSlots(this, playerTokens.clone());
-                                dealer.dealerLock.wait();
-                            }
+                        if (!table.removeToken(this.id, slot)) {
+                            table.placeToken(this.id, slot);
                         }
                     }
-                }
-                // Apply action depends on dealer's answer
-                if (isValid == 1)
-                    point();
-                else if (isValid == 0)
-                    penalty();
-            } catch (InterruptedException ignored) {}
+
+                    // Get the player's slot
+                    // if (isValid == -1 && !actionsQueue.isEmpty()) {
+                    //     int slot = actionsQueue.remove();
+                    //     if (!removeSlot(slot) && table.slotToCard[slot] != null && canBePlaced(slot)) {
+                    //         while (!dealer.hasChanged() && actionsQueue.remainingCapacity() == 0) {
+                    //             dealer.checkPlayerSlots(this, playerTokens.clone());
+                    //             this.wait();
+                    //         }
+                    //     }
+                    // }
+                    // Apply action depends on dealer's answer
+                    // if (isValid == 1)
+                    //     point();
+                    // else if (isValid == 0)
+                    //     penalty();
+                } catch (InterruptedException ignored) {}
+            }
+            this.notifyAll();
         }
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -169,7 +182,7 @@ public class Player implements Runnable {
      */
     public void keyPressed(int slot) {
         // We make sure that the dealer has not changed the table currently
-        if (actionsQueue.size() < env.config.featureSize && !dealer.hasChanged()) {
+        if (actionsQueue.remainingCapacity() > 0) {
             try {
                 actionsQueue.put(slot);
             } catch (InterruptedException e) {}
@@ -179,90 +192,106 @@ public class Player implements Runnable {
     /**
      * Award a point to a player and perform other related actions.
      *
+     * @pre - actionsQueue.remainingCapacity() == 0
      * @post - the player's score is increased by 1.
      * @post - the player's score is updated in the ui.
      */
     public void point() {
-        int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-        env.ui.setScore(id, ++score);
-        try {
-            for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
-                env.ui.setFreeze(id, i);
-                Thread.sleep(1000);
+        synchronized(this) {
+            while (actionsQueue.remainingCapacity() > 0) {
+                try {this.wait();} 
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            env.ui.setFreeze(id, 0);
-        } catch (InterruptedException e) {}
-        actionsQueue.clear();
-        isValid = -1;
+            int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+            env.ui.setScore(id, ++score);
+            try {
+                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    Thread.sleep(1000);
+                }
+                env.ui.setFreeze(id, 0);
+            } catch (InterruptedException e) {}
+            actionsQueue.clear();
+            //isValid = -1;
+            notifyAll();
+        }
     }
 
     /**
      * Penalize a player and perform other related actions.
+     * 
+     * @pre - actionsQueue.remainigCapacity() == 0
      */
     public void penalty() {
-        try {
-            for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
-                env.ui.setFreeze(id, i);
-                Thread.sleep(1000);
-            }
-            env.ui.setFreeze(id, 0);
-        } catch (InterruptedException e) {}
-        actionsQueue.clear();
-        isValid = -1;
+        synchronized(this) {
+            try {
+                while (actionsQueue.remainingCapacity() > 0) {
+                    this.wait();
+                }
+                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    Thread.sleep(1000);
+                }
+                env.ui.setFreeze(id, 0);
+            } 
+            catch (InterruptedException e) {}
+            actionsQueue.clear();
+            //isValid = -1;
+            notifyAll();
+        }
     }
 
     public int score() {
         return score;
     }
-    public void setIsValid(int input) {
-        this.isValid = input;
-    }
+    // public void setIsValid(int input) {
+    //     this.isValid = input;
+    // }
 
-    private boolean canBePlaced(int slot) {
-        if (tokensAmount < env.config.featureSize) {
-            boolean alreadyExists = false;
-            int updateIndex = -1;
-            // Checking if the slot exists
-            for (int i = 0; i < env.config.featureSize; i++) {
-                if (playerTokens[i] == slot)
-                    alreadyExists = true;
-            }
-            // Find if there is a place to insert the slot
-            for (int i = 0; i < env.config.featureSize; i++) {
-                if (playerTokens[i] == -1)
-                    updateIndex = i;
-            }
-            // Place the new slot if we found a place for it
-            if (!alreadyExists && updateIndex != -1) {
-                playerTokens[updateIndex] = slot;
-                table.placeToken(id, slot);
-                tokensAmount++;
-                return true;
-            }
-        }
-        return false;
-    }
-    private boolean removeSlot(int slot) {
-        if (table.removeToken(id, slot)) {
-            // Searching for the token to be removed
-            for (int i = 0; i < env.config.featureSize; i++) {
-                if (playerTokens[i] == slot) {
-                    playerTokens[i] = -1;
-                    tokensAmount--;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public void deleteTokens() {
-        for (int i = 0; i < env.config.featureSize; i++) {
-            // Delete all the existing player's tokens
-            if (playerTokens[i] != -1) {
-                table.removeToken(id, playerTokens[i]);
-                playerTokens[i] = -1;
-                tokensAmount--;
-            }
-        }
-    }
+    // private boolean canBePlaced(int slot) {
+    //     if (actionsQueue.remainingCapacity() > 0) {
+    //         boolean alreadyExists = false;
+    //         int updateIndex = -1;
+    //         // Checking if the slot exists
+    //         for (int i = 0; i < env.config.featureSize; i++) {
+    //             if (playerTokens[i] == slot)
+    //                 alreadyExists = true;
+    //         }
+    //         // Find if there is a place to insert the slot
+    //         for (int i = 0; i < env.config.featureSize; i++) {
+    //             if (playerTokens[i] == -1)
+    //                 updateIndex = i;
+    //         }
+    //         // Place the new slot if we found a place for it
+    //         if (!alreadyExists && updateIndex != -1) {
+    //             playerTokens[updateIndex] = slot;
+    //             table.placeToken(id, slot);
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+    // private boolean removeSlot(int slot) {
+    //     if (table.removeToken(id, slot)) {
+    //         // Searching for the token to be removed
+    //         for (int i = 0; i < env.config.featureSize; i++) {
+    //             if (playerTokens[i] == slot) {
+    //                 playerTokens[i] = -1;
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
+    // public void deleteTokens() {
+    //     for (int i = 0; i < env.config.featureSize; i++) {
+    //         // Delete all the existing player's tokens
+    //         if (playerTokens[i] != -1) {
+    //             table.removeToken(id, playerTokens[i]);
+    //             playerTokens[i] = -1;
+    //         }
+    //     }
+    // }
 }

@@ -34,7 +34,7 @@ public class Table {
      */
     protected final Integer[] cardToSlot; // slot per card (if any)
 
-    private final HashMap<Pair, Boolean> tokens;
+    private final HashMap<Integer, List<Integer>> tokens;
 
     private final Object cardsLock;
 
@@ -54,7 +54,7 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
-        this.tokens = new HashMap<Pair, Boolean>();
+        this.tokens = new HashMap<Integer, List<Integer>>();
         this.cardsLock = new Object();
         this.hashLock = new Object();
     }
@@ -143,13 +143,16 @@ public class Table {
      * Places a player token on a grid slot.
      * 
      * @param player - the player the token belongs to.
-     * @param slot   - the slot on which to place the token.
+     * @param slot   - the slot on which to place the token. 
+     *      assumes that there is no token of this playte on this slot
      */
     public void placeToken(int player, int slot) {
         // TODO implement
         synchronized (hashLock) {
-            tokens.put(new Pair(player, slot), true);
-            env.ui.placeToken(player, slot);
+            if (!tokens.containsKey(player)) {
+                tokens.put(player, new LinkedList<Integer>());
+            }
+            tokens.get(player).add(slot);
         }
     }
 
@@ -161,20 +164,23 @@ public class Table {
      * @return - true iff a token was successfully removed.
      */
     public boolean removeToken(int player, int slot) {
-        // TODO implement
-        Pair pair = new Pair(player, slot);
+        // DONE implement
         synchronized (hashLock) {
-            if (tokens.containsKey(pair)) {
+            if (!tokens.containsKey(player)) {
+                return false;
+            }
+
+            else {
                 env.ui.removeToken(player, slot);
-                tokens.remove(pair);
-                return true;
+                // the remove method of List returns true if object found and remove
+                // and returns false if object does not exist in the list
+                return tokens.get(player).remove(slot);
             }
         }
-        return false;
     }
 
-
-    public List<Integer> emptySlots(){
+    // returns the slots which are empty 
+    public List<Integer> getEmptySlots(){
         synchronized(cardsLock) {
             List<Integer> output = new LinkedList<>();
             for (int i = 0; i < slotToCard.length; i = i+1){
@@ -185,32 +191,32 @@ public class Table {
         }
     }
 
-    private class Pair {
 
-        private int first;
-        private int last;
-
-        Pair(int first, int last) {
-            this.first = first;
-            this.last = last;
+    public int getNumOfTokensOnTable(int player) {
+        synchronized(this) {
+            if (!tokens.containsKey(player)) 
+                return 0;
+        
+            return tokens.get(player).size();
         }
+    }
 
-        public boolean equals(Object other) {
-            boolean output = false;
-            if (other instanceof Pair) {
-                Pair other2 = (Pair) other;
-                output = other2.getFirst() == this.getFirst() && other2.getLast() == this.getLast();
+    public int[] getTokens(int player) {
+        synchronized(this) {
+            if (!tokens.containsKey(player))
+                return null;
+
+            List<Integer> list = tokens.get(player);
+            int[] output = new int[list.size()];
+            int i = 0;
+            for (int token : list) {
+                output[i] = token;
+                i = i + 1;
             }
+        
             return output;
         }
-
-        public int getFirst() {
-            return first;
-        }
-
-        public int getLast() {
-            return last;
-        }
-
     }
+
+
 }

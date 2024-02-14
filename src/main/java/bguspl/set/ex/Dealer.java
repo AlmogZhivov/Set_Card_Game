@@ -27,6 +27,8 @@ public class Dealer implements Runnable {
     private final Player[] players;
     private Thread dealerThread;
 
+    // Aviad Dealer Aviad
+
     /**
      * The list of card ids that are left in the dealer's deck.
      */

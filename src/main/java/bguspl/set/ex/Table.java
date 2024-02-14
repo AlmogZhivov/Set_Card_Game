@@ -4,6 +4,7 @@ import bguspl.set.Env;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -170,6 +171,18 @@ public class Table {
             }
         }
         return false;
+    }
+
+
+    public List<Integer> emptySlots(){
+        synchronized(cardsLock) {
+            List<Integer> output = new LinkedList<>();
+            for (int i = 0; i < slotToCard.length; i = i+1){
+                if (slotToCard[i]==null)
+                    output.add(i);
+            }
+            return output;
+        }
     }
 
     private class Pair {

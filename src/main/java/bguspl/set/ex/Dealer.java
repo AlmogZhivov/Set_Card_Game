@@ -27,8 +27,6 @@ public class Dealer implements Runnable {
     private final Player[] players;
     private Thread dealerThread;
 
-    // Aviad Dealer Aviad
-
     /**
      * The list of card ids that are left in the dealer's deck.
      */
@@ -119,10 +117,12 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        for (int i = players.length - 1; i >= 0; i--) {
-            players[i].terminate();
+        synchronized(dealerLock){
+            for (int i = players.length - 1; i >= 0; i--) {
+                players[i].terminate();
+            }
+            this.terminate = true;
         }
-        this.terminate = true;
     }
 
     /**
@@ -132,7 +132,8 @@ public class Dealer implements Runnable {
      */
     // Add && noSetsOnTable()?
     private boolean shouldFinish() {
-        return terminate || env.util.findSets(deck, 1).size() == 0;
+        // maybe should sync?
+        return terminate || env.util.findSets(deck, 1).size() == 0; 
     }
 
     /**
@@ -140,6 +141,7 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {
         hasChanged = true;
+        
 
         // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using setIsValid metod
         // GET THE SLOT AND THE PLAYER FROM 'boardPlayers' 'boardSlots' amd check if boardSlots.length > 2
@@ -150,14 +152,21 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        hasChanged = true;
-        // TODO implement
+        synchronized(dealerLock){
+            hasChanged = true;
+            List<Integer> emptySlots = table.emptySlots();
+            if(emptySlots==null)
+                return;
+            
+            for (int i : emptySlots){
+                if (!deck.isEmpty())
+                    table.placeCard(deck.remove(0), i);
+            }
 
-        // After the dealer has placed the cards, we gonna change back the status to false
-        hasChanged = false;
-        synchronized (dealerLock) {
-            dealerLock.notifyAll();
+            // After the dealer has placed the cards, we gonna change back the status to false
+            hasChanged = false;
         }
+        // TODO implement
     }
 
     /**

@@ -1,9 +1,7 @@
 package bguspl.set.ex;
 
 import java.util.Random;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import bguspl.set.Env;
 
@@ -62,7 +60,7 @@ public class Player implements Runnable {
     /**
      * The key presses of a player
      */
-    private BlockingQueue<Integer> actionsQueue;
+    private ArrayBlockingQueue<Integer> actionsQueue;
     
     /**
      * Player's tokes
@@ -94,7 +92,7 @@ public class Player implements Runnable {
         this.id = id;
         this.human = human;
         this.dealer = dealer;
-        this.actionsQueue = new LinkedBlockingDeque<Integer>(env.config.featureSize);
+        this.actionsQueue = new ArrayBlockingQueue<Integer>(env.config.featureSize);
         this.playerTokens = new int[env.config.featureSize];
         for (int i = 0; i < env.config.featureSize; i++)
             this.playerTokens[i] = -1;

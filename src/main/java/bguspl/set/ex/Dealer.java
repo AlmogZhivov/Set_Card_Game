@@ -108,7 +108,6 @@ public class Dealer implements Runnable {
             if (!areAvailableSets() && deck.isEmpty()) {
                 terminate();
                 announceWinners();
-                env.logger.info("Thread " + Thread.currentThread().getName() + " terminated.");
             }
             */
         }
@@ -195,7 +194,7 @@ public class Dealer implements Runnable {
         for (int i = 0; i < table.slotToCard.length; i++) {
             slots.add(i);
         }
-        Collections.shuffle(slots);
+        //Collections.shuffle(slots);
         // remove cards from table
         for (Integer slot : slots) {
             Integer card = table.slotToCard[slot];
@@ -253,7 +252,7 @@ public class Dealer implements Runnable {
         LinkedList<Integer> cards = new LinkedList<>();
         for (int i = 0; i < table.slotToCard.length; i++) {
             if (table.slotToCard[i] != null)
-            cards.add(table.slotToCard[i]);
+                cards.add(table.slotToCard[i]);
         }
         return env.util.findSets(cards, 1).size() != 0;
     }

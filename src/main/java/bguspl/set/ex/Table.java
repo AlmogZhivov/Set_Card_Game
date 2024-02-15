@@ -174,7 +174,7 @@ public class Table {
                 env.ui.removeToken(player, slot);
                 // the remove method of List returns true if object found and remove
                 // and returns false if object does not exist in the list
-                return tokens.get(player).remove(slot);
+                return (tokens.get(player)).remove((Integer) slot);
             }
         }
     }
@@ -216,6 +216,10 @@ public class Table {
         
             return output;
         }
+    }
+
+    public boolean hasCardAt(int slot) {
+        return slotToCard[slot] != null;
     }
 
 

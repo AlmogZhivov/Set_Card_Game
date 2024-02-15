@@ -151,9 +151,15 @@ public class Dealer implements Runnable {
                 if (table.getNumOfTokensOnTable(player.id) == setSize) {
                     int[] tokens = table.getTokens(player.id);
                     if (env.util.testSet(tokens)) {
+                        // player chose a legal set
                         for (int token : tokens) {
                             table.removeToken(player.id, token);
                         }
+                        player.point();
+                    }
+                    else {
+                        // player chose an ilegal set
+                        player.penalty();
                     }
                 }
             }
@@ -178,9 +184,8 @@ public class Dealer implements Runnable {
             //         player.point();
             //     }
                 
+                placeCardsOnTable();
             } // finished sync
-
-            placeCardsOnTable();
         }
 
         // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using setIsValid metod

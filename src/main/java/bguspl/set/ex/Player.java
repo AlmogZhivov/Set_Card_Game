@@ -119,7 +119,7 @@ public class Player implements Runnable {
 
                     if (actionsQueue.size() > 0) {
                         int slot = actionsQueue.remove();
-                        if (!table.removeToken(this.id, slot)) {
+                        if (!table.removeToken(this.id, slot) && table.hasCardAt(slot)) {
                             table.placeToken(this.id, slot);
                         }
                     }

@@ -121,6 +121,8 @@ public class Player implements Runnable {
                         int slot = actionsQueue.remove();
                         if (!table.removeToken(this.id, slot) && table.hasCardAt(slot)) {
                             table.placeToken(this.id, slot);
+                            if (table.getNumOfTokensOnTable(this.id) == dealer.setSize)
+                                dealer.wakeUp();
                         }
                     }
                 } catch (InterruptedException ignored) {}

@@ -146,6 +146,15 @@ public class Dealer implements Runnable {
         synchronized(dealerLock) {
            // hasChanged = true;
 
+            while (! hasSomethingToDo()) {
+                try {
+                    dealerLock.wait();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             for (Player player : players) {
                 if (table.getNumOfTokensOnTable(player.id) == setSize) {
                     int[] tokens = table.getTokens(player.id);
@@ -313,6 +322,29 @@ public class Dealer implements Runnable {
                 cards.add(table.slotToCard[i]);
         }
         return env.util.findSets(cards, 1).size() != 0;
+    }
+
+    // 'wakes up' the dealer. notifies its lock
+    public void wakeUp() {
+        synchronized(dealerLock) {
+            try{
+                dealerLock.notifyAll();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean hasSomethingToDo() {
+        synchronized(dealerLock) {
+            for (Player player : players) {
+                if (table.getNumOfTokensOnTable(player.id) == setSize) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }

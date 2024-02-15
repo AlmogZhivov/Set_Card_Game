@@ -136,7 +136,7 @@ public class Table {
             cardToSlot[card] = null;
             env.ui.removeCard(slot);
         }
-        // TODO implement
+        // DONE implement
     }
 
     /**

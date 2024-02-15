@@ -110,7 +110,8 @@ public class Player implements Runnable {
         synchronized(this){
             while (!terminate) {
                 try {
-                    while (table.getNumOfTokensOnTable(this.id) >= dealer.setSize) {
+                    while (table.getNumOfTokensOnTable(this.id) >= dealer.setSize || 
+                        actionsQueue.isEmpty()) {
                         // if player had put all of his token on the Table then player should
                         // wait for dealer to either point or penalize
                         this.wait();
@@ -163,13 +164,26 @@ public class Player implements Runnable {
      * This method is called when a key is pressed.
      *
      * @param slot - the slot corresponding to the key pressed.
+     * @pre- actionsQueue needs to be not full
      */
     public void keyPressed(int slot) {
         // We make sure that the dealer has not changed the table currently
-        if (actionsQueue.remainingCapacity() > 0) {
-            try {
-                actionsQueue.put(slot);
-            } catch (InterruptedException e) {}
+        synchronized(this) {
+            while (actionsQueue.remainingCapacity() == 0) { 
+                try {
+                    this.wait();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+                try {
+                    actionsQueue.put(slot);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            
+            notifyAll();
         }
     }
 

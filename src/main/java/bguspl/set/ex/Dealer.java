@@ -211,9 +211,6 @@ public class Dealer implements Runnable {
                 if (!deck.isEmpty())
                     table.placeCard(deck.remove(0), i);
             }
-
-            // After the dealer has placed the cards, we gonna change back the status to false
-            //hasChanged = false;
         }
         // done implement
     }
@@ -317,4 +314,5 @@ public class Dealer implements Runnable {
         }
         return env.util.findSets(cards, 1).size() != 0;
     }
+
 }

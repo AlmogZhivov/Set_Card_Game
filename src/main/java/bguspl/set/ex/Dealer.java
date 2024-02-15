@@ -149,24 +149,26 @@ public class Dealer implements Runnable {
             for (Player player : players) {
                 if (table.getNumOfTokensOnTable(player.id) == setSize) {
                     int[] tokens = table.getTokens(player.id);
-                    if (env.util.testSet(tokens)) {
-                        // player chose a legal set
-                        for (int token : tokens) {
-                            for (Player playersTokenToRemove : players) {
-                                table.removeToken(playersTokenToRemove.id, token);
+                        if (env.util.testSet(tokens)) {
+                            // player chose a legal set
+                            for (int token : tokens) {
+                                for (Player playersTokenToRemove : players) {
+                                    table.removeToken(playersTokenToRemove.id, token);
+                                }
+                                table.removeCard(token);
                             }
-                            table.removeCard(token);
+                            player.point();
+                            updateTimerDisplay(true);
+                            //dealerThread.interrupt();
                         }
-                        player.point();
-                    }
-                    else {
-                        // player chose an ilegal set
-                        for (int token : tokens) {
-                            table.removeToken(player.id, token);
+                        else {
+                            // player chose an ilegal set
+                            for (int token : tokens) {
+                                table.removeToken(player.id, token);
+                            }
+                            player.penalty();
                         }
-                        player.penalty();
                     }
-                }
             }
 
 

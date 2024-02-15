@@ -181,22 +181,16 @@ public class Player implements Runnable {
      */
     public void point() {
         synchronized(this) {
-            // while (actionsQueue.remainingCapacity() > 0) {
-            //     try {this.wait();} 
-            //     catch (InterruptedException e) {
-            //         e.printStackTrace();
-            //     }
-            // }
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-            long freezeTime = env.config.pointFreezeMillis;
             env.ui.setScore(id, ++score);
             try {
-                env.ui.setFreeze(id, freezeTime);
-                Thread.sleep(freezeTime);
-                //env.ui.setFreeze(id, 0);
+                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    Thread.sleep(1000);
+                }
+                env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
             //actionsQueue.clear();
-            //isValid = -1;
             notifyAll();
         }
     }
@@ -212,13 +206,14 @@ public class Player implements Runnable {
                 //     this.wait();
                 // }
                 long freezeTime = env.config.pointFreezeMillis;
-                env.ui.setFreeze(id, freezeTime);
-                Thread.sleep(1000);
-                //env.ui.setFreeze(id, 0);
+                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    Thread.sleep(1000);
+                }
+                env.ui.setFreeze(id, 0);
             } 
             catch (InterruptedException e) {}
             //actionsQueue.clear();
-            //isValid = -1;
             notifyAll();
         }
     }

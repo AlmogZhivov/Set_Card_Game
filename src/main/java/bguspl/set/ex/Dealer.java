@@ -184,7 +184,7 @@ public class Dealer implements Runnable {
             //         player.point();
             //     }
                 
-                placeCardsOnTable();
+            placeCardsOnTable();
             } // finished sync
         }
 

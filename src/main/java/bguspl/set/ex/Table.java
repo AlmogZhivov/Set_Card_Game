@@ -34,7 +34,7 @@ public class Table {
      */
     protected final Integer[] cardToSlot; // slot per card (if any)
 
-    private final HashMap<Integer, List<Integer>> tokens;
+    private final LinkedList<Integer>[] tokens;
 
     private final Object cardsLock;
 
@@ -54,7 +54,10 @@ public class Table {
         this.env = env;
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
-        this.tokens = new HashMap<Integer, List<Integer>>();
+        this.tokens = new LinkedList[slotToCard.length];
+        for (int i=0; i<tokens.length; i++){
+            this.tokens[i]= new LinkedList<Integer>();
+        }
         this.cardsLock = new Object();
         this.hashLock = new Object();
     }
@@ -149,10 +152,15 @@ public class Table {
     public void placeToken(int player, int slot) {
         // TODO implement
         synchronized (hashLock) {
+            /*
+             * 
             if (!tokens.containsKey(player)) {
                 tokens.put(player, new LinkedList<Integer>());
             }
             tokens.get(player).add(slot);
+             */
+            this.tokens[slot].push(player);
+            env.ui.placeToken(player, slot);
         }
     }
 
@@ -166,16 +174,24 @@ public class Table {
     public boolean removeToken(int player, int slot) {
         // DONE implement
         synchronized (hashLock) {
-            if (!tokens.containsKey(player)) {
+            /**
+             * if (!tokens.containsKey(player)) {
                 return false;
             }
 
             else {
+                boolean flag = (tokens.get(player)).remove((Integer) slot);
                 env.ui.removeToken(player, slot);
                 // the remove method of List returns true if object found and remove
                 // and returns false if object does not exist in the list
-                return (tokens.get(player)).remove((Integer) slot);
+                return flag;
             }
+             */
+            
+            boolean hasRemoved = this.tokens[slot].remove((Object)player);
+            if (hasRemoved)
+                env.ui.removeToken(player, slot);
+            return hasRemoved;
         }
     }
 
@@ -194,26 +210,33 @@ public class Table {
 
     public int getNumOfTokensOnTable(int player) {
         synchronized(this) {
-            if (!tokens.containsKey(player)) 
+            /**
+             * if (!tokens.containsKey(player)) 
                 return 0;
         
             return tokens.get(player).size();
+             */
+            for (int i = 0; i < tokens.length; i++) {
+                if (tokens[i].contains(player))
+                    return tokens[player].size();
+            }
+            return 0;
         }
     }
 
     public int[] getTokens(int player) {
         synchronized(this) {
-            if (!tokens.containsKey(player))
-                return null;
-
-            List<Integer> list = tokens.get(player);
+            List<Integer> list = tokens[player];
             int[] output = new int[list.size()];
-            int i = 0;
-            for (int token : list) {
-                output[i] = token;
-                i = i + 1;
+            for (int i = 0; i < tokens.length; i++) {
+                if (tokens[i].contains(player)) {
+                    int j = 0;
+                    for (int token : list) {
+                        output[j] = token;
+                        j = j + 1;
+                    }
+                }
             }
-        
             return output;
         }
     }

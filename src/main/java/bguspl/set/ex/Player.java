@@ -110,10 +110,9 @@ public class Player implements Runnable {
         synchronized(this){
             while (!terminate) {
                 try {
-
                     while (table.getNumOfTokensOnTable(this.id) >= dealer.setSize) {
-                        // if actionsQueue is full then current thread need to wait
-                        // for dealer to either point or penelty
+                        // if player had put all of his token on the Table then player should
+                        // wait for dealer to either point or penalize
                         this.wait();
                     }
 
@@ -123,25 +122,10 @@ public class Player implements Runnable {
                             table.placeToken(this.id, slot);
                         }
                     }
-
-                    // Get the player's slot
-                    // if (isValid == -1 && !actionsQueue.isEmpty()) {
-                    //     int slot = actionsQueue.remove();
-                    //     if (!removeSlot(slot) && table.slotToCard[slot] != null && canBePlaced(slot)) {
-                    //         while (!dealer.hasChanged() && actionsQueue.remainingCapacity() == 0) {
-                    //             dealer.checkPlayerSlots(this, playerTokens.clone());
-                    //             this.wait();
-                    //         }
-                    //     }
-                    // }
-                    // Apply action depends on dealer's answer
-                    // if (isValid == 1)
-                    //     point();
-                    // else if (isValid == 0)
-                    //     penalty();
                 } catch (InterruptedException ignored) {}
             }
             this.notifyAll();
+            // end sync
         }
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -192,28 +176,26 @@ public class Player implements Runnable {
     /**
      * Award a point to a player and perform other related actions.
      *
-     * @pre - actionsQueue.remainingCapacity() == 0
      * @post - the player's score is increased by 1.
      * @post - the player's score is updated in the ui.
      */
     public void point() {
         synchronized(this) {
-            while (actionsQueue.remainingCapacity() > 0) {
-                try {this.wait();} 
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            // while (actionsQueue.remainingCapacity() > 0) {
+            //     try {this.wait();} 
+            //     catch (InterruptedException e) {
+            //         e.printStackTrace();
+            //     }
+            // }
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+            long freezeTime = env.config.pointFreezeMillis;
             env.ui.setScore(id, ++score);
             try {
-                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
-                    env.ui.setFreeze(id, i);
-                    Thread.sleep(1000);
-                }
-                env.ui.setFreeze(id, 0);
+                env.ui.setFreeze(id, freezeTime);
+                Thread.sleep(freezeTime);
+                //env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
-            actionsQueue.clear();
+            //actionsQueue.clear();
             //isValid = -1;
             notifyAll();
         }
@@ -222,22 +204,20 @@ public class Player implements Runnable {
     /**
      * Penalize a player and perform other related actions.
      * 
-     * @pre - actionsQueue.remainigCapacity() == 0
      */
     public void penalty() {
         synchronized(this) {
             try {
-                while (actionsQueue.remainingCapacity() > 0) {
-                    this.wait();
-                }
-                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
-                    env.ui.setFreeze(id, i);
-                    Thread.sleep(1000);
-                }
-                env.ui.setFreeze(id, 0);
+                // while (actionsQueue.remainingCapacity() > 0) {
+                //     this.wait();
+                // }
+                long freezeTime = env.config.pointFreezeMillis;
+                env.ui.setFreeze(id, freezeTime);
+                Thread.sleep(1000);
+                //env.ui.setFreeze(id, 0);
             } 
             catch (InterruptedException e) {}
-            actionsQueue.clear();
+            //actionsQueue.clear();
             //isValid = -1;
             notifyAll();
         }

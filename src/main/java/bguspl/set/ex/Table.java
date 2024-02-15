@@ -153,6 +153,7 @@ public class Table {
                 tokens.put(player, new LinkedList<Integer>());
             }
             tokens.get(player).add(slot);
+            env.ui.placeToken(player, slot);
         }
     }
 
@@ -171,10 +172,11 @@ public class Table {
             }
 
             else {
-                env.ui.removeToken(player, slot);
-                // the remove method of List returns true if object found and remove
-                // and returns false if object does not exist in the list
-                return (tokens.get(player)).remove((Integer) slot);
+                if (tokens.get(player).remove((Integer) slot)) {
+                    env.ui.removeToken(player, slot);
+                    return true;
+                }
+                return false;
             }
         }
     }

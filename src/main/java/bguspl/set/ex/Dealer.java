@@ -88,7 +88,7 @@ public class Dealer implements Runnable {
             //placeCardsOnTable();
             timerLoop();
             updateTimerDisplay(false);
-            removeAllCardsFromTable();
+            //removeAllCardsFromTable();
         }
         //announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -102,8 +102,7 @@ public class Dealer implements Runnable {
             sleepUntilWokenOrTimeout();
             updateTimerDisplay(false);
             removeCardsFromTable();
-            placeCardsOnTable();
-            /* 
+            //placeCardsOnTable(); 
             while (!areAvailableSets() && !deck.isEmpty()) {
                 removeAllCardsFromTable();
                 placeCardsOnTable();
@@ -113,7 +112,6 @@ public class Dealer implements Runnable {
                 terminate();
                 announceWinners();
             }
-            */
         }
     }
 
@@ -134,10 +132,11 @@ public class Dealer implements Runnable {
      *
      * @return true iff the game should be finished.
      */
-    // Add && noSetsOnTable()?
     private boolean shouldFinish() {
-        // maybe should sync?
-        return terminate || env.util.findSets(deck, 1).size() == 0; 
+        synchronized(dealerLock) {
+            return terminate || env.util.findSets(deck, 1).size() == 0 ||
+            (!areAvailableSets() && deck.isEmpty()); 
+        }
     }
 
     /**
@@ -153,12 +152,18 @@ public class Dealer implements Runnable {
                     if (env.util.testSet(tokens)) {
                         // player chose a legal set
                         for (int token : tokens) {
-                            table.removeToken(player.id, token);
+                            for (Player playersTokenToRemove : players) {
+                                table.removeToken(playersTokenToRemove.id, token);
+                            }
+                            table.removeCard(token);
                         }
                         player.point();
                     }
                     else {
                         // player chose an ilegal set
+                        for (int token : tokens) {
+                            table.removeToken(player.id, token);
+                        }
                         player.penalty();
                     }
                 }
@@ -304,6 +309,7 @@ public class Dealer implements Runnable {
     // }
 
     private boolean areAvailableSets() {
+        // creation of list should be done in Table
         LinkedList<Integer> cards = new LinkedList<>();
         for (int i = 0; i < table.slotToCard.length; i++) {
             if (table.slotToCard[i] != null)

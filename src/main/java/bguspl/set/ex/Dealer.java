@@ -85,10 +85,10 @@ public class Dealer implements Runnable {
         placeCardsOnTable();
         while (!shouldFinish()) {
             reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
-            //placeCardsOnTable();
+            placeCardsOnTable();
             timerLoop();
             updateTimerDisplay(false);
-            //removeAllCardsFromTable();
+            removeAllCardsFromTable();
         }
         //announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -119,7 +119,8 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        synchronized(dealerLock){
+        synchronized(dealerLock) {
+            dealerThread.interrupt();
             for (int i = players.length - 1; i >= 0; i--) {
                 players[i].terminate();
             }

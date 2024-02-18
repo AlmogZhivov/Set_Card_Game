@@ -194,8 +194,10 @@ public class Table {
     }
 
 
+    // returns the number of tokens a player has on the table 
+    // return 0 if table does not recognize the player
     public int getNumOfTokensOnTable(int player) {
-        synchronized(this) {
+        synchronized(hashLock) {
             if (!tokens.containsKey(player)) 
                 return 0;
         
@@ -203,25 +205,42 @@ public class Table {
         }
     }
 
-    public int[] getTokens(int player) {
-        synchronized(this) {
-            if (!tokens.containsKey(player))
-                return null;
 
-            List<Integer> list = tokens.get(player);
-            int[] output = new int[list.size()];
-            int i = 0;
-            for (int token : list) {
-                output[i] = token;
-                i = i + 1;
+    // returns an array of cards that the player chose by placing a token on
+    // returns an empty array (length = 0) if table does not recognize the player.
+    public int[] getTokens(int player) {
+        synchronized(hashLock) {
+            synchronized(cardsLock){
+                if (!tokens.containsKey(player))
+                    return new int[0];
+
+                List<Integer> list = tokens.get(player);
+                int[] output = new int[list.size()];
+                int i = 0;
+                for (int token : list) {
+                    output[i] = token;
+                    i = i + 1;
+                }
+            
+                return output;
             }
-        
-            return output;
         }
     }
 
     public boolean hasCardAt(int slot) {
-        return slotToCard[slot] != null;
+        synchronized(cardsLock) {
+            return slotToCard[slot] != null;
+        }
+    }
+
+    public int cardAt(int slot) {
+        synchronized(cardsLock) {
+            Integer output = slotToCard[slot];
+            if (output == null)
+                return -1;
+
+            return output;
+        }
     }
 
 

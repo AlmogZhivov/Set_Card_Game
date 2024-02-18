@@ -160,6 +160,7 @@ public class Player implements Runnable {
      */
     public void terminate() {
         terminate = true;
+        playerThread.interrupt();
     }
 
     /**

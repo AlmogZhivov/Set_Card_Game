@@ -103,7 +103,7 @@ public class Dealer implements Runnable {
             updateTimerDisplay(false);
             removeCardsFromTable();
             //placeCardsOnTable(); 
-            while (!areAvailableSets() && !deck.isEmpty()) {
+            while (!areAvailableSets() && !deck.isEmpty() && !terminate) {
                 removeAllCardsFromTable();
                 placeCardsOnTable();
                 updateTimerDisplay(true);
@@ -120,6 +120,7 @@ public class Dealer implements Runnable {
      */
     public void terminate() {
         synchronized(dealerLock){
+            dealerThread.interrupt();
             for (int i = players.length - 1; i >= 0; i--) {
                 players[i].terminate();
             }
@@ -146,19 +147,26 @@ public class Dealer implements Runnable {
         synchronized(dealerLock) {
            // hasChanged = true;
 
-            while (! hasSomethingToDo()) {
-                try {
+           env.logger.info("thread " + Thread.currentThread().getName() + " checking");
+           try {
+                while (! hasSomethingToDo()) {
+                    env.logger.info("thread " + Thread.currentThread().getName() + " entering while loop");
                     dealerLock.wait();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
+                    env.logger.info("thread " + Thread.currentThread().getName() + " woken up.");
                 }
             }
+            catch (InterruptedException e) {
+                env.logger.info("thread " + Thread.currentThread().getName() + " interrupted");
+                e.printStackTrace();
+            }
+            
 
+            env.logger.info("thread " + Thread.currentThread().getName() + " starting for.");
             for (Player player : players) {
-                if (table.getNumOfTokensOnTable(player.id) == setSize) {
+                if (table.getNumOfTokensOnTable(player.id) == this.setSize) {
                     int[] tokens = table.getTokens(player.id);
-                    if (env.util.testSet(tokens)) {
+                    int[] cards = slotsToCards(tokens);
+                    if (env.util.testSet(cards)) {
                         // player chose a legal set
                         for (int token : tokens) {
                             for (Player playersTokenToRemove : players) {
@@ -177,7 +185,7 @@ public class Dealer implements Runnable {
                     }
                 }
             }
-
+            env.logger.info("thread " + Thread.currentThread().getName() + " done for .");
 
             // // ----------------
             // while(!boardPlayers.isEmpty()){
@@ -228,6 +236,12 @@ public class Dealer implements Runnable {
      * Sleep for a fixed amount of time or until the thread is awakened for some purpose.
      */
     private void sleepUntilWokenOrTimeout() {
+        // int sleepTime;
+        // long timeLeft = reshuffleTime - System.currentTimeMillis();
+        // if (timeLeft > env.config.turnTimeoutMillis)
+        //     sleepTime = 1000;
+        // else 
+        //     sleepTime = 1;
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {}
@@ -326,18 +340,13 @@ public class Dealer implements Runnable {
 
     // 'wakes up' the dealer. notifies its lock
     public void wakeUp() {
-        synchronized(dealerLock) {
-            try{
-                dealerLock.notifyAll();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        env.logger.info("thread " + Thread.currentThread().getName() + " waking up dealer");
+        dealerThread.interrupt();            
     }
 
     private boolean hasSomethingToDo() {
         synchronized(dealerLock) {
+            env.logger.info("thread " + Thread.currentThread().getName() + "calling 'has something to do.");
             for (Player player : players) {
                 if (table.getNumOfTokensOnTable(player.id) == setSize) {
                     return true;
@@ -346,5 +355,16 @@ public class Dealer implements Runnable {
             return false;
         }
     }
+
+    // gets an array of slots and returns an array of cards 
+    private int[] slotsToCards(int[] slots) {
+        int[] output = new int[slots.length];
+        int i = 0;
+        for (int slot : slots) {
+            output[i] = slot;
+            i = i + 1;
+        }
+        return output;
+   }
 
 }

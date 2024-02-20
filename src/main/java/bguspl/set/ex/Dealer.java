@@ -163,16 +163,15 @@ public class Dealer implements Runnable {
                             //dealerThread.interrupt();
                         }
                         else {
-                            // player chose an ilegal set
+                            //player chose an ilegal set
                             for (int token : tokens) {
                                 table.removeToken(player.id, token);
                             }
                             player.penalty();
                         }
+
                     }
             }
-
-
             // // ----------------
             // while(!boardPlayers.isEmpty()){
             //     Player player = null;

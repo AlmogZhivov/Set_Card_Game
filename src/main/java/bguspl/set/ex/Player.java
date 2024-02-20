@@ -143,9 +143,6 @@ public class Player implements Runnable {
             while (!terminate) {
                 int pressing = rnd.nextInt(env.config.tableSize);
                 keyPressed(pressing);
-                try {
-                    synchronized (this) { wait(); }
-                } catch (InterruptedException ignored) {}
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);

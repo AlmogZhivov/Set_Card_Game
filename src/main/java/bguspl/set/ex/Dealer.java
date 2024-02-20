@@ -155,6 +155,7 @@ public class Dealer implements Runnable {
                 int num = table.getNumOfTokensOnTable(player.id);
                 if (num==setSize && table.checkAndRemoveSet(player.id)) {
                         player.point();
+                        updateTimerDisplay(true);
                         // not to sleep the time it took to remove the cards
                         this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
                     }

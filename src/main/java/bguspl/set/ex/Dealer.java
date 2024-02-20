@@ -5,6 +5,8 @@ import bguspl.set.Env;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -86,10 +88,10 @@ public class Dealer implements Runnable {
         placeCardsOnTable();
         while (!shouldFinish()) {
             reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
-            placeCardsOnTable();
+            //placeCardsOnTable();
             timerLoop();
             updateTimerDisplay(false);
-            removeAllCardsFromTable();
+            //removeAllCardsFromTable();
         }
         //announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
@@ -154,13 +156,13 @@ public class Dealer implements Runnable {
             for (Player player : players) {
                 int num = table.getNumOfTokensOnTable(player.id);
                 if (num==setSize && table.checkAndRemoveSet(player.id)) {
-                        player.point();
-                        updateTimerDisplay(true);
-                        // not to sleep the time it took to remove the cards
-                        this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
-                    }
+                    player.point();
+                    updateTimerDisplay(true);
+                    // not to sleep the time it took to remove the cards
+                    this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
+                }
                 else if (num == setSize) {
-                        // player chose an ilegal set
+                    // player chose an ilegal set
                     player.penalty();
                 }
             }
@@ -279,21 +281,6 @@ public class Dealer implements Runnable {
         }
         env.ui.announceWinner(winners);
     }
-
-    // public boolean hasChanged() {
-    //     return hasChanged;
-    // }
-
-    // // Maybe not needed?
-    // public void checkPlayerSlots(Player player, int[] slots) {
-    //     try {
-    //         for (int i = 0; i < slots.length; i++) {
-    //             boardSlots.put(slots[i]);
-    //         }
-    //         boardPlayers.put(player);
-    //         dealerThread.interrupt();
-    //     } catch (InterruptedException e) {}
-    // }
 
     private boolean areAvailableSets() {
         // creation of list should be done in Table

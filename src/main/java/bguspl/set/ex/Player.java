@@ -166,7 +166,6 @@ public class Player implements Runnable {
     public void terminate() {
         terminate = true;
         playerThread.interrupt();
-        playerThread.interrupt();
     }
 
     /**
@@ -176,29 +175,13 @@ public class Player implements Runnable {
      * @pre- actionsQueue needs to be not full
      */
     public void keyPressed(int slot) {
-        // We make sure that the dealer has not changed the table currently
-        //synchronized(this) {
-            //env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
-            // while (actionsQueue.remainingCapacity() == 0) { 
-            //     try {
-            //         this.wait();
-            //     }
-            //     catch (Exception e) {
-            //         e.printStackTrace();
-            //     }
-            // }
-            
-            try {
-                env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
-                actionsQueue.put(slot);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            playerThread.interrupt(); // wake up player from waiting
-            
-            //notifyAll();
-            //env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player " + this.id);
-        //}
+        try {
+            env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
+            actionsQueue.put(slot);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        playerThread.interrupt(); // wake up player from waiting    
     }
 
     /**
@@ -210,16 +193,19 @@ public class Player implements Runnable {
     public void point() {
         synchronized(this) {
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being point");
             env.ui.setScore(id, ++score);
             try {
+                int freezeTime = 1000;
                 for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
                     env.ui.setFreeze(id, i);
-                    Thread.sleep(1000);
+                    playerThread.sleep(freezeTime);
                 }
                 env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
             //actionsQueue.clear();
             notifyAll();
+            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
         }
     }
 
@@ -228,28 +214,27 @@ public class Player implements Runnable {
      */
     public void penalty() {
         synchronized(this) {
-            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             try {
-                // while (actionsQueue.remainingCapacity() > 0) {
-                //     this.wait();
-                // }
-                long freezeTime = env.config.pointFreezeMillis;
-                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
-                    env.ui.setFreeze(id, i);
-                    Thread.sleep(1000);
+                env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
+                if (!wasPenalized) {
+                    long freezeTime = 1000;
+                    this.wasPenalized = true;
+                    for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                        env.ui.setFreeze(id, i);
+                        playerThread.sleep(freezeTime);
+                    }
+                    env.ui.setFreeze(id, 0);
                 }
-                env.ui.setFreeze(id, 0);
             } 
             catch (InterruptedException e) {}
             //actionsQueue.clear();
             notifyAll();
-            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
+            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
         }
     }
 
     public int score() {
         synchronized(this) {
-            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             return score;
         }
     }
@@ -283,52 +268,4 @@ public class Player implements Runnable {
         // actionsQueue.size() > 0 for sure
     }
 
-    // public void setIsValid(int input) {
-    //     this.isValid = input;
-    // }
-
-    // private boolean canBePlaced(int slot) {
-    //     if (actionsQueue.remainingCapacity() > 0) {
-    //         boolean alreadyExists = false;
-    //         int updateIndex = -1;
-    //         // Checking if the slot exists
-    //         for (int i = 0; i < env.config.featureSize; i++) {
-    //             if (playerTokens[i] == slot)
-    //                 alreadyExists = true;
-    //         }
-    //         // Find if there is a place to insert the slot
-    //         for (int i = 0; i < env.config.featureSize; i++) {
-    //             if (playerTokens[i] == -1)
-    //                 updateIndex = i;
-    //         }
-    //         // Place the new slot if we found a place for it
-    //         if (!alreadyExists && updateIndex != -1) {
-    //             playerTokens[updateIndex] = slot;
-    //             table.placeToken(id, slot);
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-    // private boolean removeSlot(int slot) {
-    //     if (table.removeToken(id, slot)) {
-    //         // Searching for the token to be removed
-    //         for (int i = 0; i < env.config.featureSize; i++) {
-    //             if (playerTokens[i] == slot) {
-    //                 playerTokens[i] = -1;
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
-    // public void deleteTokens() {
-    //     for (int i = 0; i < env.config.featureSize; i++) {
-    //         // Delete all the existing player's tokens
-    //         if (playerTokens[i] != -1) {
-    //             table.removeToken(id, playerTokens[i]);
-    //             playerTokens[i] = -1;
-    //         }
-    //     }
-    // }
 }

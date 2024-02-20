@@ -36,6 +36,8 @@ public class Table {
 
     private final HashMap<Integer, List<Integer>> tokens;
 
+    private List<Integer> players;
+
     private final Object cardsLock;
 
     private final Object hashLock;
@@ -55,6 +57,7 @@ public class Table {
         this.slotToCard = slotToCard;
         this.cardToSlot = cardToSlot;
         this.tokens = new HashMap<Integer, List<Integer>>();
+        this.players = new LinkedList<>();
         this.cardsLock = new Object();
         this.hashLock = new Object();
     }
@@ -91,11 +94,13 @@ public class Table {
      * @return - the number of cards on the table.
      */
     public int countCards() {
-        int cards = 0;
-        for (Integer card : slotToCard)
-            if (card != null)
-                ++cards;
-        return cards;
+        synchronized(cardsLock) {
+            int cards = 0;
+            for (Integer card : slotToCard)
+                if (card != null)
+                    ++cards;
+            return cards;
+        }
     }
 
     /**
@@ -134,6 +139,11 @@ public class Table {
             int card = slotToCard[slot];
             slotToCard[slot] = null;
             cardToSlot[card] = null;
+            synchronized (hashLock) {
+                for (int player : players) {
+                    this.removeToken(player, slot);
+                }
+            }
             env.ui.removeCard(slot);
         }
         // DONE implement
@@ -150,6 +160,7 @@ public class Table {
         // TODO implement
         synchronized (hashLock) {
             if (!tokens.containsKey(player)) {
+                players.add(player);
                 tokens.put(player, new LinkedList<Integer>());
             }
             tokens.get(player).add(slot);
@@ -209,12 +220,12 @@ public class Table {
     // returns an array of cards that the player chose by placing a token on
     // returns an empty array (length = 0) if table does not recognize the player.
     public int[] getTokens(int player) {
-        synchronized(hashLock) {
-            synchronized(cardsLock){
+        synchronized(cardsLock) {
+            synchronized(hashLock){
                 if (!tokens.containsKey(player))
                     return new int[0];
 
-                List<Integer> list = tokens.get(player);
+                List<Integer> list = new LinkedList<>(tokens.get(player));
                 int[] output = new int[list.size()];
                 int i = 0;
                 for (int token : list) {
@@ -240,6 +251,42 @@ public class Table {
                 return -1;
 
             return output;
+        }
+    }
+
+    public boolean checkAndRemoveSet(int player) {
+        // returns true if player has a set
+        // else returns false
+        synchronized(cardsLock){
+            synchronized(hashLock) {
+
+                if (!players.contains((Integer) player)) // if player does not exist
+                    return false;
+
+                List<Integer> currentTokens = new LinkedList<>(tokens.get(player));
+                int[] cards = new int[currentTokens.size()];
+                
+                // copy currentTokens into cards
+                int i = 0;
+                for (int token : currentTokens) {
+                    cards[i] = slotToCard[token];
+                    i = i + 1;
+                }
+
+                if (env.util.testSet(cards)) {
+                    // player chose a legal set
+                    
+                    // remove cards of the set
+                    for (int token : currentTokens) {
+                        this.removeCard(token);
+                    }
+                    return true;
+                }
+
+                // is not a legal set. return false
+                return false;
+
+            }
         }
     }
 

@@ -50,6 +50,8 @@ public class Dealer implements Runnable {
     public final Object dealerLock;
 
     public final int setSize;
+
+    private long timeNotToSleep;
      /**
      * Slots of the current round
      */
@@ -66,6 +68,7 @@ public class Dealer implements Runnable {
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         dealerLock = new Object();
         this.setSize = env.config.featureSize;
+        this.timeNotToSleep = 0;
         // this.boardSlots = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
         // this.boardPlayers = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
@@ -144,71 +147,29 @@ public class Dealer implements Runnable {
      * Checks cards should be removed from the table and removes them.
      */
     private void removeCardsFromTable() {
-        synchronized(dealerLock) {
-           // hasChanged = true;
-
-           env.logger.info("thread " + Thread.currentThread().getName() + " checking");
-           try {
-                while (! hasSomethingToDo()) {
-                    env.logger.info("thread " + Thread.currentThread().getName() + " entering while loop");
-                    dealerLock.wait();
-                    env.logger.info("thread " + Thread.currentThread().getName() + " woken up.");
-                }
-            }
-            catch (InterruptedException e) {
-                env.logger.info("thread " + Thread.currentThread().getName() + " interrupted");
-                e.printStackTrace();
-            }
+        
+            env.logger.info("thread " + Thread.currentThread().getName() + " checking");    
+            if (!hasSomethingToDo())
+                return;
             
-
             env.logger.info("thread " + Thread.currentThread().getName() + " starting for.");
             for (Player player : players) {
-                if (table.getNumOfTokensOnTable(player.id) == this.setSize) {
-                    int[] tokens = table.getTokens(player.id);
-                    int[] cards = slotsToCards(tokens);
-                    if (env.util.testSet(cards)) {
-                        // player chose a legal set
-                        for (int token : tokens) {
-                            for (Player playersTokenToRemove : players) {
-                                table.removeToken(playersTokenToRemove.id, token);
-                            }
-                            table.removeCard(token);
-                        }
+                int num = table.getNumOfTokensOnTable(player.id);
+                if (num==setSize && table.checkAndRemoveSet(player.id)) {
                         player.point();
+                        // not to sleep the time it took to remove the cards
+                        this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
                     }
-                    else {
+                else if (num == setSize) {
                         // player chose an ilegal set
-                        for (int token : tokens) {
-                            table.removeToken(player.id, token);
-                        }
-                        player.penalty();
-                    }
+                    player.penalty();
                 }
             }
+            
             env.logger.info("thread " + Thread.currentThread().getName() + " done for .");
-
-            // // ----------------
-            // while(!boardPlayers.isEmpty()){
-            //     Player player = null;
-            //     try {
-            //         player = boardPlayers.take();
-            //     }
-            //     catch(Exception e) {/*do nothing */}
-            //     int[] arr = new int[3];
-            //     for (int i = 0; i < 3; i = i + 1){
-            //         try{arr[i] = boardSlots.take();} catch(Exception e) {}
-            //     }
-            //     if (env.util.testSet(arr)) {
-            //         for (int i : arr) {
-            //             table.removeToken(player.id, i);
-            //             table.removeCard(i);
-            //         }
-            //         player.point();
-            //     }
                 
-                placeCardsOnTable();
-            } // finished sync
-        }
+            placeCardsOnTable();
+    }
 
         // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using setIsValid metod
         // GET THE SLOT AND THE PLAYER FROM 'boardPlayers' 'boardSlots' amd check if boardSlots.length > 2
@@ -218,17 +179,17 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        synchronized(dealerLock){
+        //synchronized(dealerLock){
             //hasChanged = true;
             List<Integer> emptySlots = table.getEmptySlots();
-            if(emptySlots==null)
+            if(emptySlots==null || emptySlots.isEmpty())
                 return;
             
             for (int i : emptySlots){
                 if (!deck.isEmpty())
                     table.placeCard(deck.remove(0), i);
             }
-        }
+        //}
         // done implement
     }
 
@@ -236,15 +197,21 @@ public class Dealer implements Runnable {
      * Sleep for a fixed amount of time or until the thread is awakened for some purpose.
      */
     private void sleepUntilWokenOrTimeout() {
-        // int sleepTime;
-        // long timeLeft = reshuffleTime - System.currentTimeMillis();
-        // if (timeLeft > env.config.turnTimeoutMillis)
-        //     sleepTime = 1000;
-        // else 
-        //     sleepTime = 1;
+        long sleepTime = 1000; // one seconed
+        long timeLeft = reshuffleTime - System.currentTimeMillis();
+        if (timeLeft > env.config.turnTimeoutWarningMillis) {
+            sleepTime = sleepTime - timeNotToSleep;
+            env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft is big");
+        }
+        else{
+            sleepTime = 10;
+            env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft is small");
+            env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft: " + timeLeft);
+        }
         try {
-            Thread.sleep(1);
+            Thread.sleep(Math.max(sleepTime, 1));
         } catch (InterruptedException e) {}
+        timeNotToSleep = 0;
     }
 
     /**
@@ -254,6 +221,7 @@ public class Dealer implements Runnable {
         if (reset && !shouldFinish())
             reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
         long timeLeft = reshuffleTime - System.currentTimeMillis();
+        env.logger.info("thread " + Thread.currentThread().getName() + "timer display timeLeft: " + timeLeft);
         if (timeLeft > env.config.turnTimeoutWarningMillis)
             env.ui.setCountdown(timeLeft, false);
         else

@@ -62,6 +62,8 @@ public class Player implements Runnable {
      */
     private ArrayBlockingQueue<Integer> actionsQueue;
 
+    private boolean wasPenalized;
+
     //private final int setSize;
     
     // /**
@@ -90,7 +92,8 @@ public class Player implements Runnable {
         this.id = id;
         this.human = human;
         this.dealer = dealer;
-        this.actionsQueue = new ArrayBlockingQueue<Integer>(dealer.setSize); //why do we need limitations?
+        this.actionsQueue = new ArrayBlockingQueue<Integer>(dealer.setSize);
+        this.wasPenalized = false;
         //this.setSize = env.config.featureSize;
         // this.playerTokens = new int[env.config.featureSize];
         // for (int i = 0; i < env.config.featureSize; i++)
@@ -108,26 +111,31 @@ public class Player implements Runnable {
         if (!human) createArtificialIntelligence();
 
         synchronized(this){
+            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             while (!terminate) {
-                try {
-                    while (table.getNumOfTokensOnTable(this.id) >= dealer.setSize || 
-                        actionsQueue.isEmpty()) {
-                        // if player had put all of his token on the Table then player should
-                        // wait for dealer to either point or penalize
+                while (shouldWait()) {
+                    env.logger.info("thread " + Thread.currentThread().getName() + "Player should wait");
+                    // if player had put all of his token on the Table then player should
+                    // wait for dealer to either point or penalize
+                    try {
                         this.wait();
                     }
+                    catch(InterruptedException e) {}
+                }
 
                     if (actionsQueue.size() > 0) {
                         int slot = actionsQueue.remove();
-                        if (!table.removeToken(this.id, slot) && table.hasCardAt(slot)) {
+                        this.wasPenalized = false;
+                        if (!table.removeToken(this.id, slot) && table.hasCardAt(slot) 
+                                && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
                             table.placeToken(this.id, slot);
                             if (table.getNumOfTokensOnTable(this.id) == dealer.setSize)
                                 dealer.wakeUp();
                         }
                     }
-                } catch (InterruptedException ignored) {}
             }
             this.notifyAll();
+            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
             // end sync
         }
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
@@ -171,23 +179,28 @@ public class Player implements Runnable {
      */
     public void keyPressed(int slot) {
         // We make sure that the dealer has not changed the table currently
-        synchronized(this) {
-            while (actionsQueue.remainingCapacity() == 0) { 
-                try {
-                    this.wait();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-                try {
-                    actionsQueue.put(slot);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        //synchronized(this) {
+            //env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
+            // while (actionsQueue.remainingCapacity() == 0) { 
+            //     try {
+            //         this.wait();
+            //     }
+            //     catch (Exception e) {
+            //         e.printStackTrace();
+            //     }
+            // }
             
-            notifyAll();
-        }
+            try {
+                env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
+                actionsQueue.put(slot);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            playerThread.interrupt(); // wake up player from waiting
+            
+            //notifyAll();
+            //env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player " + this.id);
+        //}
     }
 
     /**
@@ -198,6 +211,7 @@ public class Player implements Runnable {
      */
     public void point() {
         synchronized(this) {
+            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player " + this.id);
             // while (actionsQueue.remainingCapacity() > 0) {
             //     try {this.wait();} 
             //     catch (InterruptedException e) {
@@ -209,12 +223,13 @@ public class Player implements Runnable {
             env.ui.setScore(id, ++score);
             try {
                 env.ui.setFreeze(id, freezeTime);
-                Thread.sleep(freezeTime);
+                playerThread.sleep(freezeTime);
                 //env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
             //actionsQueue.clear();
             //isValid = -1;
             notifyAll();
+            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
         }
     }
 
@@ -224,25 +239,66 @@ public class Player implements Runnable {
      */
     public void penalty() {
         synchronized(this) {
+            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             try {
                 // while (actionsQueue.remainingCapacity() > 0) {
                 //     this.wait();
                 // }
-                long freezeTime = env.config.pointFreezeMillis;
-                env.ui.setFreeze(id, freezeTime);
-                Thread.sleep(1000);
-                //env.ui.setFreeze(id, 0);
+                if (!wasPenalized) {
+                    // if a player was penalized but did not change his tokens he should not be
+                    // penalized again
+                    long freezeTime = env.config.pointFreezeMillis;
+                    env.ui.setFreeze(id, freezeTime);
+                    Thread.sleep(1000);
+                    wasPenalized = true; 
+                    //env.ui.setFreeze(id, 0);
+                }
             } 
             catch (InterruptedException e) {}
             //actionsQueue.clear();
             //isValid = -1;
+            this.wasPenalized = true;
             notifyAll();
+            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
         }
     }
 
     public int score() {
-        return score;
+        synchronized(this) {
+            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
+            return score;
+        }
     }
+
+
+    private boolean shouldWait() {
+        int num = table.getNumOfTokensOnTable(id);
+        if (actionsQueue.isEmpty()) {
+
+            return true;
+        }
+        
+        else if (num == dealer.setSize && !wasPenalized) {
+            // has setSize ammount of tokens on table and was not looked by
+            // dealer yet. 
+            // if tokens were a legal set then the Dealer would have removed the tokens.
+            return true;
+        }
+
+        else if (num == dealer.setSize && wasPenalized) {
+            // illegal set which was checked by Dealer 
+            return false;
+        }
+
+        else {
+            // num < setSize && actionsQueue is not empty
+            return false;
+        }
+
+    
+        // actionsQueue.size() > 0 for sure
+    }
+
     // public void setIsValid(int input) {
     //     this.isValid = input;
     // }

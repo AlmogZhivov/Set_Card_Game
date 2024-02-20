@@ -51,7 +51,6 @@ public class Dealer implements Runnable {
 
     public final int setSize;
 
-    private long timeNotToSleep;
      /**
      * Slots of the current round
      */
@@ -68,7 +67,6 @@ public class Dealer implements Runnable {
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         dealerLock = new Object();
         this.setSize = env.config.featureSize;
-        this.timeNotToSleep = 0;
         // this.boardSlots = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
         // this.boardPlayers = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
     }
@@ -148,26 +146,26 @@ public class Dealer implements Runnable {
      */
     private void removeCardsFromTable() {
         
-            env.logger.info("thread " + Thread.currentThread().getName() + " checking");    
-            if (!hasSomethingToDo())
-                return;
+            // // env.logger.info("thread " + Thread.currentThread().getName() + " checking");    
+            // // if (!hasSomethingToDo())
+            // //     return;
             
-            env.logger.info("thread " + Thread.currentThread().getName() + " starting for.");
-            for (Player player : players) {
-                int num = table.getNumOfTokensOnTable(player.id);
-                if (num==setSize && table.checkAndRemoveSet(player.id)) {
-                    player.point();
-                    updateTimerDisplay(true);
-                    // not to sleep the time it took to remove the cards
-                    this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
-                }
-                else if (num == setSize) {
-                    // player chose an ilegal set
-                    player.penalty();
-                }
-            }
+            // // env.logger.info("thread " + Thread.currentThread().getName() + " starting for.");
+            // // for (Player player : players) {
+            // //     int num = table.getNumOfTokensOnTable(player.id);
+            // //     if (num==setSize && table.checkAndRemoveSet(player.id)) {
+            // //         player.point();
+            // //         updateTimerDisplay(true);
+            // //         // not to sleep the time it took to remove the cards
+            // //         this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
+            // //     }
+            // //     else if (num == setSize) {
+            // //         // player chose an ilegal set
+            // //         player.penalty();
+            // //     }
+            // // }
             
-            env.logger.info("thread " + Thread.currentThread().getName() + " done for .");
+            // env.logger.info("thread " + Thread.currentThread().getName() + " done for .");
                 
             placeCardsOnTable();
     }
@@ -201,7 +199,6 @@ public class Dealer implements Runnable {
         long sleepTime = 1000; // one seconed
         long timeLeft = reshuffleTime - System.currentTimeMillis();
         if (timeLeft > env.config.turnTimeoutWarningMillis) {
-            sleepTime = sleepTime - timeNotToSleep;
             env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft is big");
         }
         else{
@@ -212,7 +209,6 @@ public class Dealer implements Runnable {
         try {
             Thread.sleep(Math.max(sleepTime, 1));
         } catch (InterruptedException e) {}
-        timeNotToSleep = 0;
     }
 
     /**

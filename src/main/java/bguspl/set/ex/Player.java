@@ -129,8 +129,12 @@ public class Player implements Runnable {
                         if (!table.removeToken(this.id, slot) && table.hasCardAt(slot) 
                                 && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
                             table.placeToken(this.id, slot);
-                            if (table.getNumOfTokensOnTable(this.id) == dealer.setSize)
-                                dealer.wakeUp();
+                            if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id)) {
+                                this.point();
+                            }
+                            else if (table.getNumOfTokensOnTable(this.id) == dealer.setSize){
+                                this.penalty();
+                            }   
                         }
                     }
             }
@@ -175,13 +179,15 @@ public class Player implements Runnable {
      * @pre- actionsQueue needs to be not full
      */
     public void keyPressed(int slot) {
-        try {
-            env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
-            actionsQueue.put(slot);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        synchronized (this) {
+            try {
+                env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
+                actionsQueue.put(slot);
+                this.notifyAll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        playerThread.interrupt(); // wake up player from waiting    
     }
 
     /**

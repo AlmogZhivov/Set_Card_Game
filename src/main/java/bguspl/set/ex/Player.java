@@ -154,9 +154,6 @@ public class Player implements Runnable {
             while (!terminate) {
                 int pressing = rnd.nextInt(env.config.tableSize);
                 keyPressed(pressing);
-                try {
-                    synchronized (this) { wait(); }
-                } catch (InterruptedException ignored) {}
             }
             env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
         }, "computer-" + id);
@@ -168,6 +165,7 @@ public class Player implements Runnable {
      */
     public void terminate() {
         terminate = true;
+        playerThread.interrupt();
         playerThread.interrupt();
     }
 
@@ -211,31 +209,22 @@ public class Player implements Runnable {
      */
     public void point() {
         synchronized(this) {
-            env.logger.info("thread " + Thread.currentThread().getName() + "is locking player " + this.id);
-            // while (actionsQueue.remainingCapacity() > 0) {
-            //     try {this.wait();} 
-            //     catch (InterruptedException e) {
-            //         e.printStackTrace();
-            //     }
-            // }
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-            long freezeTime = env.config.pointFreezeMillis;
             env.ui.setScore(id, ++score);
             try {
-                env.ui.setFreeze(id, freezeTime);
-                playerThread.sleep(freezeTime);
-                //env.ui.setFreeze(id, 0);
+                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    Thread.sleep(1000);
+                }
+                env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
             //actionsQueue.clear();
-            //isValid = -1;
             notifyAll();
-            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
         }
     }
 
     /**
      * Penalize a player and perform other related actions.
-     * 
      */
     public void penalty() {
         synchronized(this) {
@@ -244,20 +233,15 @@ public class Player implements Runnable {
                 // while (actionsQueue.remainingCapacity() > 0) {
                 //     this.wait();
                 // }
-                if (!wasPenalized) {
-                    // if a player was penalized but did not change his tokens he should not be
-                    // penalized again
-                    long freezeTime = env.config.pointFreezeMillis;
-                    env.ui.setFreeze(id, freezeTime);
+                long freezeTime = env.config.pointFreezeMillis;
+                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
                     Thread.sleep(1000);
-                    wasPenalized = true; 
-                    //env.ui.setFreeze(id, 0);
                 }
+                env.ui.setFreeze(id, 0);
             } 
             catch (InterruptedException e) {}
             //actionsQueue.clear();
-            //isValid = -1;
-            this.wasPenalized = true;
             notifyAll();
             env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
         }

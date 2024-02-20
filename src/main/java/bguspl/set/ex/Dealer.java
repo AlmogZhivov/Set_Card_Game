@@ -5,8 +5,6 @@ import bguspl.set.Env;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -88,10 +86,10 @@ public class Dealer implements Runnable {
         placeCardsOnTable();
         while (!shouldFinish()) {
             reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
-            //placeCardsOnTable();
+            placeCardsOnTable();
             timerLoop();
             updateTimerDisplay(false);
-            //removeAllCardsFromTable();
+            removeAllCardsFromTable();
         }
         //announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");

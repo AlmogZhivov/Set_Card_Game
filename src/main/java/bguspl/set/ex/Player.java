@@ -94,11 +94,6 @@ public class Player implements Runnable {
         this.dealer = dealer;
         this.actionsQueue = new ArrayBlockingQueue<Integer>(dealer.setSize);
         this.wasPenalized = false;
-        //this.setSize = env.config.featureSize;
-        // this.playerTokens = new int[env.config.featureSize];
-        // for (int i = 0; i < env.config.featureSize; i++)
-        //     this.playerTokens[i] = -1;
-        //this.isValid = -1;
     }
 
     /**
@@ -132,7 +127,7 @@ public class Player implements Runnable {
                 }
             
             }
-            this.notifyAll();
+            //this.notifyAll();
             env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
             // end sync
         }
@@ -162,6 +157,13 @@ public class Player implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
+        // try to clear and put into actions queue
+        // so blocked threads can continue and then terminate
+        try {
+            actionsQueue.clear();
+            actionsQueue.put(0);
+        }
+        catch (Exception e) {}
         terminate = true;
         playerThread.interrupt();
     }
@@ -201,7 +203,6 @@ public class Player implements Runnable {
                 env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
             //actionsQueue.clear();
-            notifyAll();
             env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
         }
     }
@@ -234,38 +235,6 @@ public class Player implements Runnable {
         synchronized(this) {
             return score;
         }
-    }
-
-
-    private boolean shouldWait() {
-        if (terminate)
-            return false;
-
-        int num = table.getNumOfTokensOnTable(id);
-        if (actionsQueue.isEmpty()) {
-
-            return true;
-        }
-        
-        else if (num == dealer.setSize && !wasPenalized) {
-            // has setSize ammount of tokens on table and was not looked by
-            // dealer yet. 
-            // if tokens were a legal set then the Dealer would have removed the tokens.
-            return true;
-        }
-
-        else if (num == dealer.setSize && wasPenalized) {
-            // illegal set which was checked by Dealer 
-            return false;
-        }
-
-        else {
-            // num < setSize && actionsQueue is not empty
-            return false;
-        }
-
-    
-        // actionsQueue.size() > 0 for sure
     }
 
 }

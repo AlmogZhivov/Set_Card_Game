@@ -271,6 +271,10 @@ public class Table {
                 // copy currentTokens into cards
                 int i = 0;
                 for (int token : currentTokens) {
+                    if(slotToCard[token] == null)
+                        return false;
+
+                    
                     cards[i] = slotToCard[token];
                     i = i + 1;
                 }

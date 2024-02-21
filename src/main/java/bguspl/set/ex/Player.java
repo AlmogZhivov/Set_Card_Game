@@ -117,7 +117,7 @@ public class Player implements Runnable {
                 if (slot >= 0 && !table.removeToken(this.id, slot) && table.hasCardAt(slot) 
                         && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
                     table.placeToken(this.id, slot);
-                    if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id)) {
+                    if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id, dealer)) {
                         this.point();
                         dealer.resetTimer();
                     }

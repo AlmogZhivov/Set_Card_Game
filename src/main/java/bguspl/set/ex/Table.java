@@ -256,7 +256,7 @@ public class Table {
         }
     }
 
-    public boolean checkAndRemoveSet(int player) {
+    public boolean checkAndRemoveSet(int player, Dealer dealer) {
         // returns true if player has a set
         // else returns false
         synchronized(cardsLock){
@@ -279,7 +279,7 @@ public class Table {
                     i = i + 1;
                 }
 
-                if (env.util.testSet(cards)) {
+                if (dealer.testSet(cards)) {
                     // player chose a legal set
                     
                     // remove cards of the set

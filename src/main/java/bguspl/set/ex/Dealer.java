@@ -281,20 +281,13 @@ public class Dealer implements Runnable {
         dealerThread.interrupt();            
     }
 
-    private boolean hasSomethingToDo() {
-        synchronized(dealerLock) {
-            env.logger.info("thread " + Thread.currentThread().getName() + "calling 'has something to do.");
-            for (Player player : players) {
-                if (table.getNumOfTokensOnTable(player.id) == setSize) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
 
     public void resetTimer() {
         updateTimerDisplay(true);
+    }
+
+    public boolean testSet(int[] cards) {
+        return env.util.testSet(cards);
     }
 
 }

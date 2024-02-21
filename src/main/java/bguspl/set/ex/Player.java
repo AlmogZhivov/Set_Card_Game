@@ -108,35 +108,29 @@ public class Player implements Runnable {
     public void run() {
         playerThread = Thread.currentThread();
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-        if (!human) createArtificialIntelligence();
+        if (!human) {createArtificialIntelligence();}
 
         synchronized(this){
             env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             while (!terminate) {
-                while (shouldWait()) {
-                    env.logger.info("thread " + Thread.currentThread().getName() + "Player should wait");
-                    // if player had put all of his token on the Table then player should
-                    // wait for dealer to either point or penalize
-                    try {
-                        this.wait();
-                    }
-                    catch(InterruptedException e) {}
+                  
+                int slot = -1;
+                try {
+                    slot = actionsQueue.take();
                 }
-
-                    if (actionsQueue.size() > 0) {
-                        int slot = actionsQueue.remove();
-                        this.wasPenalized = false;
-                        if (!table.removeToken(this.id, slot) && table.hasCardAt(slot) 
-                                && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
-                            table.placeToken(this.id, slot);
-                            if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id)) {
-                                this.point();
-                            }
-                            else if (table.getNumOfTokensOnTable(this.id) == dealer.setSize){
-                                this.penalty();
-                            }   
-                        }
+                catch (InterruptedException e) {}
+                if (slot >= 0 && !table.removeToken(this.id, slot) && table.hasCardAt(slot) 
+                        && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
+                    table.placeToken(this.id, slot);
+                    if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id)) {
+                        this.point();
+                        dealer.resetTimer();
                     }
+                    else if (table.getNumOfTokensOnTable(this.id) == dealer.setSize){
+                        this.penalty();
+                    }   
+                }
+            
             }
             this.notifyAll();
             env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
@@ -179,14 +173,11 @@ public class Player implements Runnable {
      * @pre- actionsQueue needs to be not full
      */
     public void keyPressed(int slot) {
-        synchronized (this) {
-            try {
-                env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
-                actionsQueue.put(slot);
-                this.notifyAll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {                
+            env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
+            actionsQueue.put(slot);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
         }
     }
 
@@ -221,17 +212,17 @@ public class Player implements Runnable {
     public void penalty() {
         synchronized(this) {
             try {
-                env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
                 if (!wasPenalized) {
+                    env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
                     long freezeTime = 1000;
-                    this.wasPenalized = true;
                     for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
                         env.ui.setFreeze(id, i);
                         playerThread.sleep(freezeTime);
                     }
                     env.ui.setFreeze(id, 0);
                 }
-            } 
+            }
+
             catch (InterruptedException e) {}
             //actionsQueue.clear();
             notifyAll();
@@ -247,6 +238,9 @@ public class Player implements Runnable {
 
 
     private boolean shouldWait() {
+        if (terminate)
+            return false;
+
         int num = table.getNumOfTokensOnTable(id);
         if (actionsQueue.isEmpty()) {
 

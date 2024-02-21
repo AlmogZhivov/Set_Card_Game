@@ -136,15 +136,17 @@ public class Table {
         } catch (InterruptedException ignored) {
         }
         synchronized (cardsLock) {
-            int card = slotToCard[slot];
-            slotToCard[slot] = null;
-            cardToSlot[card] = null;
-            synchronized (hashLock) {
-                for (int player : players) {
-                    this.removeToken(player, slot);
+            if (slotToCard[slot] != null) {
+                int card = slotToCard[slot];     
+                slotToCard[slot] = null;
+                cardToSlot[card] = null;
+                synchronized (hashLock) {
+                    for (int player : players) {
+                        this.removeToken(player, slot);
+                    }
                 }
+                env.ui.removeCard(slot);
             }
-            env.ui.removeCard(slot);
         }
         // DONE implement
     }
@@ -286,6 +288,34 @@ public class Table {
                 // is not a legal set. return false
                 return false;
 
+            }
+        }
+    }
+
+    public List<Integer> getAllCards() {
+        synchronized(cardsLock) {
+            List<Integer> output = new LinkedList<>();
+            for (int i = 0; i < slotToCard.length; i = i + 1){
+                if (slotToCard[i] != null) {
+                    output.add(slotToCard[i]);
+                }
+            }
+
+            return output;
+        }
+    }
+
+    public List<Integer> removeAllCards() {
+        env.logger.info("thread " + Thread.currentThread().getName() + " Table remove all cards");
+        synchronized(cardsLock) {
+            synchronized(hashLock) {
+                List<Integer> output = this.getAllCards();
+
+                for (int i = 0; i < slotToCard.length; i = i + 1) {
+                    this.removeCard(i);
+                }
+
+                return output;
             }
         }
     }

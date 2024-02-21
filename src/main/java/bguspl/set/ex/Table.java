@@ -336,5 +336,17 @@ public class Table {
         }
     }
 
+    public void placeCardsOnTable(List<Integer> deck) {
+        synchronized (cardsLock) {
+            List<Integer> emptySlots = this.getEmptySlots();
+            for (int slot : emptySlots) {
+                if(deck.isEmpty())
+                    return;
+                    
+                this.placeCard(deck.remove(0), slot);
+            }
+        }
+    }
+
 
 }

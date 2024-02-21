@@ -180,18 +180,8 @@ public class Dealer implements Runnable {
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        //synchronized(dealerLock){
-            //hasChanged = true;
-            List<Integer> emptySlots = table.getEmptySlots();
-            if(emptySlots==null || emptySlots.isEmpty())
-                return;
-            
-            for (int i : emptySlots){
-                if (!deck.isEmpty())
-                    table.placeCard(deck.remove(0), i);
-            }
-        //}
-        // done implement
+        // exporting to table make it more thread safe
+        table.placeCardsOnTable(deck);
     }
 
     /**

@@ -111,6 +111,7 @@ public class Player implements Runnable {
                   
                 int slot = -1;
                 try {
+                    env.logger.info("thread " + Thread.currentThread().getName() + " is taking from actions Queue");
                     slot = actionsQueue.take();
                 }
                 catch (InterruptedException e) {}
@@ -128,9 +129,9 @@ public class Player implements Runnable {
             
             }
             //this.notifyAll();
-            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
-            // end sync
-        }
+            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player " + this.id);
+            actionsQueue.clear();
+        } // end of sync
         if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
@@ -159,13 +160,17 @@ public class Player implements Runnable {
     public void terminate() {
         // try to clear and put into actions queue
         // so blocked threads can continue and then terminate
+        this.terminate = true;
+        try {
+            actionsQueue.put(0);
+            playerThread.interrupt();
+            playerThread.join();
+        } catch (Exception e) {}
         try {
             actionsQueue.clear();
-            actionsQueue.put(0);
+            aiThread.interrupt();
         }
         catch (Exception e) {}
-        terminate = true;
-        playerThread.interrupt();
     }
 
     /**

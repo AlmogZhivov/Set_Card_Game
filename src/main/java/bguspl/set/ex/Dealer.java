@@ -121,6 +121,7 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
+        this.removeAllCardsFromTable();
         synchronized(dealerLock){
             for (int i = players.length - 1; i >= 0; i--) {
                 players[i].terminate();
@@ -235,7 +236,6 @@ public class Dealer implements Runnable {
         }
         // shuffle the cards again after removal
         Collections.shuffle(deck);
-        placeCardsOnTable();
     }
 
     /**

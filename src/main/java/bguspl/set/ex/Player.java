@@ -115,15 +115,22 @@ public class Player implements Runnable {
                     slot = actionsQueue.take();
                 }
                 catch (InterruptedException e) {}
+
                 if (slot >= 0 && !table.removeToken(this.id, slot) && table.hasCardAt(slot) 
                         && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
                     table.placeToken(this.id, slot);
-                    if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id, dealer)) {
+                    this.wasPenalized = false;
+                    env.logger.info("thread " + Thread.currentThread().getName() + " checking set");
+                    if (table.checkAndRemoveSet(this.id, dealer)) {
+                        env.logger.info("thread " + Thread.currentThread().getName() + " pointing");
                         this.point();
+                        env.logger.info("thread " + Thread.currentThread().getName() + " done pointing");
                         dealer.resetTimer();
                     }
                     else if (table.getNumOfTokensOnTable(this.id) == dealer.setSize){
+                        env.logger.info("thread " + Thread.currentThread().getName() + " penalizing");
                         this.penalty();
+                        env.logger.info("thread " + Thread.currentThread().getName() + " done penalizing");
                     }   
                 }
             
@@ -199,14 +206,17 @@ public class Player implements Runnable {
             int ignored = table.countCards(); // this part is just for demonstration in the unit tests
             env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being point");
             env.ui.setScore(id, ++score);
-            try {
                 int freezeTime = 1000;
-                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
-                    env.ui.setFreeze(id, i);
-                    playerThread.sleep(freezeTime);
+                for (long i = env.config.pointFreezeMillis; i > 0; i -= freezeTime) {
+                    try {
+                        env.ui.setFreeze(id, i);
+                        playerThread.sleep(freezeTime);
+                    }
+                    catch (InterruptedException e) {}
                 }
                 env.ui.setFreeze(id, 0);
-            } catch (InterruptedException e) {}
+                actionsQueue.clear();
+
             //actionsQueue.clear();
             env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
         }
@@ -221,17 +231,19 @@ public class Player implements Runnable {
                 if (!wasPenalized) {
                     env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
                     long freezeTime = 1000;
-                    for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                    for (long i = env.config.penaltyFreezeMillis; i > 0; i -= freezeTime) {
                         env.ui.setFreeze(id, i);
                         playerThread.sleep(freezeTime);
                     }
                     env.ui.setFreeze(id, 0);
+                    actionsQueue.clear();
+                    wasPenalized = true;
                 }
             }
 
             catch (InterruptedException e) {}
             //actionsQueue.clear();
-            notifyAll();
+            //notifyAll();
             env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
         }
     }

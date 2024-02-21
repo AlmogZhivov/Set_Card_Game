@@ -242,37 +242,31 @@ public class Dealer implements Runnable {
      * Check who is/are the winner/s and displays them.
      */
     private void announceWinners() {
-
-        // if there are available sets in either table or deck then should not annount winners
-        if ((!areAvailableSets() && deck.isEmpty())|| 
-            (env.util.findSets(deck, 1).size() == 0 && !areAvailableSets())) {
-                return;
+        if (terminate) {
+            List<Integer> maxPlayer = new LinkedList<Integer>();
+            int maximum = players[0].score();
+            // Find the maximum score
+            for (int i = 1; i < players.length; i++) {
+                if (players[i].score() > maximum)
+                    maximum = players[i].score();
             }
-
-        List<Integer> maxPlayer = new LinkedList<Integer>();
-        int maximum = players[0].score();
-        // Find the maximum score
-        for (int i = 1; i < players.length; i++) {
-            if (players[i].score() > maximum)
-                maximum = players[i].score();
+            // Find the player with the maximum score or the 2 players with tie
+            for (int i = 0; i < players.length; i++) {
+                if (players[i].score() == maximum) 
+                    maxPlayer.add(players[i].id);
+            }
+            // List to array convertion
+            int[] winners = new int[maxPlayer.size()];
+            for (int i = 0; i < winners.length; i++) {
+                winners[i] = maxPlayer.get(i);
+            }
+            env.ui.announceWinner(winners);
         }
-        // Find the player with the maximum score or the 2 players with tie
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].score() == maximum) 
-                maxPlayer.add(players[i].id);
-        }
-        // List to array convertion
-        int[] winners = new int[maxPlayer.size()];
-        for (int i = 0; i < winners.length; i++) {
-            winners[i] = maxPlayer.get(i);
-        }
-        env.ui.announceWinner(winners);
     }
 
     private boolean areAvailableSets() {
         // returns true if there is a set avialable on the table
-        List<Integer> cards = table.getAllCards();
-        return env.util.findSets(cards, 1).size() != 0;
+        return table.areAvailableSets();
     }
 
     // 'wakes up' the dealer. notifies its lock

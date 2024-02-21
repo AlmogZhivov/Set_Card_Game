@@ -147,6 +147,7 @@ public class Table {
                 }
                 env.ui.removeCard(slot);
             }
+            // else slotToCard[slot] == null and there is no card at the slot
         }
         // DONE implement
     }
@@ -265,6 +266,9 @@ public class Table {
                 if (!players.contains((Integer) player)) // if player does not exist
                     return false;
 
+                if (this.getNumOfTokensOnTable(player) != dealer.setSize)
+                    return false;
+
                 List<Integer> currentTokens = new LinkedList<>(tokens.get(player));
                 int[] cards = new int[currentTokens.size()];
                 
@@ -301,7 +305,7 @@ public class Table {
             List<Integer> output = new LinkedList<>();
             for (int i = 0; i < slotToCard.length; i = i + 1){
                 if (slotToCard[i] != null) {
-                    output.add(slotToCard[i]);
+                    output.add(slotToCard[i].intValue());
                 }
             }
 
@@ -321,6 +325,14 @@ public class Table {
 
                 return output;
             }
+        }
+    }
+
+    public boolean areAvailableSets() {
+        synchronized(cardsLock) {
+            List<Integer> temp = this.getAllCards();
+
+            return env.util.findSets(temp, 1).size() >= 1;
         }
     }
 

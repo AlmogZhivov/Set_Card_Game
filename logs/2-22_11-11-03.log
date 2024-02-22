@@ -1,0 +1,120 @@
+[11:11:03.580] [INFO   ] thread bguspl.set.Main.main() starting.
+[11:11:03.581] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[11:11:03.582] [SEVERE ] configuration file was loaded from resources directory.
+[11:11:04.201] [INFO   ] thread bguspl.set.Main.main() timeToRemoveSet 300
+[11:11:04.201] [INFO   ] thread bguspl.set.Main.main() output 3
+[11:11:04.202] [INFO   ] thread dealer starting.
+[11:11:04.203] [INFO   ] thread dealer starting.
+[11:11:04.206] [INFO   ] thread 0  starting.
+[11:11:04.206] [INFO   ] thread 1  starting.
+[11:11:04.209] [INFO   ] thread 0 is locking player + 0
+[11:11:04.209] [INFO   ] thread 1 is locking player + 1
+[11:11:04.309] [SEVERE ] placing card 0 in slot 0
+[11:11:04.414] [SEVERE ] placing card 1 in slot 1
+[11:11:04.516] [SEVERE ] placing card 2 in slot 2
+[11:11:04.617] [SEVERE ] placing card 3 in slot 3
+[11:11:04.718] [SEVERE ] placing card 4 in slot 4
+[11:11:04.819] [SEVERE ] placing card 5 in slot 5
+[11:11:04.920] [SEVERE ] placing card 6 in slot 6
+[11:11:05.021] [SEVERE ] placing card 7 in slot 7
+[11:11:05.122] [SEVERE ] placing card 8 in slot 8
+[11:11:05.222] [SEVERE ] placing card 9 in slot 9
+[11:11:05.323] [SEVERE ] placing card 10 in slot 10
+[11:11:05.424] [SEVERE ] placing card 11 in slot 11
+[11:11:06.432] [SEVERE ] updating countdown to 59000
+[11:11:06.435] [INFO   ] thread dealer removing cards from table
+[11:11:06.435] [INFO   ] thread dealer playersLeft 3
+[11:11:06.436] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58996
+[11:11:06.436] [INFO   ] thread dealer should finish false
+[11:11:07.129] [SEVERE ] key 81 was pressed by player 1
+[11:11:07.129] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[11:11:07.130] [SEVERE ] player 1 placing token on slot 0
+[11:11:07.200] [SEVERE ] key 87 was pressed by player 1
+[11:11:07.201] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[11:11:07.201] [SEVERE ] player 1 placing token on slot 1
+[11:11:07.263] [SEVERE ] key 69 was pressed by player 1
+[11:11:07.264] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[11:11:07.264] [SEVERE ] player 1 placing token on slot 2
+[11:11:07.265] [INFO   ] thread 0  adding player 0 to check queue
+[11:11:07.437] [SEVERE ] updating countdown to 57995
+[11:11:07.437] [INFO   ] thread dealer removing cards from table
+[11:11:07.437] [INFO   ] thread dealer playersLeft 3
+[11:11:07.438] [INFO   ] thread dealer checking player 0
+[11:11:07.539] [SEVERE ] removing player 1 token from slot 0
+[11:11:07.540] [SEVERE ] removing card from slot 0
+[11:11:07.641] [SEVERE ] removing player 1 token from slot 1
+[11:11:07.641] [SEVERE ] removing card from slot 1
+[11:11:07.742] [SEVERE ] removing player 1 token from slot 2
+[11:11:07.743] [SEVERE ] removing card from slot 2
+[11:11:07.743] [INFO   ] thread dealer pointing player 0
+[11:11:07.744] [SEVERE ] updating countdown to 60000
+[11:11:07.844] [SEVERE ] placing card 12 in slot 0
+[11:11:07.945] [SEVERE ] placing card 13 in slot 1
+[11:11:08.046] [SEVERE ] placing card 14 in slot 2
+[11:11:08.047] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59697
+[11:11:08.048] [INFO   ] thread dealer should finish false
+[11:11:08.748] [SEVERE ] updating countdown to 58996
+[11:11:08.750] [INFO   ] thread dealer removing cards from table
+[11:11:08.750] [INFO   ] thread dealer playersLeft 3
+[11:11:08.750] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58994
+[11:11:08.750] [INFO   ] thread dealer should finish false
+[11:11:09.188] [SEVERE ] key 81 was pressed by player 1
+[11:11:09.189] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[11:11:09.189] [INFO   ] thread 0  Player 0is being point
+[11:11:09.189] [SEVERE ] setting player 1 score to 1
+[11:11:09.191] [SEVERE ] setting player 1 freeze to 1000
+[11:11:09.751] [SEVERE ] updating countdown to 57993
+[11:11:09.751] [INFO   ] thread dealer removing cards from table
+[11:11:09.751] [INFO   ] thread dealer playersLeft 3
+[11:11:09.751] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57993
+[11:11:09.752] [INFO   ] thread dealer should finish false
+[11:11:10.193] [SEVERE ] setting player 1 freeze to 0
+[11:11:10.194] [INFO   ] thread 0  Player 0is done being point
+[11:11:10.753] [SEVERE ] updating countdown to 56991
+[11:11:10.753] [INFO   ] thread dealer removing cards from table
+[11:11:10.754] [INFO   ] thread dealer playersLeft 3
+[11:11:10.754] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56990
+[11:11:10.754] [INFO   ] thread dealer should finish false
+[11:11:11.754] [SEVERE ] updating countdown to 55990
+[11:11:11.755] [INFO   ] thread dealer removing cards from table
+[11:11:11.755] [INFO   ] thread dealer playersLeft 3
+[11:11:11.755] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 55989
+[11:11:11.755] [INFO   ] thread dealer should finish false
+[11:11:12.756] [SEVERE ] updating countdown to 54988
+[11:11:12.757] [INFO   ] thread dealer removing cards from table
+[11:11:12.757] [INFO   ] thread dealer playersLeft 3
+[11:11:12.757] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 54987
+[11:11:12.757] [INFO   ] thread dealer should finish false
+[11:11:13.758] [SEVERE ] updating countdown to 53986
+[11:11:13.758] [INFO   ] thread dealer removing cards from table
+[11:11:13.759] [INFO   ] thread dealer playersLeft 3
+[11:11:13.761] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 53983
+[11:11:13.761] [INFO   ] thread dealer should finish false
+[11:11:14.762] [SEVERE ] updating countdown to 52982
+[11:11:14.763] [INFO   ] thread dealer removing cards from table
+[11:11:14.763] [INFO   ] thread dealer playersLeft 3
+[11:11:14.763] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 52981
+[11:11:14.763] [INFO   ] thread dealer should finish false
+[11:11:15.764] [SEVERE ] updating countdown to 51980
+[11:11:15.765] [INFO   ] thread dealer removing cards from table
+[11:11:15.765] [INFO   ] thread dealer playersLeft 3
+[11:11:15.765] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 51979
+[11:11:15.766] [INFO   ] thread dealer should finish false
+[11:11:16.408] [SEVERE ] exit button pressed
+[11:11:16.409] [SEVERE ] player 2 placing token on slot 0
+[11:11:16.409] [SEVERE ] updating countdown to 51335
+[11:11:16.409] [SEVERE ] player 1 placing token on slot 0
+[11:11:16.409] [INFO   ] thread 1 is releasing player + 1
+[11:11:16.410] [INFO   ] thread 0 is releasing player + 0
+[11:11:16.410] [INFO   ] thread 0  terminated.
+[11:11:16.409] [INFO   ] thread dealer removing cards from table
+[11:11:16.410] [INFO   ] thread 1  terminated.
+[11:11:16.411] [INFO   ] thread dealer playersLeft 3
+[11:11:16.412] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 51332
+[11:11:16.412] [INFO   ] thread dealer should finish true
+[11:11:16.414] [SEVERE ] announcing winner(s): player 1
+[11:11:16.416] [SEVERE ] updating countdown to 51328
+[11:11:16.417] [INFO   ] thread dealer terminated.
+[11:11:16.417] [INFO   ] thread dealer terminated.
+[11:11:16.418] [SEVERE ] thanks for playing... it was fun!
+[11:11:16.420] [INFO   ] thread bguspl.set.Main.main() terminated.

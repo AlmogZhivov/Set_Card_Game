@@ -64,18 +64,12 @@ public class Player implements Runnable {
 
     private boolean wasPenalized;
 
-    //private final int setSize;
-    
-    // /**
-    //  * Player's tokes
-    //  */
-    // private int[] playerTokens; // almog added this field, for blocking queue
+    private volatile boolean needPenalty;
 
+    private volatile boolean needPoint;
 
-    /**
-     * Indicator for penalty or point
-     */
-    //private int isValid;
+    private boolean waitForDealer;
+
 
     /**
      * The class constructor.
@@ -94,6 +88,9 @@ public class Player implements Runnable {
         this.dealer = dealer;
         this.actionsQueue = new ArrayBlockingQueue<Integer>(dealer.setSize);
         this.wasPenalized = false;
+        this.needPenalty = false;
+        this.needPoint = false;
+        this.waitForDealer = false;
     }
 
     /**
@@ -108,23 +105,40 @@ public class Player implements Runnable {
         synchronized(this){
             env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             while (!terminate) {
+
+                while (this.waitForDealer) {
+                    try {
+                        actionsQueue.clear();
+                        this.wait();
+                    }
+                    catch (InterruptedException e) {}
+                }
+
+                if (this.needPoint) {
+                    this.selfPoint();
+                    this.needPoint = false;
+                } else if (this.needPenalty) {
+                    this.selfPenalty();
+                    this.needPenalty = false;
+                    this.wasPenalized = true;
+                }
                   
-                int slot = -1;
+                Integer slot = null;
                 try {
                     slot = actionsQueue.take();
                 }
                 catch (InterruptedException e) {}
-                if (slot >= 0 && !table.removeToken(this.id, slot) && table.hasCardAt(slot) 
-                        && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
+                if (slot != null && !this.needPenalty && ! this.needPoint &&
+                 !table.removeToken(this.id, slot) && table.hasCardAt(slot) 
+                  && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
+
                     table.placeToken(this.id, slot);
-                    if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id, dealer)) {
-                        this.point();
-                        dealer.resetTimer();
+                    if (table.getNumOfTokensOnTable(id) == dealer.setSize) {
+                        dealer.checkPlayer(this);
+                        this.waitForDealer = true;
                     }
-                    else if (table.getNumOfTokensOnTable(this.id) == dealer.setSize){
-                        this.penalty();
-                    }   
                 }
+
             
             }
             //this.notifyAll();
@@ -188,52 +202,72 @@ public class Player implements Runnable {
      *
      * @post - the player's score is increased by 1.
      * @post - the player's score is updated in the ui.
+     * 
+     * should be called from playerThread only!
      */
-    public void point() {
-        synchronized(this) {
-            int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being point");
-            env.ui.setScore(id, ++score);
-            try {
-                int freezeTime = 1000;
-                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
-                    env.ui.setFreeze(id, i);
-                    playerThread.sleep(freezeTime);
-                }
-                env.ui.setFreeze(id, 0);
-            } catch (InterruptedException e) {}
-            //actionsQueue.clear();
-            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
-        }
+    private void selfPoint() {
+        needPoint = false;
+        int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+        env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being point");
+        env.ui.setScore(id, ++score);
+        try {
+            int freezeTime = 1000;
+            for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+                env.ui.setFreeze(id, i);
+                playerThread.sleep(freezeTime);
+            }
+            env.ui.setFreeze(id, 0);
+            this.actionsQueue.clear();
+        } catch (InterruptedException e) {}
+        //actionsQueue.clear();
+        env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
     }
 
     /**
      * Penalize a player and perform other related actions.
+     * 
+     * should be called from playerThread only!
      */
-    public void penalty() {
-        synchronized(this) {
-            try {
-                if (!wasPenalized) {
-                    env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
-                    long freezeTime = 1000;
-                    for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
-                        env.ui.setFreeze(id, i);
-                        playerThread.sleep(freezeTime);
-                    }
-                    env.ui.setFreeze(id, 0);
+    private void selfPenalty() {
+        try {
+            if (!wasPenalized) {
+                this.wasPenalized = true;
+                this.needPenalty = false;
+                env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
+                long freezeTime = 1000;
+                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    playerThread.sleep(freezeTime);
                 }
+                env.ui.setFreeze(id, 0);
+                this.actionsQueue.clear();
             }
-
-            catch (InterruptedException e) {}
-            //actionsQueue.clear();
-            notifyAll();
-            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
         }
+
+        catch (InterruptedException e) {}
+        //actionsQueue.clear();
+        env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
     }
 
     public int score() {
         synchronized(this) {
             return score;
+        }
+    }
+
+    public void point() {
+        synchronized (this) {
+            this.needPoint = true;
+            this.waitForDealer = false;
+            notifyAll();
+        }
+    }
+
+    public void penalty () {
+        synchronized (this) {
+            this.needPenalty = true;
+            this.waitForDealer = false;
+            notifyAll();
         }
     }
 

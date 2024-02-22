@@ -1,0 +1,1013 @@
+[10:48:19.167] [INFO   ] thread bguspl.set.Main.main() starting.
+[10:48:19.183] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[10:48:19.193] [SEVERE ] configuration file was loaded from resources directory.
+[10:48:20.811] [INFO   ] thread dealer starting.
+[10:48:20.811] [INFO   ] thread dealer starting.
+[10:48:20.812] [INFO   ] thread 0  starting.
+[10:48:20.812] [INFO   ] thread 1  starting.
+[10:48:20.813] [INFO   ] thread 0 is locking player + 0
+[10:48:20.813] [INFO   ] thread 1 is locking player + 1
+[10:48:20.913] [SEVERE ] placing card 0 in slot 0
+[10:48:21.020] [SEVERE ] placing card 1 in slot 1
+[10:48:21.121] [SEVERE ] placing card 2 in slot 2
+[10:48:21.223] [SEVERE ] placing card 3 in slot 3
+[10:48:21.325] [SEVERE ] placing card 4 in slot 4
+[10:48:21.428] [SEVERE ] placing card 5 in slot 5
+[10:48:21.529] [SEVERE ] placing card 6 in slot 6
+[10:48:21.630] [SEVERE ] placing card 7 in slot 7
+[10:48:21.734] [SEVERE ] placing card 8 in slot 8
+[10:48:21.836] [SEVERE ] placing card 9 in slot 9
+[10:48:21.937] [SEVERE ] placing card 10 in slot 10
+[10:48:22.039] [SEVERE ] placing card 11 in slot 11
+[10:48:23.051] [SEVERE ] updating countdown to 59000
+[10:48:23.056] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58995
+[10:48:23.060] [INFO   ] thread dealer should finish false
+[10:48:23.936] [SEVERE ] key 81 was pressed by player 1
+[10:48:23.936] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:23.937] [SEVERE ] player 1 placing token on slot 0
+[10:48:24.062] [SEVERE ] updating countdown to 57989
+[10:48:24.065] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57986
+[10:48:24.067] [INFO   ] thread dealer should finish false
+[10:48:24.488] [SEVERE ] key 87 was pressed by player 1
+[10:48:24.489] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:24.490] [SEVERE ] player 1 placing token on slot 1
+[10:48:24.843] [SEVERE ] key 69 was pressed by player 1
+[10:48:24.844] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:24.845] [SEVERE ] player 1 placing token on slot 2
+[10:48:24.946] [SEVERE ] removing player 1 token from slot 0
+[10:48:24.948] [SEVERE ] removing card from slot 0
+[10:48:25.049] [SEVERE ] removing player 1 token from slot 1
+[10:48:25.052] [SEVERE ] removing card from slot 1
+[10:48:25.069] [SEVERE ] updating countdown to 56982
+[10:48:25.154] [SEVERE ] removing player 1 token from slot 2
+[10:48:25.156] [SEVERE ] removing card from slot 2
+[10:48:25.159] [INFO   ] thread 0  Player 0is being point
+[10:48:25.160] [SEVERE ] setting player 1 score to 1
+[10:48:25.162] [SEVERE ] setting player 1 freeze to 1000
+[10:48:25.259] [SEVERE ] placing card 12 in slot 0
+[10:48:25.362] [SEVERE ] placing card 13 in slot 1
+[10:48:25.465] [SEVERE ] placing card 14 in slot 2
+[10:48:25.468] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56583
+[10:48:25.470] [INFO   ] thread dealer should finish false
+[10:48:26.165] [SEVERE ] setting player 1 freeze to 0
+[10:48:26.166] [INFO   ] thread 0  Player 0is done being point
+[10:48:26.167] [SEVERE ] updating countdown to 60000
+[10:48:26.475] [SEVERE ] updating countdown to 59692
+[10:48:26.476] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59691
+[10:48:26.477] [INFO   ] thread dealer should finish false
+[10:48:26.802] [SEVERE ] key 81 was pressed by player 1
+[10:48:26.802] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:26.802] [SEVERE ] player 1 placing token on slot 0
+[10:48:27.052] [SEVERE ] key 87 was pressed by player 1
+[10:48:27.053] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:27.053] [SEVERE ] player 1 placing token on slot 1
+[10:48:27.359] [SEVERE ] key 69 was pressed by player 1
+[10:48:27.360] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:27.361] [SEVERE ] player 1 placing token on slot 2
+[10:48:27.462] [SEVERE ] removing player 1 token from slot 0
+[10:48:27.466] [SEVERE ] removing card from slot 0
+[10:48:27.478] [SEVERE ] updating countdown to 58689
+[10:48:27.569] [SEVERE ] removing player 1 token from slot 1
+[10:48:27.571] [SEVERE ] removing card from slot 1
+[10:48:27.677] [SEVERE ] removing player 1 token from slot 2
+[10:48:27.679] [SEVERE ] removing card from slot 2
+[10:48:27.681] [INFO   ] thread 0  Player 0is being point
+[10:48:27.685] [SEVERE ] setting player 1 score to 2
+[10:48:27.687] [SEVERE ] setting player 1 freeze to 1000
+[10:48:27.782] [SEVERE ] placing card 15 in slot 0
+[10:48:27.885] [SEVERE ] placing card 16 in slot 1
+[10:48:27.987] [SEVERE ] placing card 17 in slot 2
+[10:48:27.990] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58177
+[10:48:27.993] [INFO   ] thread dealer should finish false
+[10:48:28.498] [SEVERE ] key 65 was pressed by player 1
+[10:48:28.499] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:28.691] [SEVERE ] setting player 1 freeze to 0
+[10:48:28.693] [INFO   ] thread 0  Player 0is done being point
+[10:48:28.695] [SEVERE ] updating countdown to 60000
+[10:48:28.835] [SEVERE ] key 83 was pressed by player 1
+[10:48:28.835] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:28.836] [SEVERE ] player 1 placing token on slot 5
+[10:48:28.997] [SEVERE ] updating countdown to 59699
+[10:48:28.999] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59696
+[10:48:29.001] [INFO   ] thread dealer should finish false
+[10:48:29.176] [SEVERE ] key 68 was pressed by player 1
+[10:48:29.177] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:29.178] [SEVERE ] player 1 placing token on slot 6
+[10:48:29.575] [SEVERE ] key 65 was pressed by player 1
+[10:48:29.576] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:29.577] [SEVERE ] player 1 placing token on slot 4
+[10:48:29.578] [INFO   ] thread 0  Player 0is being penalized
+[10:48:29.578] [SEVERE ] setting player 1 freeze to 3000
+[10:48:30.005] [SEVERE ] updating countdown to 58690
+[10:48:30.008] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58687
+[10:48:30.011] [INFO   ] thread dealer should finish false
+[10:48:30.580] [SEVERE ] setting player 1 freeze to 2000
+[10:48:31.013] [SEVERE ] updating countdown to 57682
+[10:48:31.015] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57680
+[10:48:31.017] [INFO   ] thread dealer should finish false
+[10:48:31.109] [SEVERE ] key 65 was pressed by player 1
+[10:48:31.110] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:31.448] [SEVERE ] key 83 was pressed by player 1
+[10:48:31.449] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:31.582] [SEVERE ] setting player 1 freeze to 1000
+[10:48:32.019] [SEVERE ] updating countdown to 56676
+[10:48:32.021] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56674
+[10:48:32.024] [INFO   ] thread dealer should finish false
+[10:48:32.584] [SEVERE ] setting player 1 freeze to 0
+[10:48:32.585] [INFO   ] thread 0  Player 0is done being penalized
+[10:48:33.026] [SEVERE ] updating countdown to 55669
+[10:48:33.028] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 55667
+[10:48:33.032] [INFO   ] thread dealer should finish false
+[10:48:33.570] [SEVERE ] key 65 was pressed by player 1
+[10:48:33.571] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:33.571] [SEVERE ] removing player 1 token from slot 4
+[10:48:33.949] [SEVERE ] key 83 was pressed by player 1
+[10:48:33.949] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:33.950] [SEVERE ] removing player 1 token from slot 5
+[10:48:34.033] [SEVERE ] updating countdown to 54662
+[10:48:34.036] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 54659
+[10:48:34.037] [INFO   ] thread dealer should finish false
+[10:48:34.325] [SEVERE ] key 68 was pressed by player 1
+[10:48:34.326] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:34.326] [SEVERE ] removing player 1 token from slot 6
+[10:48:35.038] [SEVERE ] updating countdown to 53657
+[10:48:35.041] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 53654
+[10:48:35.042] [INFO   ] thread dealer should finish false
+[10:48:35.841] [SEVERE ] key 81 was pressed by player 1
+[10:48:35.841] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:35.842] [SEVERE ] player 1 placing token on slot 0
+[10:48:36.045] [SEVERE ] updating countdown to 52650
+[10:48:36.046] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 52649
+[10:48:36.048] [INFO   ] thread dealer should finish false
+[10:48:36.243] [SEVERE ] key 87 was pressed by player 1
+[10:48:36.244] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:36.244] [SEVERE ] player 1 placing token on slot 1
+[10:48:36.699] [SEVERE ] key 69 was pressed by player 1
+[10:48:36.700] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:36.701] [SEVERE ] player 1 placing token on slot 2
+[10:48:36.803] [SEVERE ] removing player 1 token from slot 0
+[10:48:36.805] [SEVERE ] removing card from slot 0
+[10:48:36.908] [SEVERE ] removing player 1 token from slot 1
+[10:48:36.910] [SEVERE ] removing card from slot 1
+[10:48:37.011] [SEVERE ] removing player 1 token from slot 2
+[10:48:37.012] [SEVERE ] removing card from slot 2
+[10:48:37.013] [INFO   ] thread 0  Player 0is being point
+[10:48:37.016] [SEVERE ] setting player 1 score to 3
+[10:48:37.016] [SEVERE ] setting player 1 freeze to 1000
+[10:48:37.051] [SEVERE ] updating countdown to 51644
+[10:48:37.153] [SEVERE ] placing card 18 in slot 0
+[10:48:37.256] [SEVERE ] placing card 19 in slot 1
+[10:48:37.358] [SEVERE ] placing card 20 in slot 2
+[10:48:37.360] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 51335
+[10:48:37.362] [INFO   ] thread dealer should finish false
+[10:48:37.781] [SEVERE ] key 65 was pressed by player 1
+[10:48:37.782] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:38.018] [SEVERE ] setting player 1 freeze to 0
+[10:48:38.021] [INFO   ] thread 0  Player 0is done being point
+[10:48:38.023] [SEVERE ] updating countdown to 60000
+[10:48:38.369] [SEVERE ] updating countdown to 59655
+[10:48:38.371] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59652
+[10:48:38.372] [INFO   ] thread dealer should finish false
+[10:48:38.771] [SEVERE ] key 65 was pressed by player 1
+[10:48:38.772] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:38.773] [SEVERE ] player 1 placing token on slot 4
+[10:48:39.178] [SEVERE ] key 83 was pressed by player 1
+[10:48:39.178] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:39.179] [SEVERE ] player 1 placing token on slot 5
+[10:48:39.376] [SEVERE ] updating countdown to 58647
+[10:48:39.377] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58646
+[10:48:39.379] [INFO   ] thread dealer should finish false
+[10:48:39.465] [SEVERE ] key 68 was pressed by player 1
+[10:48:39.466] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:39.467] [SEVERE ] player 1 placing token on slot 6
+[10:48:39.468] [INFO   ] thread 0  Player 0is being penalized
+[10:48:39.470] [SEVERE ] setting player 1 freeze to 3000
+[10:48:40.381] [SEVERE ] updating countdown to 57642
+[10:48:40.383] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57640
+[10:48:40.385] [INFO   ] thread dealer should finish false
+[10:48:40.471] [SEVERE ] setting player 1 freeze to 2000
+[10:48:41.387] [SEVERE ] updating countdown to 56636
+[10:48:41.388] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56635
+[10:48:41.390] [INFO   ] thread dealer should finish false
+[10:48:41.479] [SEVERE ] setting player 1 freeze to 1000
+[10:48:42.392] [SEVERE ] updating countdown to 55631
+[10:48:42.394] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 55629
+[10:48:42.395] [INFO   ] thread dealer should finish false
+[10:48:42.480] [SEVERE ] setting player 1 freeze to 0
+[10:48:42.483] [INFO   ] thread 0  Player 0is done being penalized
+[10:48:43.226] [SEVERE ] key 83 was pressed by player 1
+[10:48:43.227] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:43.228] [SEVERE ] removing player 1 token from slot 5
+[10:48:43.397] [SEVERE ] updating countdown to 54626
+[10:48:43.399] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 54624
+[10:48:43.402] [INFO   ] thread dealer should finish false
+[10:48:43.710] [SEVERE ] key 65 was pressed by player 1
+[10:48:43.711] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:43.711] [SEVERE ] removing player 1 token from slot 4
+[10:48:44.196] [SEVERE ] key 68 was pressed by player 1
+[10:48:44.197] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:44.198] [SEVERE ] removing player 1 token from slot 6
+[10:48:44.404] [SEVERE ] updating countdown to 53619
+[10:48:44.408] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 53615
+[10:48:44.411] [INFO   ] thread dealer should finish false
+[10:48:45.099] [SEVERE ] key 81 was pressed by player 1
+[10:48:45.100] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:45.100] [SEVERE ] player 1 placing token on slot 0
+[10:48:45.413] [SEVERE ] updating countdown to 52610
+[10:48:45.415] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 52608
+[10:48:45.415] [SEVERE ] key 87 was pressed by player 1
+[10:48:45.416] [INFO   ] thread dealer should finish false
+[10:48:45.416] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:45.417] [SEVERE ] player 1 placing token on slot 1
+[10:48:45.739] [SEVERE ] key 69 was pressed by player 1
+[10:48:45.739] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:45.740] [SEVERE ] player 1 placing token on slot 2
+[10:48:45.841] [SEVERE ] removing player 1 token from slot 0
+[10:48:45.842] [SEVERE ] removing card from slot 0
+[10:48:45.944] [SEVERE ] removing player 1 token from slot 1
+[10:48:45.946] [SEVERE ] removing card from slot 1
+[10:48:46.047] [SEVERE ] removing player 1 token from slot 2
+[10:48:46.050] [SEVERE ] removing card from slot 2
+[10:48:46.051] [INFO   ] thread 0  Player 0is being point
+[10:48:46.052] [SEVERE ] setting player 1 score to 4
+[10:48:46.054] [SEVERE ] setting player 1 freeze to 1000
+[10:48:46.417] [SEVERE ] updating countdown to 51606
+[10:48:46.518] [SEVERE ] placing card 21 in slot 0
+[10:48:46.619] [SEVERE ] placing card 22 in slot 1
+[10:48:46.722] [SEVERE ] placing card 23 in slot 2
+[10:48:46.724] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 51299
+[10:48:46.726] [INFO   ] thread dealer should finish false
+[10:48:47.059] [SEVERE ] setting player 1 freeze to 0
+[10:48:47.061] [INFO   ] thread 0  Player 0is done being point
+[10:48:47.063] [SEVERE ] updating countdown to 60000
+[10:48:47.730] [SEVERE ] updating countdown to 59334
+[10:48:47.732] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59331
+[10:48:47.736] [INFO   ] thread dealer should finish false
+[10:48:48.006] [SEVERE ] key 65 was pressed by player 1
+[10:48:48.008] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:48.009] [SEVERE ] player 1 placing token on slot 4
+[10:48:48.413] [SEVERE ] key 83 was pressed by player 1
+[10:48:48.415] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:48.416] [SEVERE ] player 1 placing token on slot 5
+[10:48:48.699] [SEVERE ] key 68 was pressed by player 1
+[10:48:48.700] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:48.701] [SEVERE ] player 1 placing token on slot 6
+[10:48:48.702] [INFO   ] thread 0  Player 0is being penalized
+[10:48:48.703] [SEVERE ] setting player 1 freeze to 3000
+[10:48:48.738] [SEVERE ] updating countdown to 58325
+[10:48:48.740] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58323
+[10:48:48.744] [INFO   ] thread dealer should finish false
+[10:48:49.705] [SEVERE ] setting player 1 freeze to 2000
+[10:48:49.746] [SEVERE ] updating countdown to 57318
+[10:48:49.748] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57315
+[10:48:49.750] [INFO   ] thread dealer should finish false
+[10:48:50.251] [SEVERE ] key 46 was pressed by player 2
+[10:48:50.252] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:50.252] [SEVERE ] player 2 placing token on slot 10
+[10:48:50.465] [SEVERE ] key 44 was pressed by player 2
+[10:48:50.466] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:50.467] [SEVERE ] player 2 placing token on slot 9
+[10:48:50.708] [SEVERE ] setting player 1 freeze to 1000
+[10:48:50.752] [SEVERE ] updating countdown to 56311
+[10:48:50.754] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56309
+[10:48:50.756] [INFO   ] thread dealer should finish false
+[10:48:51.344] [SEVERE ] key 47 was pressed by player 2
+[10:48:51.344] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:51.345] [SEVERE ] player 2 placing token on slot 11
+[10:48:51.445] [SEVERE ] removing player 2 token from slot 10
+[10:48:51.446] [SEVERE ] removing card from slot 10
+[10:48:51.549] [SEVERE ] removing player 2 token from slot 9
+[10:48:51.550] [SEVERE ] removing card from slot 9
+[10:48:51.653] [SEVERE ] removing player 2 token from slot 11
+[10:48:51.654] [SEVERE ] removing card from slot 11
+[10:48:51.655] [INFO   ] thread 1  Player 1is being point
+[10:48:51.659] [SEVERE ] setting player 2 score to 1
+[10:48:51.662] [SEVERE ] setting player 2 freeze to 1000
+[10:48:51.711] [SEVERE ] setting player 1 freeze to 0
+[10:48:51.713] [INFO   ] thread 0  Player 0is done being penalized
+[10:48:51.758] [SEVERE ] updating countdown to 55305
+[10:48:51.860] [SEVERE ] placing card 24 in slot 9
+[10:48:51.962] [SEVERE ] placing card 25 in slot 10
+[10:48:52.065] [SEVERE ] placing card 26 in slot 11
+[10:48:52.067] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 54996
+[10:48:52.070] [INFO   ] thread dealer should finish false
+[10:48:52.664] [SEVERE ] setting player 2 freeze to 0
+[10:48:52.666] [INFO   ] thread 1  Player 1is done being point
+[10:48:52.668] [SEVERE ] updating countdown to 60000
+[10:48:53.074] [SEVERE ] updating countdown to 59594
+[10:48:53.076] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59592
+[10:48:53.077] [INFO   ] thread dealer should finish false
+[10:48:53.464] [SEVERE ] key 65 was pressed by player 1
+[10:48:53.464] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:53.465] [SEVERE ] removing player 1 token from slot 4
+[10:48:53.484] [SEVERE ] key 47 was pressed by player 2
+[10:48:53.484] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:53.485] [SEVERE ] player 2 placing token on slot 11
+[10:48:54.080] [SEVERE ] updating countdown to 58589
+[10:48:54.082] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58586
+[10:48:54.084] [INFO   ] thread dealer should finish false
+[10:48:55.086] [SEVERE ] updating countdown to 57582
+[10:48:55.088] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57580
+[10:48:55.090] [INFO   ] thread dealer should finish false
+[10:48:55.259] [SEVERE ] key 46 was pressed by player 2
+[10:48:55.260] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:55.261] [SEVERE ] player 2 placing token on slot 10
+[10:48:56.036] [SEVERE ] key 65 was pressed by player 1
+[10:48:56.037] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:56.041] [SEVERE ] player 1 placing token on slot 4
+[10:48:56.042] [INFO   ] thread 0  Player 0is being penalized
+[10:48:56.043] [SEVERE ] setting player 1 freeze to 3000
+[10:48:56.053] [SEVERE ] key 44 was pressed by player 2
+[10:48:56.054] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:56.055] [SEVERE ] player 2 placing token on slot 9
+[10:48:56.092] [SEVERE ] updating countdown to 56576
+[10:48:56.155] [SEVERE ] removing player 2 token from slot 11
+[10:48:56.156] [SEVERE ] removing card from slot 11
+[10:48:56.257] [SEVERE ] removing player 2 token from slot 10
+[10:48:56.259] [SEVERE ] removing card from slot 10
+[10:48:56.361] [SEVERE ] removing player 2 token from slot 9
+[10:48:56.363] [SEVERE ] removing card from slot 9
+[10:48:56.366] [INFO   ] thread 1  Player 1is being point
+[10:48:56.369] [SEVERE ] setting player 2 score to 2
+[10:48:56.370] [SEVERE ] setting player 2 freeze to 1000
+[10:48:56.467] [SEVERE ] placing card 27 in slot 9
+[10:48:56.568] [SEVERE ] placing card 28 in slot 10
+[10:48:56.671] [SEVERE ] placing card 29 in slot 11
+[10:48:56.673] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 55995
+[10:48:56.676] [INFO   ] thread dealer should finish false
+[10:48:57.047] [SEVERE ] setting player 1 freeze to 2000
+[10:48:57.373] [SEVERE ] setting player 2 freeze to 0
+[10:48:57.379] [INFO   ] thread 1  Player 1is done being point
+[10:48:57.382] [SEVERE ] updating countdown to 60000
+[10:48:57.678] [SEVERE ] updating countdown to 59704
+[10:48:57.680] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59702
+[10:48:57.682] [INFO   ] thread dealer should finish false
+[10:48:58.049] [SEVERE ] setting player 1 freeze to 1000
+[10:48:58.685] [SEVERE ] updating countdown to 58697
+[10:48:58.687] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58695
+[10:48:58.690] [INFO   ] thread dealer should finish false
+[10:48:58.712] [SEVERE ] key 47 was pressed by player 2
+[10:48:58.713] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:58.714] [SEVERE ] player 2 placing token on slot 11
+[10:48:59.036] [SEVERE ] key 46 was pressed by player 2
+[10:48:59.037] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:59.037] [SEVERE ] player 2 placing token on slot 10
+[10:48:59.052] [SEVERE ] setting player 1 freeze to 0
+[10:48:59.054] [INFO   ] thread 0  Player 0is done being penalized
+[10:48:59.154] [SEVERE ] key 44 was pressed by player 2
+[10:48:59.155] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:48:59.155] [SEVERE ] player 2 placing token on slot 9
+[10:48:59.257] [SEVERE ] removing player 2 token from slot 11
+[10:48:59.259] [SEVERE ] removing card from slot 11
+[10:48:59.361] [SEVERE ] removing player 2 token from slot 10
+[10:48:59.363] [SEVERE ] removing card from slot 10
+[10:48:59.465] [SEVERE ] removing player 2 token from slot 9
+[10:48:59.467] [SEVERE ] removing card from slot 9
+[10:48:59.469] [INFO   ] thread 1  Player 1is being point
+[10:48:59.471] [SEVERE ] setting player 2 score to 3
+[10:48:59.474] [SEVERE ] setting player 2 freeze to 1000
+[10:48:59.692] [SEVERE ] updating countdown to 57690
+[10:48:59.794] [SEVERE ] placing card 30 in slot 9
+[10:48:59.897] [SEVERE ] placing card 31 in slot 10
+[10:49:00.000] [SEVERE ] placing card 32 in slot 11
+[10:49:00.002] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57380
+[10:49:00.003] [INFO   ] thread dealer should finish false
+[10:49:00.315] [SEVERE ] key 65 was pressed by player 1
+[10:49:00.316] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:00.317] [SEVERE ] removing player 1 token from slot 4
+[10:49:00.476] [SEVERE ] setting player 2 freeze to 0
+[10:49:00.479] [INFO   ] thread 1  Player 1is done being point
+[10:49:00.480] [SEVERE ] updating countdown to 60000
+[10:49:00.491] [SEVERE ] key 68 was pressed by player 1
+[10:49:00.492] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:00.492] [SEVERE ] removing player 1 token from slot 6
+[10:49:01.006] [SEVERE ] updating countdown to 59474
+[10:49:01.010] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59470
+[10:49:01.011] [INFO   ] thread dealer should finish false
+[10:49:01.060] [SEVERE ] key 83 was pressed by player 1
+[10:49:01.061] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:01.061] [SEVERE ] removing player 1 token from slot 5
+[10:49:01.592] [SEVERE ] key 81 was pressed by player 1
+[10:49:01.592] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:01.592] [SEVERE ] player 1 placing token on slot 0
+[10:49:01.735] [SEVERE ] key 87 was pressed by player 1
+[10:49:01.737] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:01.738] [SEVERE ] player 1 placing token on slot 1
+[10:49:01.752] [SEVERE ] key 69 was pressed by player 1
+[10:49:01.754] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:01.754] [SEVERE ] player 1 placing token on slot 2
+[10:49:01.855] [SEVERE ] removing player 1 token from slot 0
+[10:49:01.859] [SEVERE ] removing card from slot 0
+[10:49:01.962] [SEVERE ] removing player 1 token from slot 1
+[10:49:01.964] [SEVERE ] removing card from slot 1
+[10:49:02.012] [SEVERE ] updating countdown to 58468
+[10:49:02.066] [SEVERE ] removing player 1 token from slot 2
+[10:49:02.068] [SEVERE ] removing card from slot 2
+[10:49:02.070] [INFO   ] thread 0  Player 0is being point
+[10:49:02.071] [SEVERE ] setting player 1 score to 5
+[10:49:02.074] [SEVERE ] setting player 1 freeze to 1000
+[10:49:02.170] [SEVERE ] placing card 33 in slot 0
+[10:49:02.272] [SEVERE ] placing card 34 in slot 1
+[10:49:02.375] [SEVERE ] placing card 35 in slot 2
+[10:49:02.376] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58104
+[10:49:02.379] [INFO   ] thread dealer should finish false
+[10:49:03.077] [SEVERE ] setting player 1 freeze to 0
+[10:49:03.079] [INFO   ] thread 0  Player 0is done being point
+[10:49:03.082] [SEVERE ] updating countdown to 60000
+[10:49:03.364] [SEVERE ] key 81 was pressed by player 1
+[10:49:03.365] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:03.365] [SEVERE ] player 1 placing token on slot 0
+[10:49:03.372] [SEVERE ] key 47 was pressed by player 2
+[10:49:03.376] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:03.376] [SEVERE ] player 2 placing token on slot 11
+[10:49:03.382] [SEVERE ] updating countdown to 59700
+[10:49:03.383] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59699
+[10:49:03.384] [INFO   ] thread dealer should finish false
+[10:49:03.964] [SEVERE ] key 46 was pressed by player 2
+[10:49:03.966] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:03.969] [SEVERE ] player 2 placing token on slot 10
+[10:49:03.980] [SEVERE ] key 87 was pressed by player 1
+[10:49:03.981] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:03.981] [SEVERE ] player 1 placing token on slot 1
+[10:49:04.385] [SEVERE ] updating countdown to 58697
+[10:49:04.387] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58695
+[10:49:04.389] [INFO   ] thread dealer should finish false
+[10:49:04.899] [SEVERE ] key 69 was pressed by player 1
+[10:49:04.899] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:04.900] [SEVERE ] player 1 placing token on slot 2
+[10:49:04.916] [SEVERE ] key 44 was pressed by player 2
+[10:49:04.917] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:05.001] [SEVERE ] removing player 1 token from slot 0
+[10:49:05.002] [SEVERE ] removing card from slot 0
+[10:49:05.104] [SEVERE ] removing player 1 token from slot 1
+[10:49:05.106] [SEVERE ] removing card from slot 1
+[10:49:05.210] [SEVERE ] removing player 1 token from slot 2
+[10:49:05.212] [SEVERE ] removing card from slot 2
+[10:49:05.213] [INFO   ] thread 0  Player 0is being point
+[10:49:05.215] [SEVERE ] setting player 1 score to 6
+[10:49:05.213] [SEVERE ] player 2 placing token on slot 9
+[10:49:05.216] [SEVERE ] setting player 1 freeze to 1000
+[10:49:05.319] [SEVERE ] removing player 2 token from slot 11
+[10:49:05.320] [SEVERE ] removing card from slot 11
+[10:49:05.391] [SEVERE ] updating countdown to 57691
+[10:49:05.421] [SEVERE ] removing player 2 token from slot 10
+[10:49:05.423] [SEVERE ] removing card from slot 10
+[10:49:05.525] [SEVERE ] removing player 2 token from slot 9
+[10:49:05.527] [SEVERE ] removing card from slot 9
+[10:49:05.528] [INFO   ] thread 1  Player 1is being point
+[10:49:05.529] [SEVERE ] setting player 2 score to 4
+[10:49:05.530] [SEVERE ] setting player 2 freeze to 1000
+[10:49:05.628] [SEVERE ] placing card 36 in slot 0
+[10:49:05.729] [SEVERE ] placing card 37 in slot 1
+[10:49:05.832] [SEVERE ] placing card 38 in slot 2
+[10:49:05.934] [SEVERE ] placing card 39 in slot 9
+[10:49:06.037] [SEVERE ] placing card 40 in slot 10
+[10:49:06.139] [SEVERE ] placing card 41 in slot 11
+[10:49:06.141] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56941
+[10:49:06.143] [INFO   ] thread dealer should finish false
+[10:49:06.222] [SEVERE ] setting player 1 freeze to 0
+[10:49:06.224] [INFO   ] thread 0  Player 0is done being point
+[10:49:06.226] [SEVERE ] updating countdown to 60000
+[10:49:06.533] [SEVERE ] setting player 2 freeze to 0
+[10:49:06.534] [INFO   ] thread 1  Player 1is done being point
+[10:49:06.537] [SEVERE ] updating countdown to 60000
+[10:49:06.578] [SEVERE ] key 81 was pressed by player 1
+[10:49:06.578] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:06.578] [SEVERE ] player 1 placing token on slot 0
+[10:49:06.667] [SEVERE ] key 87 was pressed by player 1
+[10:49:06.667] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:06.668] [SEVERE ] player 1 placing token on slot 1
+[10:49:06.742] [SEVERE ] key 69 was pressed by player 1
+[10:49:06.743] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:06.743] [SEVERE ] player 1 placing token on slot 2
+[10:49:06.844] [SEVERE ] removing player 1 token from slot 0
+[10:49:06.846] [SEVERE ] removing card from slot 0
+[10:49:06.949] [SEVERE ] removing player 1 token from slot 1
+[10:49:06.951] [SEVERE ] removing card from slot 1
+[10:49:07.053] [SEVERE ] removing player 1 token from slot 2
+[10:49:07.055] [SEVERE ] removing card from slot 2
+[10:49:07.057] [INFO   ] thread 0  Player 0is being point
+[10:49:07.058] [SEVERE ] setting player 1 score to 7
+[10:49:07.060] [SEVERE ] setting player 1 freeze to 1000
+[10:49:07.147] [SEVERE ] updating countdown to 59390
+[10:49:07.249] [SEVERE ] placing card 42 in slot 0
+[10:49:07.351] [SEVERE ] placing card 43 in slot 1
+[10:49:07.454] [SEVERE ] placing card 44 in slot 2
+[10:49:07.456] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59081
+[10:49:07.458] [INFO   ] thread dealer should finish false
+[10:49:07.700] [SEVERE ] key 81 was pressed by player 1
+[10:49:07.701] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:07.837] [SEVERE ] key 87 was pressed by player 1
+[10:49:07.838] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:07.880] [SEVERE ] key 69 was pressed by player 1
+[10:49:07.881] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:08.061] [SEVERE ] setting player 1 freeze to 0
+[10:49:08.063] [INFO   ] thread 0  Player 0is done being point
+[10:49:08.064] [SEVERE ] updating countdown to 60000
+[10:49:08.462] [SEVERE ] updating countdown to 59602
+[10:49:08.464] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59600
+[10:49:08.465] [INFO   ] thread dealer should finish false
+[10:49:08.547] [SEVERE ] key 81 was pressed by player 1
+[10:49:08.548] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:08.548] [SEVERE ] player 1 placing token on slot 0
+[10:49:08.692] [SEVERE ] key 87 was pressed by player 1
+[10:49:08.692] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:08.693] [SEVERE ] player 1 placing token on slot 1
+[10:49:08.707] [SEVERE ] key 69 was pressed by player 1
+[10:49:08.708] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:08.709] [SEVERE ] player 1 placing token on slot 2
+[10:49:08.809] [SEVERE ] removing player 1 token from slot 0
+[10:49:08.810] [SEVERE ] removing card from slot 0
+[10:49:08.912] [SEVERE ] removing player 1 token from slot 1
+[10:49:08.914] [SEVERE ] removing card from slot 1
+[10:49:09.015] [SEVERE ] removing player 1 token from slot 2
+[10:49:09.017] [SEVERE ] removing card from slot 2
+[10:49:09.019] [INFO   ] thread 0  Player 0is being point
+[10:49:09.021] [SEVERE ] setting player 1 score to 8
+[10:49:09.024] [SEVERE ] setting player 1 freeze to 1000
+[10:49:09.467] [SEVERE ] updating countdown to 58597
+[10:49:09.570] [SEVERE ] placing card 45 in slot 0
+[10:49:09.673] [SEVERE ] placing card 46 in slot 1
+[10:49:09.775] [SEVERE ] placing card 47 in slot 2
+[10:49:09.777] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58287
+[10:49:09.782] [INFO   ] thread dealer should finish false
+[10:49:10.025] [SEVERE ] setting player 1 freeze to 0
+[10:49:10.027] [INFO   ] thread 0  Player 0is done being point
+[10:49:10.028] [SEVERE ] updating countdown to 60000
+[10:49:10.070] [SEVERE ] key 81 was pressed by player 1
+[10:49:10.071] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:10.071] [SEVERE ] player 1 placing token on slot 0
+[10:49:10.196] [SEVERE ] key 87 was pressed by player 1
+[10:49:10.197] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:10.198] [SEVERE ] player 1 placing token on slot 1
+[10:49:10.279] [SEVERE ] key 69 was pressed by player 1
+[10:49:10.279] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:10.280] [SEVERE ] player 1 placing token on slot 2
+[10:49:10.380] [SEVERE ] removing player 1 token from slot 0
+[10:49:10.382] [SEVERE ] removing card from slot 0
+[10:49:10.485] [SEVERE ] removing player 1 token from slot 1
+[10:49:10.488] [SEVERE ] removing card from slot 1
+[10:49:10.589] [SEVERE ] removing player 1 token from slot 2
+[10:49:10.592] [SEVERE ] removing card from slot 2
+[10:49:10.593] [INFO   ] thread 0  Player 0is being point
+[10:49:10.594] [SEVERE ] setting player 1 score to 9
+[10:49:10.599] [SEVERE ] setting player 1 freeze to 1000
+[10:49:10.785] [SEVERE ] updating countdown to 59243
+[10:49:10.888] [SEVERE ] placing card 48 in slot 0
+[10:49:10.990] [SEVERE ] placing card 49 in slot 1
+[10:49:11.091] [SEVERE ] placing card 50 in slot 2
+[10:49:11.093] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58935
+[10:49:11.095] [INFO   ] thread dealer should finish false
+[10:49:11.602] [SEVERE ] setting player 1 freeze to 0
+[10:49:11.603] [INFO   ] thread 0  Player 0is done being point
+[10:49:11.604] [SEVERE ] updating countdown to 60000
+[10:49:11.651] [SEVERE ] key 81 was pressed by player 1
+[10:49:11.651] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:11.652] [SEVERE ] player 1 placing token on slot 0
+[10:49:11.785] [SEVERE ] key 87 was pressed by player 1
+[10:49:11.785] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:11.786] [SEVERE ] player 1 placing token on slot 1
+[10:49:11.876] [SEVERE ] key 69 was pressed by player 1
+[10:49:11.877] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:11.878] [SEVERE ] player 1 placing token on slot 2
+[10:49:11.979] [SEVERE ] removing player 1 token from slot 0
+[10:49:11.981] [SEVERE ] removing card from slot 0
+[10:49:12.083] [SEVERE ] removing player 1 token from slot 1
+[10:49:12.085] [SEVERE ] removing card from slot 1
+[10:49:12.099] [SEVERE ] updating countdown to 59505
+[10:49:12.186] [SEVERE ] removing player 1 token from slot 2
+[10:49:12.188] [SEVERE ] removing card from slot 2
+[10:49:12.191] [INFO   ] thread 0  Player 0is being point
+[10:49:12.192] [SEVERE ] setting player 1 score to 10
+[10:49:12.193] [SEVERE ] setting player 1 freeze to 1000
+[10:49:12.292] [SEVERE ] placing card 51 in slot 0
+[10:49:12.394] [SEVERE ] placing card 52 in slot 1
+[10:49:12.497] [SEVERE ] placing card 53 in slot 2
+[10:49:12.498] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59106
+[10:49:12.500] [INFO   ] thread dealer should finish false
+[10:49:12.847] [SEVERE ] key 81 was pressed by player 1
+[10:49:12.848] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:12.997] [SEVERE ] key 87 was pressed by player 1
+[10:49:12.999] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:13.073] [SEVERE ] key 69 was pressed by player 1
+[10:49:13.074] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:13.194] [SEVERE ] setting player 1 freeze to 0
+[10:49:13.195] [INFO   ] thread 0  Player 0is done being point
+[10:49:13.196] [SEVERE ] updating countdown to 60000
+[10:49:13.506] [SEVERE ] updating countdown to 59690
+[10:49:13.507] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59689
+[10:49:13.511] [INFO   ] thread dealer should finish false
+[10:49:13.682] [SEVERE ] key 69 was pressed by player 1
+[10:49:13.682] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:13.682] [SEVERE ] player 1 placing token on slot 2
+[10:49:13.827] [SEVERE ] key 81 was pressed by player 1
+[10:49:13.828] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:13.828] [SEVERE ] player 1 placing token on slot 0
+[10:49:14.313] [SEVERE ] key 87 was pressed by player 1
+[10:49:14.314] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:14.314] [SEVERE ] player 1 placing token on slot 1
+[10:49:14.415] [SEVERE ] removing player 1 token from slot 2
+[10:49:14.417] [SEVERE ] removing card from slot 2
+[10:49:14.512] [SEVERE ] updating countdown to 58684
+[10:49:14.521] [SEVERE ] removing player 1 token from slot 0
+[10:49:14.522] [SEVERE ] removing card from slot 0
+[10:49:14.623] [SEVERE ] removing player 1 token from slot 1
+[10:49:14.625] [SEVERE ] removing card from slot 1
+[10:49:14.628] [INFO   ] thread 0  Player 0is being point
+[10:49:14.630] [SEVERE ] setting player 1 score to 11
+[10:49:14.634] [SEVERE ] setting player 1 freeze to 1000
+[10:49:14.729] [SEVERE ] placing card 54 in slot 0
+[10:49:14.830] [SEVERE ] placing card 55 in slot 1
+[10:49:14.933] [SEVERE ] placing card 56 in slot 2
+[10:49:14.934] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58262
+[10:49:14.939] [INFO   ] thread dealer should finish false
+[10:49:15.393] [SEVERE ] key 81 was pressed by player 1
+[10:49:15.394] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:15.635] [SEVERE ] setting player 1 freeze to 0
+[10:49:15.637] [INFO   ] thread 0  Player 0is done being point
+[10:49:15.639] [SEVERE ] updating countdown to 60000
+[10:49:15.709] [SEVERE ] key 87 was pressed by player 1
+[10:49:15.709] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:15.710] [SEVERE ] player 1 placing token on slot 1
+[10:49:15.941] [SEVERE ] updating countdown to 59698
+[10:49:15.943] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59696
+[10:49:15.944] [INFO   ] thread dealer should finish false
+[10:49:16.274] [SEVERE ] key 69 was pressed by player 1
+[10:49:16.274] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:16.275] [SEVERE ] player 1 placing token on slot 2
+[10:49:16.525] [SEVERE ] key 81 was pressed by player 1
+[10:49:16.525] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:16.526] [SEVERE ] player 1 placing token on slot 0
+[10:49:16.626] [SEVERE ] removing player 1 token from slot 1
+[10:49:16.629] [SEVERE ] removing card from slot 1
+[10:49:16.730] [SEVERE ] removing player 1 token from slot 2
+[10:49:16.732] [SEVERE ] removing card from slot 2
+[10:49:16.833] [SEVERE ] removing player 1 token from slot 0
+[10:49:16.835] [SEVERE ] removing card from slot 0
+[10:49:16.837] [INFO   ] thread 0  Player 0is being point
+[10:49:16.840] [SEVERE ] setting player 1 score to 12
+[10:49:16.841] [SEVERE ] setting player 1 freeze to 1000
+[10:49:16.945] [SEVERE ] updating countdown to 58694
+[10:49:17.047] [SEVERE ] placing card 57 in slot 0
+[10:49:17.150] [SEVERE ] placing card 58 in slot 1
+[10:49:17.252] [SEVERE ] placing card 59 in slot 2
+[10:49:17.254] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58385
+[10:49:17.256] [INFO   ] thread dealer should finish false
+[10:49:17.826] [SEVERE ] key 81 was pressed by player 1
+[10:49:17.826] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:17.844] [SEVERE ] setting player 1 freeze to 0
+[10:49:17.846] [INFO   ] thread 0  Player 0is done being point
+[10:49:17.847] [SEVERE ] updating countdown to 60000
+[10:49:18.260] [SEVERE ] updating countdown to 59587
+[10:49:18.261] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59586
+[10:49:18.262] [INFO   ] thread dealer should finish false
+[10:49:18.398] [SEVERE ] key 81 was pressed by player 1
+[10:49:18.398] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:18.399] [SEVERE ] player 1 placing token on slot 0
+[10:49:18.627] [SEVERE ] key 87 was pressed by player 1
+[10:49:18.628] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:18.629] [SEVERE ] player 1 placing token on slot 1
+[10:49:18.843] [SEVERE ] key 69 was pressed by player 1
+[10:49:18.844] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:18.844] [SEVERE ] player 1 placing token on slot 2
+[10:49:18.945] [SEVERE ] removing player 1 token from slot 0
+[10:49:18.947] [SEVERE ] removing card from slot 0
+[10:49:19.048] [SEVERE ] removing player 1 token from slot 1
+[10:49:19.050] [SEVERE ] removing card from slot 1
+[10:49:19.152] [SEVERE ] removing player 1 token from slot 2
+[10:49:19.154] [SEVERE ] removing card from slot 2
+[10:49:19.155] [INFO   ] thread 0  Player 0is being point
+[10:49:19.158] [SEVERE ] setting player 1 score to 13
+[10:49:19.159] [SEVERE ] setting player 1 freeze to 1000
+[10:49:19.265] [SEVERE ] updating countdown to 58582
+[10:49:19.367] [SEVERE ] placing card 60 in slot 0
+[10:49:19.469] [SEVERE ] placing card 61 in slot 1
+[10:49:19.572] [SEVERE ] placing card 62 in slot 2
+[10:49:19.574] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58273
+[10:49:19.575] [INFO   ] thread dealer should finish false
+[10:49:20.160] [SEVERE ] setting player 1 freeze to 0
+[10:49:20.161] [INFO   ] thread 0  Player 0is done being point
+[10:49:20.164] [SEVERE ] updating countdown to 60000
+[10:49:20.580] [SEVERE ] updating countdown to 59584
+[10:49:20.582] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59582
+[10:49:20.585] [INFO   ] thread dealer should finish false
+[10:49:20.877] [SEVERE ] key 81 was pressed by player 1
+[10:49:20.879] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:20.879] [SEVERE ] player 1 placing token on slot 0
+[10:49:21.211] [SEVERE ] key 87 was pressed by player 1
+[10:49:21.212] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:21.213] [SEVERE ] player 1 placing token on slot 1
+[10:49:21.436] [SEVERE ] key 69 was pressed by player 1
+[10:49:21.437] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:21.438] [SEVERE ] player 1 placing token on slot 2
+[10:49:21.539] [SEVERE ] removing player 1 token from slot 0
+[10:49:21.540] [SEVERE ] removing card from slot 0
+[10:49:21.586] [SEVERE ] updating countdown to 58578
+[10:49:21.640] [SEVERE ] removing player 1 token from slot 1
+[10:49:21.641] [SEVERE ] removing card from slot 1
+[10:49:21.743] [SEVERE ] removing player 1 token from slot 2
+[10:49:21.745] [SEVERE ] removing card from slot 2
+[10:49:21.747] [INFO   ] thread 0  Player 0is being point
+[10:49:21.747] [SEVERE ] setting player 1 score to 14
+[10:49:21.750] [SEVERE ] setting player 1 freeze to 1000
+[10:49:21.847] [SEVERE ] placing card 63 in slot 0
+[10:49:21.949] [SEVERE ] placing card 64 in slot 1
+[10:49:22.052] [SEVERE ] placing card 65 in slot 2
+[10:49:22.054] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58111
+[10:49:22.055] [INFO   ] thread dealer should finish false
+[10:49:22.737] [SEVERE ] key 81 was pressed by player 1
+[10:49:22.738] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:22.754] [SEVERE ] setting player 1 freeze to 0
+[10:49:22.756] [INFO   ] thread 0  Player 0is done being point
+[10:49:22.760] [SEVERE ] updating countdown to 60000
+[10:49:23.059] [SEVERE ] updating countdown to 59701
+[10:49:23.061] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59699
+[10:49:23.062] [INFO   ] thread dealer should finish false
+[10:49:23.180] [SEVERE ] key 81 was pressed by player 1
+[10:49:23.181] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:23.181] [SEVERE ] player 1 placing token on slot 0
+[10:49:23.464] [SEVERE ] key 87 was pressed by player 1
+[10:49:23.465] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:23.466] [SEVERE ] player 1 placing token on slot 1
+[10:49:23.680] [SEVERE ] key 69 was pressed by player 1
+[10:49:23.681] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:23.681] [SEVERE ] player 1 placing token on slot 2
+[10:49:23.782] [SEVERE ] removing player 1 token from slot 0
+[10:49:23.783] [SEVERE ] removing card from slot 0
+[10:49:23.884] [SEVERE ] removing player 1 token from slot 1
+[10:49:23.890] [SEVERE ] removing card from slot 1
+[10:49:23.991] [SEVERE ] removing player 1 token from slot 2
+[10:49:23.992] [SEVERE ] removing card from slot 2
+[10:49:23.993] [INFO   ] thread 0  Player 0is being point
+[10:49:23.993] [SEVERE ] setting player 1 score to 15
+[10:49:23.996] [SEVERE ] setting player 1 freeze to 1000
+[10:49:24.065] [SEVERE ] updating countdown to 58695
+[10:49:24.166] [SEVERE ] placing card 66 in slot 0
+[10:49:24.269] [SEVERE ] placing card 67 in slot 1
+[10:49:24.370] [SEVERE ] placing card 68 in slot 2
+[10:49:24.373] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58387
+[10:49:24.374] [INFO   ] thread dealer should finish false
+[10:49:24.998] [SEVERE ] setting player 1 freeze to 0
+[10:49:25.000] [INFO   ] thread 0  Player 0is done being point
+[10:49:25.001] [SEVERE ] updating countdown to 60000
+[10:49:25.321] [SEVERE ] key 81 was pressed by player 1
+[10:49:25.322] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:25.323] [SEVERE ] player 1 placing token on slot 0
+[10:49:25.376] [SEVERE ] updating countdown to 59625
+[10:49:25.378] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59623
+[10:49:25.379] [INFO   ] thread dealer should finish false
+[10:49:25.704] [SEVERE ] key 87 was pressed by player 1
+[10:49:25.704] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:25.705] [SEVERE ] player 1 placing token on slot 1
+[10:49:25.928] [SEVERE ] key 69 was pressed by player 1
+[10:49:25.929] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:25.929] [SEVERE ] player 1 placing token on slot 2
+[10:49:26.030] [SEVERE ] removing player 1 token from slot 0
+[10:49:26.033] [SEVERE ] removing card from slot 0
+[10:49:26.134] [SEVERE ] removing player 1 token from slot 1
+[10:49:26.134] [SEVERE ] removing card from slot 1
+[10:49:26.235] [SEVERE ] removing player 1 token from slot 2
+[10:49:26.238] [SEVERE ] removing card from slot 2
+[10:49:26.241] [INFO   ] thread 0  Player 0is being point
+[10:49:26.242] [SEVERE ] setting player 1 score to 16
+[10:49:26.243] [SEVERE ] setting player 1 freeze to 1000
+[10:49:26.382] [SEVERE ] updating countdown to 58619
+[10:49:26.483] [SEVERE ] placing card 69 in slot 0
+[10:49:26.584] [SEVERE ] placing card 70 in slot 1
+[10:49:26.686] [SEVERE ] placing card 71 in slot 2
+[10:49:26.688] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58313
+[10:49:26.693] [INFO   ] thread dealer should finish false
+[10:49:27.196] [SEVERE ] key 81 was pressed by player 1
+[10:49:27.197] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:27.247] [SEVERE ] setting player 1 freeze to 0
+[10:49:27.249] [INFO   ] thread 0  Player 0is done being point
+[10:49:27.250] [SEVERE ] updating countdown to 60000
+[10:49:27.610] [SEVERE ] key 81 was pressed by player 1
+[10:49:27.611] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:27.612] [SEVERE ] player 1 placing token on slot 0
+[10:49:27.694] [SEVERE ] updating countdown to 59556
+[10:49:27.695] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59555
+[10:49:27.696] [INFO   ] thread dealer should finish false
+[10:49:27.943] [SEVERE ] key 87 was pressed by player 1
+[10:49:27.944] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:27.944] [SEVERE ] player 1 placing token on slot 1
+[10:49:28.193] [SEVERE ] key 69 was pressed by player 1
+[10:49:28.194] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:28.194] [SEVERE ] player 1 placing token on slot 2
+[10:49:28.295] [SEVERE ] removing player 1 token from slot 0
+[10:49:28.296] [SEVERE ] removing card from slot 0
+[10:49:28.396] [SEVERE ] removing player 1 token from slot 1
+[10:49:28.397] [SEVERE ] removing card from slot 1
+[10:49:28.499] [SEVERE ] removing player 1 token from slot 2
+[10:49:28.500] [SEVERE ] removing card from slot 2
+[10:49:28.500] [INFO   ] thread 0  Player 0is being point
+[10:49:28.502] [SEVERE ] setting player 1 score to 17
+[10:49:28.502] [SEVERE ] setting player 1 freeze to 1000
+[10:49:28.697] [SEVERE ] updating countdown to 58553
+[10:49:28.800] [SEVERE ] placing card 72 in slot 0
+[10:49:28.901] [SEVERE ] placing card 73 in slot 1
+[10:49:29.004] [SEVERE ] placing card 74 in slot 2
+[10:49:29.008] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58242
+[10:49:29.012] [INFO   ] thread dealer should finish false
+[10:49:29.401] [SEVERE ] key 81 was pressed by player 1
+[10:49:29.401] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:29.503] [SEVERE ] setting player 1 freeze to 0
+[10:49:29.504] [INFO   ] thread 0  Player 0is done being point
+[10:49:29.506] [SEVERE ] updating countdown to 60000
+[10:49:29.753] [SEVERE ] key 81 was pressed by player 1
+[10:49:29.754] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:29.754] [SEVERE ] player 1 placing token on slot 0
+[10:49:30.021] [SEVERE ] updating countdown to 59485
+[10:49:30.024] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59482
+[10:49:30.026] [INFO   ] thread dealer should finish false
+[10:49:30.185] [SEVERE ] key 87 was pressed by player 1
+[10:49:30.186] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:30.187] [SEVERE ] player 1 placing token on slot 1
+[10:49:30.402] [SEVERE ] key 69 was pressed by player 1
+[10:49:30.403] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:30.403] [SEVERE ] player 1 placing token on slot 2
+[10:49:30.504] [SEVERE ] removing player 1 token from slot 0
+[10:49:30.507] [SEVERE ] removing card from slot 0
+[10:49:30.609] [SEVERE ] removing player 1 token from slot 1
+[10:49:30.610] [SEVERE ] removing card from slot 1
+[10:49:30.711] [SEVERE ] removing player 1 token from slot 2
+[10:49:30.712] [SEVERE ] removing card from slot 2
+[10:49:30.713] [INFO   ] thread 0  Player 0is being point
+[10:49:30.714] [SEVERE ] setting player 1 score to 18
+[10:49:30.716] [SEVERE ] setting player 1 freeze to 1000
+[10:49:31.029] [SEVERE ] updating countdown to 58477
+[10:49:31.132] [SEVERE ] placing card 75 in slot 0
+[10:49:31.234] [SEVERE ] placing card 76 in slot 1
+[10:49:31.337] [SEVERE ] placing card 77 in slot 2
+[10:49:31.339] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58167
+[10:49:31.343] [INFO   ] thread dealer should finish false
+[10:49:31.571] [SEVERE ] key 81 was pressed by player 1
+[10:49:31.572] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:31.717] [SEVERE ] setting player 1 freeze to 0
+[10:49:31.719] [INFO   ] thread 0  Player 0is done being point
+[10:49:31.721] [SEVERE ] updating countdown to 60000
+[10:49:31.875] [SEVERE ] key 81 was pressed by player 1
+[10:49:31.876] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:31.877] [SEVERE ] player 1 placing token on slot 0
+[10:49:32.347] [SEVERE ] updating countdown to 59374
+[10:49:32.349] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59372
+[10:49:32.352] [INFO   ] thread dealer should finish false
+[10:49:32.370] [SEVERE ] key 69 was pressed by player 1
+[10:49:32.370] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:32.371] [SEVERE ] player 1 placing token on slot 2
+[10:49:32.608] [SEVERE ] key 87 was pressed by player 1
+[10:49:32.609] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:32.609] [SEVERE ] player 1 placing token on slot 1
+[10:49:32.710] [SEVERE ] removing player 1 token from slot 0
+[10:49:32.711] [SEVERE ] removing card from slot 0
+[10:49:32.812] [SEVERE ] removing player 1 token from slot 2
+[10:49:32.814] [SEVERE ] removing card from slot 2
+[10:49:32.916] [SEVERE ] removing player 1 token from slot 1
+[10:49:32.918] [SEVERE ] removing card from slot 1
+[10:49:32.920] [INFO   ] thread 0  Player 0is being point
+[10:49:32.923] [SEVERE ] setting player 1 score to 19
+[10:49:32.925] [SEVERE ] setting player 1 freeze to 1000
+[10:49:33.354] [SEVERE ] updating countdown to 58368
+[10:49:33.456] [SEVERE ] placing card 78 in slot 0
+[10:49:33.557] [SEVERE ] placing card 79 in slot 1
+[10:49:33.659] [SEVERE ] placing card 80 in slot 2
+[10:49:33.661] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58060
+[10:49:33.662] [INFO   ] thread dealer should finish false
+[10:49:33.926] [SEVERE ] setting player 1 freeze to 0
+[10:49:33.927] [INFO   ] thread 0  Player 0is done being point
+[10:49:33.928] [SEVERE ] updating countdown to 60000
+[10:49:34.162] [SEVERE ] key 81 was pressed by player 1
+[10:49:34.162] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:34.163] [SEVERE ] player 1 placing token on slot 0
+[10:49:34.625] [SEVERE ] key 87 was pressed by player 1
+[10:49:34.626] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:34.626] [SEVERE ] player 1 placing token on slot 1
+[10:49:34.663] [SEVERE ] updating countdown to 59265
+[10:49:34.665] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59263
+[10:49:34.666] [INFO   ] thread dealer should finish false
+[10:49:34.857] [SEVERE ] key 69 was pressed by player 1
+[10:49:34.857] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:34.858] [SEVERE ] player 1 placing token on slot 2
+[10:49:34.958] [SEVERE ] removing player 1 token from slot 0
+[10:49:34.961] [SEVERE ] removing card from slot 0
+[10:49:35.062] [SEVERE ] removing player 1 token from slot 1
+[10:49:35.064] [SEVERE ] removing card from slot 1
+[10:49:35.166] [SEVERE ] removing player 1 token from slot 2
+[10:49:35.169] [SEVERE ] removing card from slot 2
+[10:49:35.170] [INFO   ] thread 0  Player 0is being point
+[10:49:35.175] [SEVERE ] setting player 1 score to 20
+[10:49:35.176] [SEVERE ] setting player 1 freeze to 1000
+[10:49:35.667] [SEVERE ] updating countdown to 58261
+[10:49:35.669] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58259
+[10:49:35.671] [INFO   ] thread dealer should finish false
+[10:49:36.177] [SEVERE ] setting player 1 freeze to 0
+[10:49:36.178] [INFO   ] thread 0  Player 0is done being point
+[10:49:36.182] [SEVERE ] updating countdown to 60000
+[10:49:36.674] [SEVERE ] updating countdown to 59508
+[10:49:36.676] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59506
+[10:49:36.677] [INFO   ] thread dealer should finish false
+[10:49:37.679] [SEVERE ] updating countdown to 58503
+[10:49:37.680] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58502
+[10:49:37.680] [INFO   ] thread dealer should finish false
+[10:49:38.375] [SEVERE ] key 86 was pressed by player 1
+[10:49:38.376] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:38.376] [SEVERE ] player 1 placing token on slot 11
+[10:49:38.682] [SEVERE ] updating countdown to 57500
+[10:49:38.684] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57498
+[10:49:38.685] [INFO   ] thread dealer should finish false
+[10:49:38.880] [SEVERE ] key 67 was pressed by player 1
+[10:49:38.882] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:38.882] [SEVERE ] player 1 placing token on slot 10
+[10:49:39.096] [SEVERE ] key 88 was pressed by player 1
+[10:49:39.096] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:39.097] [SEVERE ] player 1 placing token on slot 9
+[10:49:39.198] [SEVERE ] removing player 1 token from slot 11
+[10:49:39.199] [SEVERE ] removing card from slot 11
+[10:49:39.301] [SEVERE ] removing player 1 token from slot 10
+[10:49:39.302] [SEVERE ] removing card from slot 10
+[10:49:39.403] [SEVERE ] removing player 1 token from slot 9
+[10:49:39.406] [SEVERE ] removing card from slot 9
+[10:49:39.409] [INFO   ] thread 0  Player 0is being point
+[10:49:39.410] [SEVERE ] setting player 1 score to 21
+[10:49:39.411] [SEVERE ] setting player 1 freeze to 1000
+[10:49:39.687] [SEVERE ] updating countdown to 56495
+[10:49:39.689] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56493
+[10:49:39.692] [INFO   ] thread dealer should finish false
+[10:49:40.412] [SEVERE ] setting player 1 freeze to 0
+[10:49:40.412] [INFO   ] thread 0  Player 0is done being point
+[10:49:40.413] [SEVERE ] updating countdown to 60000
+[10:49:40.693] [SEVERE ] updating countdown to 59720
+[10:49:40.694] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59719
+[10:49:40.695] [INFO   ] thread dealer should finish false
+[10:49:40.697] [SEVERE ] key 65 was pressed by player 1
+[10:49:40.697] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:40.698] [SEVERE ] player 1 placing token on slot 4
+[10:49:41.185] [SEVERE ] key 83 was pressed by player 1
+[10:49:41.185] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:41.186] [SEVERE ] player 1 placing token on slot 5
+[10:49:41.696] [SEVERE ] updating countdown to 58717
+[10:49:41.698] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58715
+[10:49:41.699] [INFO   ] thread dealer should finish false
+[10:49:42.081] [SEVERE ] key 82 was pressed by player 1
+[10:49:42.081] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:42.082] [SEVERE ] player 1 placing token on slot 3
+[10:49:42.183] [SEVERE ] removing player 1 token from slot 4
+[10:49:42.185] [SEVERE ] removing card from slot 4
+[10:49:42.289] [SEVERE ] removing player 1 token from slot 5
+[10:49:42.290] [SEVERE ] removing card from slot 5
+[10:49:42.391] [SEVERE ] removing player 1 token from slot 3
+[10:49:42.393] [SEVERE ] removing card from slot 3
+[10:49:42.394] [INFO   ] thread 0  Player 0is being point
+[10:49:42.399] [SEVERE ] setting player 1 score to 22
+[10:49:42.401] [SEVERE ] setting player 1 freeze to 1000
+[10:49:42.701] [SEVERE ] updating countdown to 57712
+[10:49:42.703] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57710
+[10:49:42.707] [INFO   ] thread dealer should finish false
+[10:49:42.898] [SEVERE ] key 68 was pressed by player 1
+[10:49:42.899] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:43.402] [SEVERE ] setting player 1 freeze to 0
+[10:49:43.403] [INFO   ] thread 0  Player 0is done being point
+[10:49:43.407] [SEVERE ] updating countdown to 60000
+[10:49:43.421] [SEVERE ] key 70 was pressed by player 1
+[10:49:43.423] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:43.423] [SEVERE ] player 1 placing token on slot 7
+[10:49:43.708] [SEVERE ] updating countdown to 59699
+[10:49:43.710] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 59697
+[10:49:43.711] [INFO   ] thread dealer should finish false
+[10:49:43.986] [SEVERE ] key 68 was pressed by player 1
+[10:49:43.987] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:43.987] [SEVERE ] player 1 placing token on slot 6
+[10:49:44.713] [SEVERE ] updating countdown to 58695
+[10:49:44.715] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 58692
+[10:49:44.716] [INFO   ] thread dealer should finish false
+[10:49:45.718] [SEVERE ] updating countdown to 57689
+[10:49:45.720] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 57687
+[10:49:45.721] [INFO   ] thread dealer should finish false
+[10:49:45.995] [SEVERE ] key 90 was pressed by player 1
+[10:49:45.996] [INFO   ] thread AWT-EventQueue-0 inserting into actions queue
+[10:49:45.996] [SEVERE ] player 1 placing token on slot 8
+[10:49:46.098] [SEVERE ] removing player 1 token from slot 7
+[10:49:46.100] [SEVERE ] removing card from slot 7
+[10:49:46.202] [SEVERE ] removing player 1 token from slot 6
+[10:49:46.203] [SEVERE ] removing card from slot 6
+[10:49:46.306] [SEVERE ] removing player 1 token from slot 8
+[10:49:46.307] [SEVERE ] removing card from slot 8
+[10:49:46.309] [INFO   ] thread 0  Player 0is being point
+[10:49:46.310] [SEVERE ] setting player 1 score to 23
+[10:49:46.313] [SEVERE ] setting player 1 freeze to 1000
+[10:49:46.723] [SEVERE ] updating countdown to 56684
+[10:49:46.725] [INFO   ] thread dealer reshuffleTime - currentTimeMillis 56682
+[10:49:46.727] [INFO   ] thread dealer should finish true
+[10:49:46.728] [INFO   ] thread 1 is releasing player + 1
+[10:49:46.730] [INFO   ] thread 1  terminated.
+[10:49:46.728] [INFO   ] thread 0  Player 0is done being point
+[10:49:46.732] [SEVERE ] updating countdown to 56675
+[10:49:46.732] [INFO   ] thread 0 is releasing player + 0
+[10:49:46.733] [INFO   ] thread 0  terminated.
+[10:49:46.734] [SEVERE ] announcing winner(s): player 1
+[10:49:46.741] [SEVERE ] updating countdown to 56666
+[10:49:46.743] [INFO   ] thread dealer terminated.
+[10:49:46.746] [INFO   ] thread dealer terminated.
+[10:49:51.749] [SEVERE ] thanks for playing... it was fun!
+[10:49:51.751] [INFO   ] thread bguspl.set.Main.main() terminated.
+[10:49:51.752] [SEVERE ] disposing of user interface elements

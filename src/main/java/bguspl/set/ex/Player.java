@@ -202,7 +202,7 @@ public class Player implements Runnable {
                 }
                 env.ui.setFreeze(id, 0);
             } catch (InterruptedException e) {}
-            //actionsQueue.clear();
+            actionsQueue.clear();
             env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
         }
     }
@@ -225,8 +225,8 @@ public class Player implements Runnable {
             }
 
             catch (InterruptedException e) {}
-            //actionsQueue.clear();
-            notifyAll();
+            actionsQueue.clear();
+            //notifyAll();
             env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
         }
     }

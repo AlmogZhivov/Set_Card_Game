@@ -205,17 +205,20 @@ public class Dealer implements Runnable {
      * purpose.
      */
     private void sleepUntilWokenOrTimeout() {
-        long sleepTime = clockTick; // one seconed
+        //long sleepTime = clockTick; // one seconed
+        int minSleepTime = 10;
         long timeLeft = reshuffleTime - System.currentTimeMillis();
+        long sleepTime = timeLeft%clockTick;
+        sleepTime = Math.min(sleepTime, clockTick); // sleep time should not be bigger than clockTick
         if (timeLeft > env.config.turnTimeoutWarningMillis) {
-            sleepTime = sleepTime - timeNotToSleep;
+            //sleepTime = sleepTime - timeNotToSleep;
         } else {
             sleepTime = 10;
             env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft is small");
             env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft: " + timeLeft);
         }
         try {
-            Thread.sleep(Math.max(sleepTime, 1));
+            Thread.sleep(Math.max(sleepTime, minSleepTime)); // should not sleep less than 10 ms
         } catch (InterruptedException e) {
         }
         timeNotToSleep = 0;
@@ -253,12 +256,8 @@ public class Dealer implements Runnable {
      */
     private void announceWinners() {
 
-        // if there are available sets in either table or deck then should not annount
-        // winners
-        if ((!areAvailableSets() && deck.isEmpty()) ||
-                (env.util.findSets(deck, 1).size() == 0 && !areAvailableSets())) {
+        if(!terminate)
             return;
-        }
 
         List<Integer> maxPlayer = new LinkedList<Integer>();
         int maximum = players[0].score();
@@ -302,11 +301,11 @@ public class Dealer implements Runnable {
 
     private long calculateMaxPlayersToCheckAtOnce() {
         long timeToRemoveSet = this.setSize * env.config.tableDelayMillis;
-        env.logger.info("thread " + Thread.currentThread().getName() + " timeToRemoveSet " + timeToRemoveSet);
+        //env.logger.info("thread " + Thread.currentThread().getName() + " timeToRemoveSet " + timeToRemoveSet);
         // timeToRemoveSet*playersToCheckAtOnce should be < clockTick
         long output = clockTick / timeToRemoveSet;
-        env.logger.info("thread " + Thread.currentThread().getName() + " output " + output);
-        return clockTick / timeToRemoveSet;
+        //env.logger.info("thread " + Thread.currentThread().getName() + " output " + output);
+        return output;
     }
 
     public void checkPlayer(Player player) {
@@ -314,6 +313,7 @@ public class Dealer implements Runnable {
                 .info("thread " + Thread.currentThread().getName() + " adding player " + player.id + " to check queue");
         try {
             playersToCheck.put(player);
+            wakeUp();
         } catch (InterruptedException e) {
         }
     }

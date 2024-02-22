@@ -5,6 +5,7 @@ import bguspl.set.Env;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -39,7 +40,6 @@ public class Dealer implements Runnable {
     /**
      * True iff the dealer has changed the table
      */
-    //private boolean hasChanged = false;
     /**
      * The time when the dealer needs to reshuffle the deck due to turn timeout.
      */
@@ -51,14 +51,13 @@ public class Dealer implements Runnable {
 
     public final int setSize;
 
-     /**
-     * Slots of the current round
-     */
-    // private BlockingQueue<Integer> boardSlots;
-    //  /**
-    //  * Players of the current round
-    //  */
-    // private BlockingQueue<Player> boardPlayers;
+    private final long maxPlayerToCheckAtOnce;
+
+    private final long clockTick;
+
+    private BlockingQueue<Player> playersToCheck;
+
+    private long timeNotToSleep;
 
     public Dealer(Env env, Table table, Player[] players) {
         this.env = env;
@@ -67,8 +66,10 @@ public class Dealer implements Runnable {
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         dealerLock = new Object();
         this.setSize = env.config.featureSize;
-        // this.boardSlots = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
-        // this.boardPlayers = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
+        this.clockTick = 1000;
+        this.maxPlayerToCheckAtOnce = this.calculateMaxPlayersToCheckAtOnce();
+        this.playersToCheck = new ArrayBlockingQueue<>(players.length);
+        this.timeNotToSleep = 0;
     }
 
     /**
@@ -90,22 +91,27 @@ public class Dealer implements Runnable {
             timerLoop();
             updateTimerDisplay(false);
         }
-        //announceWinners();
+        // announceWinners();
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
     /**
-     * The inner loop of the dealer thread that runs as long as the countdown did not time out.
+     * The inner loop of the dealer thread that runs as long as the countdown did
+     * not time out.
      */
     private void timerLoop() {
         while (!shouldFinish() && System.currentTimeMillis() < reshuffleTime) {
             sleepUntilWokenOrTimeout();
             updateTimerDisplay(false);
             removeCardsFromTable();
-            //placeCardsOnTable(); 
-            env.logger.info("thread " + Thread.currentThread().getName() + " reshuffleTime - currentTimeMillis " +(reshuffleTime - System.currentTimeMillis()));
-            env.logger.info("thread " + Thread.currentThread().getName() + " should finish " + shouldFinish());
-            while ((!shouldFinish() && !deck.isEmpty() && !areAvailableSets()) || reshuffleTime - System.currentTimeMillis() <= 0) {
+            // placeCardsOnTable();
+            // env.logger.info("thread " + Thread.currentThread().getName() + "
+            // reshuffleTime - currentTimeMillis " +(reshuffleTime -
+            // System.currentTimeMillis()));
+            // env.logger.info("thread " + Thread.currentThread().getName() + " should
+            // finish " + shouldFinish());
+            while ((!shouldFinish() && !deck.isEmpty() && !areAvailableSets())
+                    || reshuffleTime - System.currentTimeMillis() <= 0) {
                 removeAllCardsFromTable();
                 placeCardsOnTable();
                 updateTimerDisplay(true);
@@ -121,7 +127,7 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        synchronized(dealerLock){
+        synchronized (dealerLock) {
             for (int i = players.length - 1; i >= 0; i--) {
                 players[i].terminate();
             }
@@ -136,9 +142,9 @@ public class Dealer implements Runnable {
      * @return true iff the game should be finished.
      */
     private boolean shouldFinish() {
-        synchronized(dealerLock) {
-            return terminate || (!areAvailableSets() && deck.isEmpty())|| 
-            (env.util.findSets(deck, 1).size() == 0 && !areAvailableSets()); 
+        synchronized (dealerLock) {
+            return terminate || (!areAvailableSets() && deck.isEmpty()) ||
+                    (env.util.findSets(deck, 1).size() == 0 && !areAvailableSets());
         }
     }
 
@@ -146,69 +152,73 @@ public class Dealer implements Runnable {
      * Checks cards should be removed from the table and removes them.
      */
     private void removeCardsFromTable() {
-        
-            // // env.logger.info("thread " + Thread.currentThread().getName() + " checking");    
-            // // if (!hasSomethingToDo())
-            // //     return;
-            
-            // // env.logger.info("thread " + Thread.currentThread().getName() + " starting for.");
-            // // for (Player player : players) {
-            // //     int num = table.getNumOfTokensOnTable(player.id);
-            // //     if (num==setSize && table.checkAndRemoveSet(player.id)) {
-            // //         player.point();
-            // //         updateTimerDisplay(true);
-            // //         // not to sleep the time it took to remove the cards
-            // //         this.timeNotToSleep = this.timeNotToSleep + env.config.tableDelayMillis*this.setSize;
-            // //     }
-            // //     else if (num == setSize) {
-            // //         // player chose an ilegal set
-            // //         player.penalty();
-            // //     }
-            // // }
-            
-            // env.logger.info("thread " + Thread.currentThread().getName() + " done for .");
-                
-            placeCardsOnTable();
+
+        env.logger.info("thread " + Thread.currentThread().getName() + " removing cards from table");
+
+        long playersLeft = maxPlayerToCheckAtOnce;
+        // env.logger.info("thread " + Thread.currentThread().getName() + " playersLeft
+        // " + playersLeft);
+        while (playersLeft > 0 && !playersToCheck.isEmpty()) {
+            Player player = playersToCheck.remove();
+            env.logger.info("thread " + Thread.currentThread().getName() + " checking player " + player.id);
+            if (table.checkAndRemoveSet(player.id, this)) {
+                env.logger.info("thread " + Thread.currentThread().getName() + " pointing player " + player.id);
+                player.point();
+                this.resetTimer();
+                playersLeft = playersLeft - 1;
+                timeNotToSleep = timeNotToSleep + setSize * env.config.tableDelayMillis;
+            } else {
+                env.logger.info("thread " + Thread.currentThread().getName() + " penalizing player " + player.id);
+                player.penalty();
+            }
+        }
+
+        placeCardsOnTable();
     }
 
-        // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using setIsValid metod
-        // GET THE SLOT AND THE PLAYER FROM 'boardPlayers' 'boardSlots' amd check if boardSlots.length > 2
-        // done implement
+    // CHECK IF THE SET IS VALID, IF IT IS SO SET 'isValid' to 1, else 0 using
+    // setIsValid metod
+    // GET THE SLOT AND THE PLAYER FROM 'boardPlayers' 'boardSlots' amd check if
+    // boardSlots.length > 2
+    // done implement
 
     /**
      * Check if any cards can be removed from the deck and placed on the table.
      */
     private void placeCardsOnTable() {
-        //synchronized(dealerLock){
-            //hasChanged = true;
-            List<Integer> emptySlots = table.getEmptySlots();
-            //Collections.shuffle(emptySlots);
-            if(emptySlots==null || emptySlots.isEmpty())
-                return;
-            
-            for (int i : emptySlots){
-                if (!deck.isEmpty())
-                    table.placeCard(deck.remove(0), i);
-            }
-        //}
+        // synchronized(dealerLock){
+        // hasChanged = true;
+        List<Integer> emptySlots = table.getEmptySlots();
+        if (emptySlots == null || emptySlots.isEmpty())
+            return;
+
+        for (int i : emptySlots) {
+            if (!deck.isEmpty())
+                table.placeCard(deck.remove(0), i);
+        }
+        // }
         // done implement
     }
 
     /**
-     * Sleep for a fixed amount of time or until the thread is awakened for some purpose.
+     * Sleep for a fixed amount of time or until the thread is awakened for some
+     * purpose.
      */
     private void sleepUntilWokenOrTimeout() {
-        long sleepTime = 1000; // one seconed
+        long sleepTime = clockTick; // one seconed
         long timeLeft = reshuffleTime - System.currentTimeMillis();
-        if (timeLeft > env.config.turnTimeoutWarningMillis) {}
-        else{
+        if (timeLeft > env.config.turnTimeoutWarningMillis) {
+            sleepTime = sleepTime - timeNotToSleep;
+        } else {
             sleepTime = 10;
             env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft is small");
             env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft: " + timeLeft);
         }
         try {
             Thread.sleep(Math.max(sleepTime, 1));
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
+        timeNotToSleep = 0;
     }
 
     /**
@@ -236,7 +246,6 @@ public class Dealer implements Runnable {
         }
         // shuffle the cards again after removal
         Collections.shuffle(deck);
-        placeCardsOnTable();
     }
 
     /**
@@ -244,31 +253,31 @@ public class Dealer implements Runnable {
      */
     private void announceWinners() {
 
-        // if there are available sets in either table or deck then should not announce winners
-        //if ((areAvailableSets() && deck.isEmpty())|| 
-         //(env.util.findSets(deck, 1).size() != 0 && !areAvailableSets())) {
-         //     return;
-        // }
-        if (terminate) {
-            List<Integer> maxPlayer = new LinkedList<Integer>();
-            int maximum = players[0].score();
-            // Find the maximum score
-            for (int i = 1; i < players.length; i++) {
-                if (players[i].score() > maximum)
-                    maximum = players[i].score();
-            }
-            // Find the player with the maximum score or the 2 players with tie
-            for (int i = 0; i < players.length; i++) {
-                if (players[i].score() == maximum) 
-                    maxPlayer.add(players[i].id);
-            }
-            // List to array convertion
-            int[] winners = new int[maxPlayer.size()];
-            for (int i = 0; i < winners.length; i++) {
-                winners[i] = maxPlayer.get(i);
-            }
-            env.ui.announceWinner(winners);
+        // if there are available sets in either table or deck then should not annount
+        // winners
+        if ((!areAvailableSets() && deck.isEmpty()) ||
+                (env.util.findSets(deck, 1).size() == 0 && !areAvailableSets())) {
+            return;
         }
+
+        List<Integer> maxPlayer = new LinkedList<Integer>();
+        int maximum = players[0].score();
+        // Find the maximum score
+        for (int i = 1; i < players.length; i++) {
+            if (players[i].score() > maximum)
+                maximum = players[i].score();
+        }
+        // Find the player with the maximum score or the 2 players with tie
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].score() == maximum)
+                maxPlayer.add(players[i].id);
+        }
+        // List to array convertion
+        int[] winners = new int[maxPlayer.size()];
+        for (int i = 0; i < winners.length; i++) {
+            winners[i] = maxPlayer.get(i);
+        }
+        env.ui.announceWinner(winners);
     }
 
     private boolean areAvailableSets() {
@@ -280,9 +289,8 @@ public class Dealer implements Runnable {
     // 'wakes up' the dealer. notifies its lock
     public void wakeUp() {
         env.logger.info("thread " + Thread.currentThread().getName() + " waking up dealer");
-        dealerThread.interrupt();            
+        dealerThread.interrupt();
     }
-
 
     public void resetTimer() {
         updateTimerDisplay(true);
@@ -290,6 +298,24 @@ public class Dealer implements Runnable {
 
     public boolean testSet(int[] cards) {
         return env.util.testSet(cards);
+    }
+
+    private long calculateMaxPlayersToCheckAtOnce() {
+        long timeToRemoveSet = this.setSize * env.config.tableDelayMillis;
+        env.logger.info("thread " + Thread.currentThread().getName() + " timeToRemoveSet " + timeToRemoveSet);
+        // timeToRemoveSet*playersToCheckAtOnce should be < clockTick
+        long output = clockTick / timeToRemoveSet;
+        env.logger.info("thread " + Thread.currentThread().getName() + " output " + output);
+        return clockTick / timeToRemoveSet;
+    }
+
+    public void checkPlayer(Player player) {
+        env.logger
+                .info("thread " + Thread.currentThread().getName() + " adding player " + player.id + " to check queue");
+        try {
+            playersToCheck.put(player);
+        } catch (InterruptedException e) {
+        }
     }
 
 }

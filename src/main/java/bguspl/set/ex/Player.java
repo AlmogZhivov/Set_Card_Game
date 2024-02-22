@@ -23,7 +23,7 @@ public class Player implements Runnable {
      */
     private final Table table;
 
-     /**
+    /**
      * Dealer entity
      */
     private final Dealer dealer;
@@ -38,7 +38,8 @@ public class Player implements Runnable {
     private Thread playerThread;
 
     /**
-     * The thread of the AI (computer) player (an additional thread used to generate key presses).
+     * The thread of the AI (computer) player (an additional thread used to generate
+     * key presses).
      */
     private Thread aiThread;
 
@@ -64,18 +65,11 @@ public class Player implements Runnable {
 
     private boolean wasPenalized;
 
-    //private final int setSize;
-    
-    // /**
-    //  * Player's tokes
-    //  */
-    // private int[] playerTokens; // almog added this field, for blocking queue
+    private volatile boolean needPenalty;
 
+    private volatile boolean needPoint;
 
-    /**
-     * Indicator for penalty or point
-     */
-    //private int isValid;
+    private boolean waitForDealer;
 
     /**
      * The class constructor.
@@ -84,7 +78,8 @@ public class Player implements Runnable {
      * @param dealer - the dealer object.
      * @param table  - the table object.
      * @param id     - the id of the player.
-     * @param human  - true iff the player is a human player (i.e. input is provided manually, via the keyboard).
+     * @param human  - true iff the player is a human player (i.e. input is provided
+     *               manually, via the keyboard).
      */
     public Player(Env env, Dealer dealer, Table table, int id, boolean human) {
         this.env = env;
@@ -94,50 +89,92 @@ public class Player implements Runnable {
         this.dealer = dealer;
         this.actionsQueue = new ArrayBlockingQueue<Integer>(dealer.setSize);
         this.wasPenalized = false;
+        this.needPenalty = false;
+        this.needPoint = false;
+        this.waitForDealer = false;
     }
 
     /**
-     * The main player thread of each player starts here (main loop for the player thread).
+     * The main player thread of each player starts here (main loop for the player
+     * thread).
      */
     @Override
     public void run() {
         playerThread = Thread.currentThread();
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
-        if (!human) {createArtificialIntelligence();}
+        if (!human) {
+            createArtificialIntelligence();
+        }
 
-        synchronized(this){
+        synchronized (this) {
             env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             while (!terminate) {
-                  
-                int slot = -1;
-                try {
-                    slot = actionsQueue.take();
-                }
-                catch (InterruptedException e) {}
-                if (slot >= 0 && !table.removeToken(this.id, slot) && table.hasCardAt(slot) 
-                        && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
-                    table.placeToken(this.id, slot);
-                    if (table.getNumOfTokensOnTable(this.id)==dealer.setSize && table.checkAndRemoveSet(this.id, dealer)) {
-                        this.point();
-                        dealer.resetTimer();
+
+                while (this.waitForDealer) {
+                    try {
+                        env.logger.info("thread " + Thread.currentThread().getName() + " waiting for dealer player: "
+                                + this.id);
+                        actionsQueue.clear();
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        env.logger.info("thread " + Thread.currentThread().getName() + " waiting interrupted player: "
+                                + this.id);
                     }
-                    else if (table.getNumOfTokensOnTable(this.id) == dealer.setSize){
-                        this.penalty();
-                    }   
                 }
-            
+
+                if (this.needPoint) {
+                    this.selfPoint();
+                    this.needPoint = false;
+                } else if (this.needPenalty) {
+                    this.selfPenalty();
+                    this.needPenalty = false;
+                    this.wasPenalized = true;
+                }
+
+                Integer slot = null;
+                try {
+                    env.logger.info("thread " + Thread.currentThread().getName() + " player: " + id
+                            + " is trying to take from actions queue");
+                    slot = actionsQueue.take();
+                    env.logger.info("thread " + Thread.currentThread().getName() + " player: " + this.id
+                            + " took key from actins queue: " + slot.toString());
+                } catch (InterruptedException e) {
+                }
+
+                if (slot != null && !this.needPenalty && !this.needPoint &&
+                        !table.removeToken(this.id, slot) && table.hasCardAt(slot)
+                        && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
+                    // If player tries to put token then he should be penalized next.
+                    // If player only removed token the wasPenalized is not relavant
+                    this.wasPenalized = false;
+                    env.logger.info("thread " + Thread.currentThread().getName() + " player: " + this.id
+                            + " is placing token on slot: " + slot.toString());
+                    table.placeToken(this.id, slot);
+                    if (table.getNumOfTokensOnTable(id) == dealer.setSize) {
+                        dealer.checkPlayer(this);
+                        this.waitForDealer = true;
+                    }
+                }
+
             }
-            //this.notifyAll();
-            env.logger.info("thread " + Thread.currentThread().getName() + "is releasing player + " + this.id);
+            // this.notifyAll();
+            // env.logger.info("thread " + Thread.currentThread().getName() + "is releasing
+            // player + " + this.id);
             // end sync
         }
-        if (!human) try { aiThread.join(); } catch (InterruptedException ignored) {}
+        if (!human)
+            try {
+                aiThread.join();
+            } catch (InterruptedException ignored) {
+            }
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
     /**
-     * Creates an additional thread for an AI (computer) player. The main loop of this thread repeatedly generates
-     * key presses. If the queue of key presses is full, the thread waits until it is not full.
+     * Creates an additional thread for an AI (computer) player. The main loop of
+     * this thread repeatedly generates
+     * key presses. If the queue of key presses is full, the thread waits until it
+     * is not full.
      */
     private void createArtificialIntelligence() {
         // note: this is a very, very smart AI (!)
@@ -162,8 +199,8 @@ public class Player implements Runnable {
         try {
             actionsQueue.clear();
             actionsQueue.put(0);
+        } catch (Exception e) {
         }
-        catch (Exception e) {}
         terminate = true;
         playerThread.interrupt();
     }
@@ -175,11 +212,12 @@ public class Player implements Runnable {
      * @pre- actionsQueue needs to be not full
      */
     public void keyPressed(int slot) {
-        try {                
-            env.logger.info("thread " + Thread.currentThread().getName() + " inserting into actions queue");
-            actionsQueue.put(slot);
-        } catch (InterruptedException e) {
-            //e.printStackTrace();
+        try {
+            env.logger.info(
+                    "thread " + Thread.currentThread().getName() + " playe: " + id + " is pressing key + " + slot);
+            actionsQueue.add(slot);
+        } catch (Exception e) {
+            // e.printStackTrace();
         }
     }
 
@@ -188,52 +226,78 @@ public class Player implements Runnable {
      *
      * @post - the player's score is increased by 1.
      * @post - the player's score is updated in the ui.
+     * 
+     *       should be called from playerThread only!
      */
-    public void point() {
-        synchronized(this) {
-            int ignored = table.countCards(); // this part is just for demonstration in the unit tests
-            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being point");
-            env.ui.setScore(id, ++score);
-            try {
-                int freezeTime = 1000;
-                for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
-                    env.ui.setFreeze(id, i);
-                    playerThread.sleep(freezeTime);
-                }
-                env.ui.setFreeze(id, 0);
-            } catch (InterruptedException e) {}
-            actionsQueue.clear();
-            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
+    private void selfPoint() {
+        needPoint = false;
+        int ignored = table.countCards(); // this part is just for demonstration in the unit tests
+        env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being point");
+        env.ui.setScore(id, ++score);
+        try {
+            int freezeTime = 1000;
+            for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+                env.ui.setFreeze(id, i);
+                playerThread.sleep(freezeTime);
+            }
+            env.ui.setFreeze(id, 0);
+            this.actionsQueue.clear();
+        } catch (InterruptedException e) {
         }
+        // actionsQueue.clear();
+        env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being point");
     }
 
     /**
      * Penalize a player and perform other related actions.
+     * 
+     * should be called from playerThread only!
      */
-    public void penalty() {
-        synchronized(this) {
-            try {
-                if (!wasPenalized) {
-                    env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
-                    long freezeTime = 1000;
-                    for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
-                        env.ui.setFreeze(id, i);
-                        playerThread.sleep(freezeTime);
-                    }
-                    env.ui.setFreeze(id, 0);
+    private void selfPenalty() {
+        try {
+            if (!wasPenalized) {
+                this.wasPenalized = true;
+                this.needPenalty = false;
+                env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
+                long freezeTime = 1000;
+                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                    env.ui.setFreeze(id, i);
+                    playerThread.sleep(freezeTime);
                 }
+                env.ui.setFreeze(id, 0);
+                this.actionsQueue.clear();
             }
-
-            catch (InterruptedException e) {}
-            actionsQueue.clear();
-            //notifyAll();
-            env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
         }
+
+        catch (InterruptedException e) {
+        }
+        // actionsQueue.clear();
+        env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is done being penalized");
     }
 
     public int score() {
-        synchronized(this) {
+        synchronized (this) {
             return score;
+        }
+    }
+
+    public void point() {
+        synchronized (this) {
+            this.needPoint = true;
+            this.waitForDealer = false;
+            env.logger.info(
+                    "thread " + Thread.currentThread().getName() + " is pointing and notifying player: " + this.id);
+            notifyAll();
+        }
+    }
+
+    public void penalty() {
+        synchronized (this) {
+            this.needPenalty = true;
+            this.waitForDealer = false;
+            env.logger.info(
+                    "thread " + Thread.currentThread().getName() + " is penalizing and nontifying player: " + this.id);
+            notifyAll();
         }
     }
 

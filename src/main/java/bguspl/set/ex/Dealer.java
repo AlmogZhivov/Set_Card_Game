@@ -127,13 +127,15 @@ public class Dealer implements Runnable {
      * Called when the game should be terminated.
      */
     public void terminate() {
-        synchronized (dealerLock) {
-            for (int i = players.length - 1; i >= 0; i--) {
-                players[i].terminate();
-            }
-            this.terminate = true;
-            dealerThread.interrupt();
+        //synchronized (dealerLock) {
+        this.removeAllCardsFromTable();
+        this.playersToCheck.add(new Player(env, this, table, players.length + 1, true));
+        for (int i = players.length - 1; i >= 0; i--) {
+            players[i].terminate();
         }
+        this.terminate = true;
+        dealerThread.interrupt();
+        //}
     }
 
     /**
@@ -158,7 +160,7 @@ public class Dealer implements Runnable {
         long playersLeft = maxPlayerToCheckAtOnce;
         // env.logger.info("thread " + Thread.currentThread().getName() + " playersLeft
         // " + playersLeft);
-        while (playersLeft > 0 && !playersToCheck.isEmpty()) {
+        while (playersLeft > 0 && !playersToCheck.isEmpty() && !terminate) {
             Player player = playersToCheck.remove();
             env.logger.info("thread " + Thread.currentThread().getName() + " checking player " + player.id);
             if (table.checkAndRemoveSet(player.id, this)) {

@@ -110,7 +110,7 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             while (!terminate) {
 
-                while (this.waitForDealer) {
+                while (this.waitForDealer && !terminate) {
                     try {
                         env.logger.info("thread " + Thread.currentThread().getName() + " waiting for dealer player: "
                                 + this.id);
@@ -122,10 +122,10 @@ public class Player implements Runnable {
                     }
                 }
 
-                if (this.needPoint) {
+                if (this.needPoint && !terminate) {
                     this.selfPoint();
                     this.needPoint = false;
-                } else if (this.needPenalty) {
+                } else if (this.needPenalty && !terminate) {
                     this.selfPenalty();
                     this.needPenalty = false;
                     this.wasPenalized = true;
@@ -141,7 +141,7 @@ public class Player implements Runnable {
                 } catch (InterruptedException e) {
                 }
 
-                if (slot != null && !this.needPenalty && !this.needPoint &&
+                if (!terminate && slot != null && !this.needPenalty && !this.needPoint &&
                         !table.removeToken(this.id, slot) && table.hasCardAt(slot)
                         && table.getNumOfTokensOnTable(this.id) < dealer.setSize) {
                     // If player tries to put token then he should be penalized next.
@@ -157,16 +157,17 @@ public class Player implements Runnable {
                 }
 
             }
-            // this.notifyAll();
-            // env.logger.info("thread " + Thread.currentThread().getName() + "is releasing
-            // player + " + this.id);
-            // end sync
+        
         }
-        if (!human)
-            try {
-                aiThread.join();
-            } catch (InterruptedException ignored) {
+        if (!human) {
+            actionsQueue.clear();
+            while (aiThread.isAlive()) {
+                try {
+                    aiThread.join();
+                } 
+                catch (InterruptedException ignored) {}
             }
+        }
         env.logger.info("thread " + Thread.currentThread().getName() + " terminated.");
     }
 
@@ -198,17 +199,17 @@ public class Player implements Runnable {
         // so blocked threads can continue and then terminate
         this.terminate = true;
         try {
-            actionsQueue.put(0);
-            playerThread.interrupt();
-            playerThread.join();
-        } catch (Exception e) {}
-        try {
-            actionsQueue.clear();
-            actionsQueue.put(0);
-        } catch (Exception e) {
+            actionsQueue.add(0);
         }
-        terminate = true;
-        playerThread.interrupt();
+        catch (Exception egnored) {}
+        try {
+            playerThread.interrupt();
+        }
+        catch (Exception egnored) {}
+        try {
+            playerThread.join();
+        }
+        catch (Exception e) {}
     }
 
     /**

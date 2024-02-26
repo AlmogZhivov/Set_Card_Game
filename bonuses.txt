@@ -12,13 +12,19 @@ with a short description of:
 
 1. Fully supporting all configuration fields and avoiding the use of magic numbers
 
-We are not entitled to this bonus.
+we used all the numbers provided in the class ‘env.confi’. In addition to that we defined a final field in Dealer which ‘clockTick’ that is set to 1000 (because a clock tick is 100 ms)
+It was used in Player class so the player knows for how much time it should penalize itself. 
+It was already implemented into the Table for the definition of the size of Table and for the table delay time.
+We implemented in Dealer class for almost everything. Time delays, timing the timmer, for knowing the legal set size, testing for legal sets and more….
+We changed the details in the file config.properties and tried to play the game and saw that the changes also appeared in the actual game.
 
 --------------------
 
 2. Terminating all threads (that you created) gracefully and in reverse order to the order they were created in.
 
-We are not entitled to this bonus.
+the terminate() method in Dealer calls the terminate method in Player class in reverse order to the order in which they were started. The method terminate() in Player class calls join() on playerThread which freezes the caller thread (dealer’s Thread in this case). If the Player is non-human the player’s Thread calls join() on the AI thread in a while loop that continues until the AI Thread is dead.
+It was used in Dealer class but mostly in Player class.
+We added into the log an info message that tells when the thread is terminated and saw that indeed they were terminated in reverse order to their start.
 
 --------------------
 
@@ -35,4 +41,14 @@ We are not entitled to this bonus.
 changed on the display, key input needs to be handled, etc.) and the only threads created by you are:
 1 thread per player + 1 additional thread for non-human players.
 
-We are not entitled to this bonus.
+We used a blocking queue for storing the key presses of Player. When the player tries to take from the blocking queue, it is empty then its thread waits.
+If the player is human then keyPress tries to add into the blocking queue by add() so the main thread does not wait if it is full. If the player is non-human then keyPress tries to add to the queue by put() so the AI Thread waits until there is more room in the queue. 
+
+We also made the Dealer class sleep for just enough time to set the timer correctly and Dealer is woken up when a player puts all of its tokens on table, tests for set, does what’s needed and goes back to sleep.
+In a single iteration of the timer loop the Dealer does not place or removes more cards then he can do so within a clock tick (1000 ms).
+
+
+It was Used in the classes of Dealer and Player. In the main loops of Player and Dealer and also in the pressKey of Player. Also within removeCardsFromTable and placeCardsOnTable of Dealer. Also at sleepUntilWokenUpOrTimeout of Dealer.
+
+
+We added log info in the main loop of the threads so we could check when were they woke up.

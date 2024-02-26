@@ -59,6 +59,12 @@ public class Dealer implements Runnable {
 
     private long timeNotToSleep;
 
+    private final long maxCardsToPlaceAtOnce;
+
+    private final long maxCardsToRemoveAtOnce;
+
+    private long cardsLeftToPlace;
+
     public Dealer(Env env, Table table, Player[] players) {
         this.env = env;
         this.table = table;
@@ -67,6 +73,9 @@ public class Dealer implements Runnable {
         dealerLock = new Object();
         this.setSize = env.config.featureSize;
         this.clockTick = 1000;
+        this.maxCardsToRemoveAtOnce = clockTick/env.config.tableDelayMillis - 1;
+        this.maxCardsToPlaceAtOnce = clockTick/env.config.tableDelayMillis - 1;
+        this.cardsLeftToPlace = maxCardsToPlaceAtOnce;
         this.maxPlayerToCheckAtOnce = this.calculateMaxPlayersToCheckAtOnce();
         this.playersToCheck = new ArrayBlockingQueue<>(players.length);
         this.timeNotToSleep = 0;
@@ -84,10 +93,9 @@ public class Dealer implements Runnable {
             Thread playerThread = new Thread(player, player.id + " ");
             playerThread.start();
         }
-        placeCardsOnTable();
+        reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
         while (!shouldFinish()) {
-            reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
-            placeCardsOnTable();
+            //reshuffleTime = System.currentTimeMillis() + env.config.turnTimeoutMillis;
             timerLoop();
             updateTimerDisplay(false);
         }
@@ -101,15 +109,13 @@ public class Dealer implements Runnable {
      */
     private void timerLoop() {
         while (!shouldFinish() && System.currentTimeMillis() < reshuffleTime) {
+            updateTimerDisplay(false);
             sleepUntilWokenOrTimeout();
+            placeCardsOnTable();
             updateTimerDisplay(false);
             removeCardsFromTable();
-            // placeCardsOnTable();
-            // env.logger.info("thread " + Thread.currentThread().getName() + "
-            // reshuffleTime - currentTimeMillis " +(reshuffleTime -
-            // System.currentTimeMillis()));
-            // env.logger.info("thread " + Thread.currentThread().getName() + " should
-            // finish " + shouldFinish());
+            
+            // remove all cards because of timmer
             while ((!shouldFinish() && !deck.isEmpty() && !areAvailableSets())
                     || reshuffleTime - System.currentTimeMillis() <= 0) {
                 removeAllCardsFromTable();
@@ -168,6 +174,7 @@ public class Dealer implements Runnable {
                 player.point();
                 this.resetTimer();
                 playersLeft = playersLeft - 1;
+                cardsLeftToPlace = cardsLeftToPlace - setSize;
                 timeNotToSleep = timeNotToSleep + setSize * env.config.tableDelayMillis;
             } else {
                 env.logger.info("thread " + Thread.currentThread().getName() + " penalizing player " + player.id);
@@ -194,10 +201,20 @@ public class Dealer implements Runnable {
         if (emptySlots == null || emptySlots.isEmpty())
             return;
 
+        
         for (int i : emptySlots) {
-            if (!deck.isEmpty())
+            if (cardsLeftToPlace <=  0) {
+                // number of cards to place exceeds clockTick
+                cardsLeftToPlace = maxCardsToPlaceAtOnce;
+                return;
+            }
+            if (!deck.isEmpty()) {
                 table.placeCard(deck.remove(0), i);
+                cardsLeftToPlace = cardsLeftToPlace - 1;
+            }
         }
+
+        cardsLeftToPlace = maxCardsToPlaceAtOnce;
         // }
         // done implement
     }
@@ -212,12 +229,14 @@ public class Dealer implements Runnable {
         long timeLeft = reshuffleTime - System.currentTimeMillis();
         long sleepTime = timeLeft%clockTick;
         sleepTime = Math.min(sleepTime, clockTick); // sleep time should not be bigger than clockTick
+        env.logger.info("thread " + Thread.currentThread().getName() + " timeLeft is: " + timeLeft);
+        env.logger.info("thread " + Thread.currentThread().getName() + " sleepTime is: " + sleepTime);
         if (timeLeft > env.config.turnTimeoutWarningMillis) {
             //sleepTime = sleepTime - timeNotToSleep;
         } else {
             sleepTime = 10;
-            env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft is small");
-            env.logger.info("thread " + Thread.currentThread().getName() + "timeLeft: " + timeLeft);
+            env.logger.info("thread " + Thread.currentThread().getName() + " timeLeft is small");
+            env.logger.info("thread " + Thread.currentThread().getName() + " timeLeft: " + timeLeft);
         }
         try {
             Thread.sleep(Math.max(sleepTime, minSleepTime)); // should not sleep less than 10 ms
@@ -302,9 +321,10 @@ public class Dealer implements Runnable {
 
     private long calculateMaxPlayersToCheckAtOnce() {
         long timeToRemoveSet = this.setSize * env.config.tableDelayMillis;
+        long timeToReplaceSet = this.setSize * env.config.tableDelayMillis;
         //env.logger.info("thread " + Thread.currentThread().getName() + " timeToRemoveSet " + timeToRemoveSet);
         // timeToRemoveSet*playersToCheckAtOnce should be < clockTick
-        long output = clockTick / timeToRemoveSet;
+        long output = clockTick / (timeToRemoveSet + timeToReplaceSet);
         //env.logger.info("thread " + Thread.currentThread().getName() + " output " + output);
         return output;
     }

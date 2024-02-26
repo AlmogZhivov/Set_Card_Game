@@ -109,7 +109,8 @@ public class Player implements Runnable {
         synchronized (this) {
             env.logger.info("thread " + Thread.currentThread().getName() + "is locking player + " + this.id);
             while (!terminate) {
-
+                env.logger.info(
+                    "thread " + Thread.currentThread().getName() + " is iterating");
                 while (this.waitForDealer && !terminate) {
                     try {
                         env.logger.info("thread " + Thread.currentThread().getName() + " waiting for dealer player: "
@@ -183,6 +184,9 @@ public class Player implements Runnable {
             env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
             Random rnd = new Random();
             while (!terminate) {
+                env.logger.info(
+                    "thread " + Thread.currentThread().getName() + " is iterating");
+            
                 int pressing = rnd.nextInt(env.config.tableSize);
                 keyPressed(pressing);
             }
@@ -221,9 +225,15 @@ public class Player implements Runnable {
     public void keyPressed(int slot) {
         try {
             env.logger.info(
-                    "thread " + Thread.currentThread().getName() + " playe: " + id + " is pressing key + " + slot);
-            actionsQueue.add(slot);
+                    "thread " + Thread.currentThread().getName() + " player: " + id + " is pressing key " + slot);
+            if (!human)        
+                actionsQueue.put(slot);
+            else
+                actionsQueue.add(slot);
+            env.logger.info(
+                    "thread " + Thread.currentThread().getName() + " player: " + id + " succeeded putting " + slot + " into actions queue");
         } catch (Exception e) {
+            env.logger.info("thread " + Thread.currentThread().getName() + " player: " + id + " interrupted while key pressing " + slot);
             // e.printStackTrace();
         }
     }

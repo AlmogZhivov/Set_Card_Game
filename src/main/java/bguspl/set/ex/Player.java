@@ -253,7 +253,7 @@ public class Player implements Runnable {
         env.ui.setScore(id, ++score);
         try {
             int freezeTime = 1000;
-            for (long i = env.config.pointFreezeMillis; i > 0; i -= 1000) {
+            for (long i = env.config.pointFreezeMillis; i > 0; i -= dealer.clockTick) {
                 env.ui.setFreeze(id, i);
                 playerThread.sleep(freezeTime);
             }
@@ -277,7 +277,7 @@ public class Player implements Runnable {
                 this.needPenalty = false;
                 env.logger.info("thread " + Thread.currentThread().getName() + " Player " + id + "is being penalized");
                 long freezeTime = 1000;
-                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= 1000) {
+                for (long i = env.config.penaltyFreezeMillis; i > 0; i -= dealer.clockTick) {
                     env.ui.setFreeze(id, i);
                     playerThread.sleep(freezeTime);
                 }

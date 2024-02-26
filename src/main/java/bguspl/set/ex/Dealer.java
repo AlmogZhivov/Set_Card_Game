@@ -55,7 +55,7 @@ public class Dealer implements Runnable {
 
     //private final long maxPlayerToCheckAtOnce;
 
-    private final long clockTick;
+    public final long clockTick;
 
     private BlockingQueue<Player> playersToCheck;
 
@@ -90,6 +90,7 @@ public class Dealer implements Runnable {
     @Override
     public void run() {
         this.dealerThread = Thread.currentThread();
+        Collections.shuffle(deck);
         env.logger.info("thread " + Thread.currentThread().getName() + " starting.");
         // The dealer must activate player's threads
         for (Player player : players) {
@@ -204,7 +205,6 @@ public class Dealer implements Runnable {
         List<Integer> emptySlots = table.getEmptySlots();
         if (emptySlots == null || emptySlots.isEmpty())
             return;
-        Collections.shuffle(emptySlots);
         synchronized (deckLock) {
             for (int i : emptySlots) {
                 // if (cardsLeftToPlace <=  0) {
@@ -260,8 +260,10 @@ public class Dealer implements Runnable {
         long timeLeft = reshuffleTime - System.currentTimeMillis();
         if (timeLeft > env.config.turnTimeoutWarningMillis)
             env.ui.setCountdown(Math.max(timeLeft, 0), false);
-        else
+        else {
+            env.logger.info("thread " + Thread.currentThread().getName() + " udating warning timmer: " + timeLeft);
             env.ui.setCountdown(Math.max(timeLeft, 0), true);
+        }
     }
 
     /**

@@ -53,7 +53,7 @@ public class Dealer implements Runnable {
 
     public final int setSize;
 
-    private final long maxPlayerToCheckAtOnce;
+    //private final long maxPlayerToCheckAtOnce;
 
     private final long clockTick;
 
@@ -61,11 +61,11 @@ public class Dealer implements Runnable {
 
     private long timeNotToSleep;
 
-    private final long maxCardsToPlaceAtOnce;
+    // private final long maxCardsToPlaceAtOnce;
 
-    private final long maxCardsToRemoveAtOnce;
+    // private final long maxCardsToRemoveAtOnce;
 
-    private long cardsLeftToPlace;
+    // private long cardsLeftToPlace;
 
     public Dealer(Env env, Table table, Player[] players) {
         this.env = env;
@@ -76,10 +76,10 @@ public class Dealer implements Runnable {
         deckLock = new Object();
         this.setSize = env.config.featureSize;
         this.clockTick = 1000;
-        this.maxCardsToRemoveAtOnce = clockTick/env.config.tableDelayMillis - 1;
-        this.maxCardsToPlaceAtOnce = clockTick/env.config.tableDelayMillis - 1;
-        this.cardsLeftToPlace = maxCardsToPlaceAtOnce;
-        this.maxPlayerToCheckAtOnce = this.calculateMaxPlayersToCheckAtOnce();
+        // this.maxCardsToRemoveAtOnce = clockTick/env.config.tableDelayMillis - 1;
+        // this.maxCardsToPlaceAtOnce = clockTick/env.config.tableDelayMillis - 1;
+        // this.cardsLeftToPlace = maxCardsToPlaceAtOnce;
+        // this.maxPlayerToCheckAtOnce = this.calculateMaxPlayersToCheckAtOnce();
         this.playersToCheck = new ArrayBlockingQueue<>(players.length);
         this.timeNotToSleep = 0;
     }
@@ -166,19 +166,20 @@ public class Dealer implements Runnable {
 
         env.logger.info("thread " + Thread.currentThread().getName() + " removing cards from table");
 
-        long playersLeft = maxPlayerToCheckAtOnce;
+        //long playersLeft = maxPlayerToCheckAtOnce;
         // env.logger.info("thread " + Thread.currentThread().getName() + " playersLeft
         // " + playersLeft);
-        while (playersLeft > 0 && !playersToCheck.isEmpty() && !terminate) {
+        while (/*playersLeft > 0 &&*/ !playersToCheck.isEmpty() && !terminate) {
             Player player = playersToCheck.remove();
             env.logger.info("thread " + Thread.currentThread().getName() + " checking player " + player.id);
             if (table.checkAndRemoveSet(player.id, this)) {
                 env.logger.info("thread " + Thread.currentThread().getName() + " pointing player " + player.id);
                 player.point();
                 this.resetTimer();
-                playersLeft = playersLeft - 1;
-                cardsLeftToPlace = cardsLeftToPlace - setSize;
-                timeNotToSleep = timeNotToSleep + setSize * env.config.tableDelayMillis;
+                this.updateTimerDisplay(false);
+                // playersLeft = playersLeft - 1;
+                // cardsLeftToPlace = cardsLeftToPlace - setSize;
+                // timeNotToSleep = timeNotToSleep + setSize * env.config.tableDelayMillis;
             } else {
                 env.logger.info("thread " + Thread.currentThread().getName() + " penalizing player " + player.id);
                 player.penalty();
@@ -206,19 +207,20 @@ public class Dealer implements Runnable {
         Collections.shuffle(emptySlots);
         synchronized (deckLock) {
             for (int i : emptySlots) {
-                if (cardsLeftToPlace <=  0) {
-                    // number of cards to place exceeds clockTick
-                    cardsLeftToPlace = maxCardsToPlaceAtOnce;
-                    return;
-                }
+                // if (cardsLeftToPlace <=  0) {
+                //     // number of cards to place exceeds clockTick
+                //     cardsLeftToPlace = maxCardsToPlaceAtOnce;
+                //     return;
+                // }
                 if (!deck.isEmpty()) {
                     table.placeCard(deck.remove(0), i);
-                    cardsLeftToPlace = cardsLeftToPlace - 1;
+                    //cardsLeftToPlace = cardsLeftToPlace - 1;
+                    this.updateTimerDisplay(false);
                 }
             }
         }
 
-        cardsLeftToPlace = maxCardsToPlaceAtOnce;
+        //cardsLeftToPlace = maxCardsToPlaceAtOnce;
         // }
         // done implement
     }

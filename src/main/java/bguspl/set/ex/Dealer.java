@@ -203,9 +203,8 @@ public class Dealer implements Runnable {
         List<Integer> emptySlots = table.getEmptySlots();
         if (emptySlots == null || emptySlots.isEmpty())
             return;
-
+        Collections.shuffle(emptySlots);
         synchronized (deckLock) {
-            Collections.shuffle(deck);
             for (int i : emptySlots) {
                 if (cardsLeftToPlace <=  0) {
                     // number of cards to place exceeds clockTick

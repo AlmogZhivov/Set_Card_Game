@@ -205,6 +205,7 @@ public class Dealer implements Runnable {
             return;
 
         synchronized (deckLock) {
+            Collections.shuffle(deck);
             for (int i : emptySlots) {
                 if (cardsLeftToPlace <=  0) {
                     // number of cards to place exceeds clockTick

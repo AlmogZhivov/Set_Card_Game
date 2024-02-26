@@ -3,6 +3,7 @@ package bguspl.set;
 import bguspl.set.ex.Dealer;
 import bguspl.set.ex.Player;
 import bguspl.set.ex.Table;
+import bguspl.set.UserInterfaceSwing;
 
 import java.io.File;
 import java.io.IOException;

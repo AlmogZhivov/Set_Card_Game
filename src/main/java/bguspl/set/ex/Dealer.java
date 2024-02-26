@@ -49,6 +49,8 @@ public class Dealer implements Runnable {
      */
     public final Object dealerLock;
 
+    private final Object deckLock;
+
     public final int setSize;
 
     private final long maxPlayerToCheckAtOnce;
@@ -71,6 +73,7 @@ public class Dealer implements Runnable {
         this.players = players;
         deck = IntStream.range(0, env.config.deckSize).boxed().collect(Collectors.toList());
         dealerLock = new Object();
+        deckLock = new Object();
         this.setSize = env.config.featureSize;
         this.clockTick = 1000;
         this.maxCardsToRemoveAtOnce = clockTick/env.config.tableDelayMillis - 1;
@@ -117,7 +120,7 @@ public class Dealer implements Runnable {
             
             // remove all cards because of timmer
             while ((!shouldFinish() && !deck.isEmpty() && !areAvailableSets())
-                    || reshuffleTime - System.currentTimeMillis() <= 0) {
+                || reshuffleTime - System.currentTimeMillis() <= 0) {
                 removeAllCardsFromTable();
                 placeCardsOnTable();
                 updateTimerDisplay(true);
@@ -201,16 +204,17 @@ public class Dealer implements Runnable {
         if (emptySlots == null || emptySlots.isEmpty())
             return;
 
-        
-        for (int i : emptySlots) {
-            if (cardsLeftToPlace <=  0) {
-                // number of cards to place exceeds clockTick
-                cardsLeftToPlace = maxCardsToPlaceAtOnce;
-                return;
-            }
-            if (!deck.isEmpty()) {
-                table.placeCard(deck.remove(0), i);
-                cardsLeftToPlace = cardsLeftToPlace - 1;
+        synchronized (deckLock) {
+            for (int i : emptySlots) {
+                if (cardsLeftToPlace <=  0) {
+                    // number of cards to place exceeds clockTick
+                    cardsLeftToPlace = maxCardsToPlaceAtOnce;
+                    return;
+                }
+                if (!deck.isEmpty()) {
+                    table.placeCard(deck.remove(0), i);
+                    cardsLeftToPlace = cardsLeftToPlace - 1;
+                }
             }
         }
 
@@ -265,11 +269,13 @@ public class Dealer implements Runnable {
         env.logger.info("thread " + Thread.currentThread().getName() + " Dealer remove all cards");
         List<Integer> cardsToRemove = table.removeAllCards();
         // remove cards from table
-        for (int card : cardsToRemove) {
-            deck.add((Integer) card);
+        synchronized (deckLock) {
+            for (int card : cardsToRemove) {
+                deck.add((Integer) card);
+            }
+            // shuffle the cards again after removal
+            Collections.shuffle(deck);
         }
-        // shuffle the cards again after removal
-        Collections.shuffle(deck);
     }
 
     /**

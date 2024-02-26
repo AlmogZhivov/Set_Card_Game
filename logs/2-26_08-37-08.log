@@ -1,0 +1,151 @@
+[08:37:08.224] [INFO   ] thread bguspl.set.Main.main() starting.
+[08:37:08.253] [SEVERE ] cannot read configuration file config.properties trying from resources.
+[08:37:08.262] [SEVERE ] configuration file was loaded from resources directory.
+[08:37:09.571] [INFO   ] thread dealer starting.
+[08:37:09.572] [INFO   ] thread dealer starting.
+[08:37:09.573] [INFO   ] thread 0  starting.
+[08:37:09.577] [SEVERE ] updating countdown to 59996
+[08:37:09.573] [INFO   ] thread 1  starting.
+[08:37:09.578] [INFO   ] thread 0 is locking player + 0
+[08:37:09.579] [INFO   ] thread dealer timeLeft is: 59994
+[08:37:09.579] [INFO   ] thread 1 is locking player + 1
+[08:37:09.591] [INFO   ] thread dealer sleepTime is: 994
+[08:37:09.579] [INFO   ] thread 0  is iterating
+[08:37:09.592] [INFO   ] thread 1  is iterating
+[08:37:09.593] [INFO   ] thread 0  player: 0 is trying to take from actions queue
+[08:37:09.594] [INFO   ] thread 1  player: 1 is trying to take from actions queue
+[08:37:10.689] [SEVERE ] placing card 0 in slot 0
+[08:37:10.795] [SEVERE ] placing card 1 in slot 1
+[08:37:10.897] [SEVERE ] placing card 2 in slot 2
+[08:37:10.999] [SEVERE ] placing card 3 in slot 3
+[08:37:11.101] [SEVERE ] placing card 4 in slot 4
+[08:37:11.203] [SEVERE ] placing card 5 in slot 5
+[08:37:11.306] [SEVERE ] placing card 6 in slot 6
+[08:37:11.408] [SEVERE ] placing card 7 in slot 7
+[08:37:11.511] [SEVERE ] placing card 8 in slot 8
+[08:37:11.513] [SEVERE ] updating countdown to 58060
+[08:37:11.516] [INFO   ] thread dealer removing cards from table
+[08:37:11.618] [SEVERE ] placing card 9 in slot 9
+[08:37:11.720] [SEVERE ] placing card 10 in slot 10
+[08:37:11.822] [SEVERE ] placing card 11 in slot 11
+[08:37:11.824] [SEVERE ] updating countdown to 57749
+[08:37:11.826] [INFO   ] thread dealer timeLeft is: 57747
+[08:37:11.827] [INFO   ] thread dealer sleepTime is: 747
+[08:37:12.575] [SEVERE ] updating countdown to 56998
+[08:37:12.577] [INFO   ] thread dealer removing cards from table
+[08:37:12.582] [SEVERE ] updating countdown to 56991
+[08:37:12.583] [INFO   ] thread dealer timeLeft is: 56990
+[08:37:12.584] [INFO   ] thread dealer sleepTime is: 990
+[08:37:13.575] [SEVERE ] updating countdown to 55998
+[08:37:13.577] [INFO   ] thread dealer removing cards from table
+[08:37:13.578] [SEVERE ] updating countdown to 55995
+[08:37:13.578] [INFO   ] thread dealer timeLeft is: 55995
+[08:37:13.581] [INFO   ] thread dealer sleepTime is: 995
+[08:37:14.578] [SEVERE ] updating countdown to 54995
+[08:37:14.582] [INFO   ] thread dealer removing cards from table
+[08:37:14.584] [SEVERE ] updating countdown to 54989
+[08:37:14.585] [INFO   ] thread dealer timeLeft is: 54988
+[08:37:14.587] [INFO   ] thread dealer sleepTime is: 988
+[08:37:15.077] [SEVERE ] key 81 was pressed by player 1
+[08:37:15.078] [INFO   ] thread AWT-EventQueue-0 player: 0 is pressing key 0
+[08:37:15.078] [INFO   ] thread 0  player: 0 took key from actins queue: 0
+[08:37:15.078] [INFO   ] thread AWT-EventQueue-0 player: 0 succeeded putting 0 into actions queue
+[08:37:15.079] [INFO   ] thread 0  player: 0 is placing token on slot: 0
+[08:37:15.080] [SEVERE ] player 1 placing token on slot 0
+[08:37:15.080] [INFO   ] thread 0  is iterating
+[08:37:15.081] [INFO   ] thread 0  player: 0 is trying to take from actions queue
+[08:37:15.114] [SEVERE ] key 87 was pressed by player 1
+[08:37:15.115] [INFO   ] thread AWT-EventQueue-0 player: 0 is pressing key 1
+[08:37:15.115] [INFO   ] thread AWT-EventQueue-0 player: 0 succeeded putting 1 into actions queue
+[08:37:15.115] [INFO   ] thread 0  player: 0 took key from actins queue: 1
+[08:37:15.116] [INFO   ] thread 0  player: 0 is placing token on slot: 1
+[08:37:15.116] [SEVERE ] player 1 placing token on slot 1
+[08:37:15.117] [INFO   ] thread 0  is iterating
+[08:37:15.117] [INFO   ] thread 0  player: 0 is trying to take from actions queue
+[08:37:15.188] [SEVERE ] key 69 was pressed by player 1
+[08:37:15.189] [INFO   ] thread AWT-EventQueue-0 player: 0 is pressing key 2
+[08:37:15.190] [INFO   ] thread AWT-EventQueue-0 player: 0 succeeded putting 2 into actions queue
+[08:37:15.190] [INFO   ] thread 0  player: 0 took key from actins queue: 2
+[08:37:15.191] [INFO   ] thread 0  player: 0 is placing token on slot: 2
+[08:37:15.191] [SEVERE ] player 1 placing token on slot 2
+[08:37:15.192] [INFO   ] thread 0  adding player 0 to check queue
+[08:37:15.193] [INFO   ] thread 0  waking up dealer
+[08:37:15.194] [INFO   ] thread 0  is iterating
+[08:37:15.195] [INFO   ] thread 0  waiting for dealer player: 0
+[08:37:15.195] [SEVERE ] updating countdown to 54378
+[08:37:15.198] [INFO   ] thread dealer removing cards from table
+[08:37:15.198] [INFO   ] thread dealer checking player 0
+[08:37:15.299] [SEVERE ] removing player 1 token from slot 0
+[08:37:15.300] [SEVERE ] removing card from slot 0
+[08:37:15.402] [SEVERE ] removing player 1 token from slot 1
+[08:37:15.404] [SEVERE ] removing card from slot 1
+[08:37:15.507] [SEVERE ] removing player 1 token from slot 2
+[08:37:15.508] [SEVERE ] removing card from slot 2
+[08:37:15.509] [INFO   ] thread dealer pointing player 0
+[08:37:15.509] [INFO   ] thread dealer is pointing and notifying player: 0
+[08:37:15.511] [INFO   ] thread 0  Player 0is being point
+[08:37:15.511] [SEVERE ] updating countdown to 60000
+[08:37:15.513] [SEVERE ] exit button pressed
+[08:37:15.513] [SEVERE ] setting player 1 score to 1
+[08:37:15.515] [INFO   ] thread AWT-EventQueue-0 Dealer remove all cards
+[08:37:15.517] [INFO   ] thread AWT-EventQueue-0 Table remove all cards
+[08:37:15.516] [SEVERE ] setting player 1 freeze to 1000
+[08:37:15.615] [SEVERE ] placing card 12 in slot 0
+[08:37:15.718] [SEVERE ] placing card 13 in slot 1
+[08:37:15.820] [SEVERE ] placing card 14 in slot 2
+[08:37:15.922] [SEVERE ] removing card from slot 0
+[08:37:16.024] [SEVERE ] removing card from slot 1
+[08:37:16.126] [SEVERE ] removing card from slot 2
+[08:37:16.230] [SEVERE ] removing card from slot 3
+[08:37:16.332] [SEVERE ] removing card from slot 4
+[08:37:16.434] [SEVERE ] removing card from slot 5
+[08:37:16.520] [SEVERE ] setting player 1 freeze to 0
+[08:37:16.522] [INFO   ] thread 0  Player 0is done being point
+[08:37:16.524] [INFO   ] thread 0  player: 0 is trying to take from actions queue
+[08:37:16.535] [SEVERE ] removing card from slot 6
+[08:37:16.638] [SEVERE ] removing card from slot 7
+[08:37:16.740] [SEVERE ] removing card from slot 8
+[08:37:16.843] [SEVERE ] removing card from slot 9
+[08:37:16.947] [SEVERE ] removing card from slot 10
+[08:37:17.049] [SEVERE ] removing card from slot 11
+[08:37:17.051] [SEVERE ] updating countdown to 58460
+[08:37:17.052] [INFO   ] thread 1  player: 1 took key from actins queue: 0
+[08:37:17.054] [INFO   ] thread 1  terminated.
+[08:37:17.053] [INFO   ] thread dealer timeLeft is: 58458
+[08:37:17.055] [INFO   ] thread dealer sleepTime is: 458
+[08:37:17.055] [INFO   ] thread 0  player: 0 took key from actins queue: 0
+[08:37:17.057] [INFO   ] thread 0  terminated.
+[08:37:17.158] [SEVERE ] placing card 35 in slot 0
+[08:37:17.261] [SEVERE ] placing card 20 in slot 1
+[08:37:17.365] [SEVERE ] placing card 23 in slot 2
+[08:37:17.467] [SEVERE ] placing card 57 in slot 3
+[08:37:17.569] [SEVERE ] placing card 11 in slot 4
+[08:37:17.672] [SEVERE ] placing card 19 in slot 5
+[08:37:17.774] [SEVERE ] placing card 13 in slot 6
+[08:37:17.877] [SEVERE ] placing card 26 in slot 7
+[08:37:17.982] [SEVERE ] placing card 64 in slot 8
+[08:37:17.983] [SEVERE ] updating countdown to 57528
+[08:37:17.984] [INFO   ] thread dealer removing cards from table
+[08:37:18.085] [SEVERE ] placing card 25 in slot 9
+[08:37:18.187] [SEVERE ] placing card 37 in slot 10
+[08:37:18.290] [SEVERE ] placing card 33 in slot 11
+[08:37:18.292] [INFO   ] thread dealer Dealer remove all cards
+[08:37:18.293] [INFO   ] thread dealer Table remove all cards
+[08:37:18.394] [SEVERE ] removing card from slot 0
+[08:37:18.498] [SEVERE ] removing card from slot 1
+[08:37:18.599] [SEVERE ] removing card from slot 2
+[08:37:18.701] [SEVERE ] removing card from slot 3
+[08:37:18.802] [SEVERE ] removing card from slot 4
+[08:37:18.904] [SEVERE ] removing card from slot 5
+[08:37:19.007] [SEVERE ] removing card from slot 6
+[08:37:19.109] [SEVERE ] removing card from slot 7
+[08:37:19.211] [SEVERE ] removing card from slot 8
+[08:37:19.313] [SEVERE ] removing card from slot 9
+[08:37:19.415] [SEVERE ] removing card from slot 10
+[08:37:19.517] [SEVERE ] removing card from slot 11
+[08:37:19.521] [SEVERE ] announcing winner(s): player 1
+[08:37:19.523] [SEVERE ] updating countdown to 55988
+[08:37:19.524] [INFO   ] thread dealer terminated.
+[08:37:19.525] [INFO   ] thread dealer terminated.
+[08:37:19.526] [SEVERE ] thanks for playing... it was fun!
+[08:37:19.526] [INFO   ] thread bguspl.set.Main.main() terminated.
